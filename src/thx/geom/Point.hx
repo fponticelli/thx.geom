@@ -27,32 +27,32 @@ abstract Point(Array<Float>) {
 	inline function get_lengthSquared() return x * x + y * y;
 	inline function get_inst() : Point return cast this;
 
-	@:op(A+B) inline function addPoint(p : Point)
+	@:op(A+B) inline public function addPoint(p : Point)
 		return new Point(x + p.x, y + p.y);
 
-	@:op(A+B) inline function add(v : Float)
+	@:op(A+B) inline public function add(v : Float)
 		return new Point(x + v, y + v);
 
-	@:op(-A) inline function negate()
+	@:op(-A) inline public function negate()
 		return new Point(-x, -y);
 
-	@:op(A-B) inline function subtractPoint(p : Point)
+	@:op(A-B) inline public function subtractPoint(p : Point)
 		return addPoint(p.negate());
 
-	@:op(A-B) inline function subtract(v : Float)
+	@:op(A-B) inline public function subtract(v : Float)
 		return add(-v);
 
-	@:op(A*B) inline function multiplyPoint(p : Point)
+	@:op(A*B) inline public function multiplyPoint(p : Point)
 		return new Point(x * p.x, y * p.y);
 
 	@:commutative
-	@:op(A*B) inline function multiply(v : Float)
+	@:op(A*B) inline public function multiply(v : Float)
 		return new Point(x * v, y * v);
 
-	@:op(A/B) inline function dividePoint(p : Point)
+	@:op(A/B) inline public function dividePoint(p : Point)
 		return new Point(x / p.x, y / p.y);
 
-	@:op(A/B) inline function divide(v : Float)
+	@:op(A/B) inline public function divide(v : Float)
 		return new Point(x / v, y / v);
 
 	@:op(A==B)

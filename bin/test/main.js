@@ -1080,16 +1080,16 @@ thx_geom_TestPoint.prototype = {
 		}(this)),null,{ fileName : "TestPoint.hx", lineNumber : 16, className : "thx.geom.TestPoint", methodName : "testInterpolate"});
 		utest_Assert.isTrue((function($this) {
 			var $r;
-			var this11 = thx_geom__$Point_Point_$Impl_$.interpolate(a,b,1);
-			$r = this11[0] == b[0] && this11[1] == b[1];
+			var this2 = thx_geom__$Point_Point_$Impl_$.interpolate(a,b,1);
+			$r = this2[0] == b[0] && this2[1] == b[1];
 			return $r;
 		}(this)),null,{ fileName : "TestPoint.hx", lineNumber : 17, className : "thx.geom.TestPoint", methodName : "testInterpolate"});
 		utest_Assert.isTrue((function($this) {
 			var $r;
-			var this12 = thx_geom__$Point_Point_$Impl_$.interpolate(a,b,0.5);
+			var this3 = thx_geom__$Point_Point_$Impl_$.interpolate(a,b,0.5);
 			var p_0 = 15;
 			var p_1 = 30;
-			$r = this12[0] == p_0 && this12[1] == p_1;
+			$r = this3[0] == p_0 && this3[1] == p_1;
 			return $r;
 		}(this)),null,{ fileName : "TestPoint.hx", lineNumber : 18, className : "thx.geom.TestPoint", methodName : "testInterpolate"});
 	}
@@ -1101,9 +1101,9 @@ thx_geom_TestPoint.prototype = {
 		p = [x,y];
 		utest_Assert.isTrue((function($this) {
 			var $r;
-			var this1_0 = 0;
-			var this1_1 = 1;
-			$r = Math.abs(this1_0 - p[0]) <= 1e-5 && Math.abs(this1_1 - p[1]) <= 1e-5;
+			var this_0 = 0;
+			var this_1 = 1;
+			$r = Math.abs(this_0 - p[0]) <= 1e-5 && Math.abs(this_1 - p[1]) <= 1e-5;
 			return $r;
 		}(this)),null,{ fileName : "TestPoint.hx", lineNumber : 24, className : "thx.geom.TestPoint", methodName : "testFromAngle"});
 	}
