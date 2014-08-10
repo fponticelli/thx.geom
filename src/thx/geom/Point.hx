@@ -9,16 +9,8 @@ abstract Point(Array<Float>) {
 	@:from static inline function fromArray(arr : Array<Int>)
 		return new Point(arr[0], arr[1]);
 
-	@:from static inline public function fromAngle(angle : Float)
+	@:from static inline public function fromAngle(angle : Angle)
 		return new Point(Math.cos(angle), Math.sin(angle));
-
-	#if thx-unit
-	@:from static inline public function fromRadians(rad : Radian)
-		return new Point(rad.cos(), rad.sin());
-
-	@:from static inline public function fromDegrees(deg : Degree)
-		return new Point(deg.cos(), deg.sin());
-	#end
 
 	inline public function new(x : Float, y : Float)
 		this = [x, y];
@@ -27,60 +19,64 @@ abstract Point(Array<Float>) {
 	public var y(get, never) : Float;
 	public var length(get, never) : Float;
 	public var lengthSquared(get, never) : Float;
+	private var inst(get, never) : Point;
 
 	inline function get_x() return this[0];
 	inline function get_y() return this[1];
 	inline function get_length() return Math.sqrt(lengthSquared);
 	inline function get_lengthSquared() return x * x + y * y;
+	inline function get_inst() : Point return cast this;
 
-	inline function interpolate(p : Point, f : Float)
-		return add(subtract(p).divideNumber(f));
-
-	inline function middle(p : Point)
-		return interpolate(p, 0.5);
-
-	inline public function isZero()
-		return x == 0 && y == 0;
-
-	public function isNearZero()
-		return Const.EPSILON >= Math.abs(x) && Const.EPSILON >= Math.abs(y);
-
-	inline public function toString()
-		return 'Point($x,$y)';
-
-	@:to inline function toArray() : Array<Float>
-		return this.copy();
-
-	@:to inline function toObject() : { x : Float, y : Float }
-		return { x : x, y : y };
-
-	@:op(A+B) inline function add(p : Point)
+	@:op(A+B) inline function addPoint(p : Point)
 		return new Point(x + p.x, y + p.y);
 
-	@:op(A+B) inline function addNumber(v : Float)
+	@:op(A+B) inline function add(v : Float)
 		return new Point(x + v, y + v);
 
 	@:op(-A) inline function negate()
 		return new Point(-x, -y);
 
-	@:op(A-B) inline function subtract(p : Point)
-		return add(p.negate());
+	@:op(A-B) inline function subtractPoint(p : Point)
+		return addPoint(p.negate());
 
-	@:op(A-B) inline function subtractNumber(v : Float)
-		return addNumber(-v);
+	@:op(A-B) inline function subtract(v : Float)
+		return add(-v);
 
-	@:op(A*B) inline function multiply(p : Point)
+	@:op(A*B) inline function multiplyPoint(p : Point)
 		return new Point(x * p.x, y * p.y);
 
 	@:commutative
-	@:op(A*B) inline function multiplyNumber(v : Float)
+	@:op(A*B) inline function multiply(v : Float)
 		return new Point(x * v, y * v);
 
-	@:op(A/B) inline function divide(p : Point)
+	@:op(A/B) inline function dividePoint(p : Point)
 		return new Point(x / p.x, y / p.y);
 
-	@:op(A/B) inline function divideNumber(v : Float)
+	@:op(A/B) inline function divide(v : Float)
 		return new Point(x / v, y / v);
+
+	@:op(A==B)
+	inline public function equals(p : Point)
+		return (x == p.x) && (y == p.y);
+
+	@:op(A!=B)
+	inline public function notEquals(p : Point)
+		return !equals(p);
+
+	inline public function abs() : Point
+		return new Point(Math.abs(x), Math.abs(y));
+
+	inline public function nearEquals(p : Point)
+		return Math.abs(x - p.x) <= Const.EPSILON && Math.abs(y - p.y) <= Const.EPSILON;
+
+	public function interpolate(p : Point, f : Float)
+		return addPoint(p.subtractPoint(inst).multiply(f));
+
+	inline public function isZero()
+		return equals(zero);
+
+	inline public function isNearZero()
+		return nearEquals(zero);
 
 	inline public function dot(p : Point) : Float
 		return x * p.x + y * p.y;
@@ -91,43 +87,41 @@ abstract Point(Array<Float>) {
 	inline public function normalize()
 		return divide(length);
 
-	inline public function equals(other : Point)
-		return (x == other.x) && (y == other.y);
+	public function distanceTo(p : Point)
+		return subtractPoint(p).length;
 
-	inline public function distanceTo(other : Point)
-		return subtract(other).length;
+	public function distanceToSquared(p : Point)
+		return subtractPoint(p).lengthSquared;
 
-	inline public function distanceToSquared(other : Point)
-		return subtract(other).lengthSquared;
+	inline public function transform(matrix : Matrix4x4)
+		return matrix.leftMultiplyPoint(inst);
 
-//	inline public function transform(matrix : Matrix4x4)
-//		return matrix.leftMultiplyPoint(this);
+	inline public function cross(p : Point)
+		return x * p.y - y * p.x;
 
-	#if thx-unit
-	@:to inline public function toDegrees() : Degree
-		return toRadians().toDegree();
+	inline public function min(p : Point) {
+		return new Point(
+			Math.min(x, p.x),
+			Math.min(y, p.y)
+		);
+	}
 
-	@:to inline public function toRadians() : Radian
-		return new Radian(Math.atan2(y, x));
-	#end
+	inline public function max(p : Point) {
+		return new Point(
+			Math.max(x, p.x),
+			Math.max(y, p.y)
+		);
+	}
 
-	@:to inline public function toAngle() : Float
+	@:to inline public function toAngle() : Angle
 		return Math.atan2(y, x);
 
-	inline public function cross(other : Point)
-		return x * other.y - y * other.x;
+	@:to inline function toArray() : Array<Float>
+		return this.copy();
 
-	inline public function min(other : Point) {
-		return new Point(
-			Math.min(x, other.x),
-			Math.min(y, other.y)
-		);
-	}
+	@:to inline function toObject() : { x : Float, y : Float }
+		return { x : x, y : y };
 
-	inline public function max(other : Point) {
-		return new Point(
-			Math.max(x, other.x),
-			Math.max(y, other.y)
-		);
-	}
+	@:to inline public function toString()
+		return 'Point($x,$y)';
 }

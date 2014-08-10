@@ -1,0 +1,11 @@
+-cp src
+-cp test
+-lib thx.core
+-lib utest
+-lib thx-unit
+-D nodejs
+-D js-flatten
+-D thxunit
+-main TestAll
+-js bin/test/main.js
+-cmd node bin/test/main.js
