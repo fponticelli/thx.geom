@@ -5,8 +5,6 @@ import thx.geom.Matrix4x4;
 
 @:access(thx.geom.Polygon)
 class Plane {
-	public inline static var EPSILON = 1e-5;
-
 	public static function fromPoint3Ds(a : Point3D, b : Point3D, c : Point3D) {
 		var n = b.subtractPoint3D(a).cross(c.subtractPoint3D(a)).normalize();
 		return new Plane(n, n.dot(a));
@@ -17,12 +15,12 @@ class Plane {
 	public static function anyPlaneFromPoint3Ds(a : Point3D, b : Point3D, c : Point3D) {
 		var v1 = b.subtractPoint3D(a),
 			v2 = c.subtractPoint3D(a);
-		if(v1.length < EPSILON)
+		if(v1.length < Const.EPSILON)
 			v1 = v2.randomNonParallelVector();
-		if(v2.length < EPSILON)
+		if(v2.length < Const.EPSILON)
 			v2 = v1.randomNonParallelVector();
 		var normal = v1.cross(v2);
-		if(normal.length < EPSILON)
+		if(normal.length < Const.EPSILON)
 		{
 			// this would mean that v1 == v2.negated()
 			v2 = v1.randomNonParallelVector();
@@ -61,7 +59,7 @@ class Plane {
 
 		for(vertex in polygon) {
 			t = normal.dot(vertex.position) - w;
-			type = (t < -EPSILON) ? BACK : (t > EPSILON) ? FRONT : COPLANAR;
+			type = (t < -Const.EPSILON) ? BACK : (t > Const.EPSILON) ? FRONT : COPLANAR;
 			polygonType |= type;
 			types.push(type);
 		}
