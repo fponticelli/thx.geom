@@ -916,6 +916,24 @@ thx_geom__$Point_Point_$Impl_$.toObject = function(this1) {
 thx_geom__$Point_Point_$Impl_$.toString = function(this1) {
 	return "Point(" + this1[0] + "," + this1[1] + ")";
 };
+thx_geom__$Point_Point_$Impl_$.solve2Linear = function(a,b,c,d,u,v) {
+	var det = a * d - b * c;
+	var invdet = 1.0 / det;
+	var x = u * d - b * v;
+	var y = -u * c + a * v;
+	return [x * invdet,y * invdet];
+};
+thx_geom__$Point_Point_$Impl_$.interpolateBetween2DPointsForY = function(p1,p2,y) {
+	var f1 = y - p1[1];
+	var f2 = p2[1] - p1[1];
+	var t;
+	if(f2 < 0) {
+		f1 = -f1;
+		f2 = -f2;
+	}
+	if(f1 <= 0) t = 0.0; else if(f1 >= f2) t = 1.0; else if(f2 < 1e-10) t = 0.5; else t = f1 / f2;
+	return p1[0] + t * (p2[0] - p1[0]);
+};
 var thx_geom__$Point3D_Point3D_$Impl_$ = function() { };
 thx_geom__$Point3D_Point3D_$Impl_$.__name__ = ["thx","geom","_Point3D","Point3D_Impl_"];
 thx_geom__$Point3D_Point3D_$Impl_$.fromObject = function(o) {
