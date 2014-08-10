@@ -1,4 +1,6 @@
-package thx.geom;
+package thx.geom.shape;
+
+import thx.geom.Point;
 
 abstract Rect(Array<Point>) {
 	inline public function new(topLeft : Point, bottomRight : Point)

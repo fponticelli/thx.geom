@@ -1,12 +1,7 @@
 package thx.geom;
 
-import chad.geom.angle.*;
-
 abstract Point(Array<Float>) {
 	public static var zero(default, null) : Point = new Point(0, 0);
-
-	@:from static public inline function fromFloat(v : Float)
-		return new Point(v, v);
 
 	@:from static inline function fromObject(o : { x : Float, y : Float })
 		return new Point(o.x, o.y);
@@ -14,11 +9,16 @@ abstract Point(Array<Float>) {
 	@:from static inline function fromArray(arr : Array<Int>)
 		return new Point(arr[0], arr[1]);
 
-	@:from static inline function fromRadians(rad : Radian)
+	@:from static inline public function fromAngle(angle : Float)
+		return new Point(Math.cos(angle), Math.sin(angle));
+
+	#if thx-unit
+	@:from static inline public function fromRadians(rad : Radian)
 		return new Point(rad.cos(), rad.sin());
 
-	@:from static inline function fromDegrees(deg : Degree)
+	@:from static inline public function fromDegrees(deg : Degree)
 		return new Point(deg.cos(), deg.sin());
+	#end
 
 	inline public function new(x : Float, y : Float)
 		this = [x, y];
@@ -103,12 +103,16 @@ abstract Point(Array<Float>) {
 //	inline public function transform(matrix : Matrix4x4)
 //		return matrix.leftMultiplyPoint(this);
 
+	#if thx-unit
 	@:to inline public function toDegrees() : Degree
 		return toRadians().toDegree();
 
-	// y=sin, x=cos
 	@:to inline public function toRadians() : Radian
 		return new Radian(Math.atan2(y, x));
+	#end
+
+	@:to inline public function toAngle() : Float
+		return Math.atan2(y, x);
 
 	inline public function cross(other : Point)
 		return x * other.y - y * other.x;
