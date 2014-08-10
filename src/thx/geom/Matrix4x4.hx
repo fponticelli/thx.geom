@@ -226,4 +226,7 @@ abstract Matrix4x4(Array<Float>)
 
 	private inline function at(index : Int)
 		return this[index];
+
+	@:to public inline function toString()
+		return 'Matrix(${this.join(",")})';
 }

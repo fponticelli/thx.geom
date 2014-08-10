@@ -767,6 +767,9 @@ thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.isMirroring = function(this1) {
 thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.at = function(this1,index) {
 	return this1[index];
 };
+thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.toString = function(this1) {
+	return "Matrix(" + this1.join(",") + ")";
+};
 var thx_geom__$Point_Point_$Impl_$ = function() { };
 thx_geom__$Point_Point_$Impl_$.__name__ = ["thx","geom","_Point","Point_Impl_"];
 thx_geom__$Point_Point_$Impl_$.fromObject = function(o) {
