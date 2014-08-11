@@ -1571,6 +1571,21 @@ thx_geom__$Point_Point_$Impl_$.max = function(this1,p) {
 	var y = Math.max(this1[1],p[1]);
 	return [x,y];
 };
+thx_geom__$Point_Point_$Impl_$.pointAt = function(this1,angle,distance) {
+	var this2 = this1;
+	var p;
+	var this3;
+	var x = Math.cos(angle);
+	var y = Math.sin(angle);
+	this3 = [x,y];
+	var p1;
+	var angle1 = distance;
+	var x1 = Math.cos(angle1);
+	var y1 = Math.sin(angle1);
+	p1 = [x1,y1];
+	p = [this3[0] * p1[0],this3[1] * p1[1]];
+	return [this2[0] + p[0],this2[1] + p[1]];
+};
 thx_geom__$Point_Point_$Impl_$.toAngle = function(this1) {
 	var angle = Math.atan2(this1[1],this1[0]);
 	return angle;

@@ -113,6 +113,10 @@ abstract Point(Array<Float>) {
 		);
 	}
 
+	public function pointAt(angle : Angle, distance : Float) {
+		return inst + Point.fromAngle(angle).multiply(distance);
+	}
+
 	@:to inline public function toAngle() : Angle
 		return Math.atan2(y, x);
 

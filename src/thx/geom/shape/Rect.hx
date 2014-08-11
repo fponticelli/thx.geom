@@ -32,4 +32,13 @@ abstract Rect(Array<Point>) {
 
 	@:to public function toString()
 		return 'Rect(${topLeft.x},${topLeft.y},$width,$height)';
+
+	@:to public function toPath() {
+		return Path.fromArray([
+				topLeft,
+				topRight,
+				bottomRight,
+				bottomLeft
+			], true);
+	}
 }
