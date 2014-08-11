@@ -32,16 +32,16 @@ abstract Matrix4x4(Array<Float>)
 	}
 
 	// Matrix for rotation about arbitrary point and axis
-//	static public function rotation(rotationCenter : Point3D, rotationAxis : Point3D, radians : Angle) {
-//		var rotationPlane = Plane.fromNormalAndPoint(rotationAxis, rotationCenter),
-//			orthobasis = OrthoNormalBasis.fromPlane(rotationPlane),
-//			transformation = Matrix4x4.translation(rotationCenter.negate());
-//		transformation = transformation.multiply(orthobasis.getProjectionMatrix());
-//		transformation = transformation.multiply(Matrix4x4.rotationZ(radians));
-//		transformation = transformation.multiply(orthobasis.getInverseProjectionMatrix());
-//		transformation = transformation.multiply(Matrix4x4.translation(rotationCenter));
-//		return transformation;
-//	}
+	static public function rotation(rotationCenter : Point3D, rotationAxis : Point3D, radians : Angle) {
+		var rotationPlane = Plane.fromNormalAndPoint(rotationAxis, rotationCenter),
+			orthobasis = OrthoNormalBasis.fromPlane(rotationPlane),
+			transformation = Matrix4x4.translation(rotationCenter.negate());
+		transformation = transformation.multiply(orthobasis.getProjectionMatrix());
+		transformation = transformation.multiply(Matrix4x4.rotationZ(radians));
+		transformation = transformation.multiply(orthobasis.getInverseProjectionMatrix());
+		transformation = transformation.multiply(Matrix4x4.translation(rotationCenter));
+		return transformation;
+	}
 
 	// Create an affine matrix for translation:
 	static public function translation(vec : Point3D)
