@@ -20,6 +20,9 @@ class Line {
 		this.normal = normal.divide(l);
 	}
 
+	public function offset(value : Float)
+		return new Line(normal, w + value);
+
 	public function reverse()
 		return new Line(normal.negate(), -w);
 
@@ -41,8 +44,8 @@ class Line {
 		return Math.abs(point.dot(normal) - w);
 
 	// intersection between two lines, returns point as Point
-	public function intersectWithLine(line2d : Line)
-		return Util.solve2Linear(normal.x, normal.y, line2d.normal.x, line2d.normal.y, w, line2d.w);
+	public function intersectWithLine(line2d : Line) : Null<Point>
+		return Point.solve2Linear(normal.x, normal.y, line2d.normal.x, line2d.normal.y, w, line2d.w);
 
 	public function transform(matrix : Matrix4x4) {
 		var origin = new Point(0, 0),

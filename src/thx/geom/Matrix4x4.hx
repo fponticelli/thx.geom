@@ -48,18 +48,18 @@ abstract Matrix4x4(Array<Float>)
 		return new Matrix4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, vec.x, vec.y, vec.z, 1);
 
 	// Create an affine matrix for mirroring into an arbitrary plane:
-//	static public function mirroring(plane : Plane) {
-//		var nx = plane.normal.x,
-//			ny = plane.normal.y,
-//			nz = plane.normal.z,
-//			w = plane.w;
-//		return new Matrix4x4(
-//			(1.0 - 2.0 * nx * nx), (-2.0 * ny * nx), (-2.0 * nz * nx), 0,
-//			(-2.0 * nx * ny), (1.0 - 2.0 * ny * ny), (-2.0 * nz * ny), 0,
-//			(-2.0 * nx * nz), (-2.0 * ny * nz), (1.0 - 2.0 * nz * nz), 0,
-//			(-2.0 * nx * w), (-2.0 * ny * w), (-2.0 * nz * w), 1
-//		);
-//	}
+	static public function mirroring(plane : Plane) {
+		var nx = plane.normal.x,
+			ny = plane.normal.y,
+			nz = plane.normal.z,
+			w = plane.w;
+		return new Matrix4x4(
+			(1.0 - 2.0 * nx * nx), (-2.0 * ny * nx), (-2.0 * nz * nx), 0,
+			(-2.0 * nx * ny), (1.0 - 2.0 * ny * ny), (-2.0 * nz * ny), 0,
+			(-2.0 * nx * nz), (-2.0 * ny * nz), (1.0 - 2.0 * nz * nz), 0,
+			(-2.0 * nx * w), (-2.0 * ny * w), (-2.0 * nz * w), 1
+		);
+	}
 
 	// Create an affine matrix for scaling:
 	static public function scaling(vec : Point3D)
@@ -224,7 +224,7 @@ abstract Matrix4x4(Array<Float>)
 		return ismirror;
 	}
 
-	private inline function at(index : Int)
+	public inline function at(index : Int)
 		return this[index];
 
 	@:to public inline function toString()
