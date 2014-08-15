@@ -18,7 +18,7 @@ class TestPoint {
 		Assert.isTrue(a.interpolate(b, 0.5) == new Point(15, 30));
 	}
 
-	#if thxunit
+	#if thx_unit
 	public function testFromAngle() {
 		var p = Point.fromAngle(90.toDegrees());
 		Assert.isTrue(new Point(0, 1).nearEquals(p));

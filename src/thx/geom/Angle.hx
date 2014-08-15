@@ -1,3 +1,3 @@
 package thx.geom;
 
-typedef Angle = #if thxunit thx.unit.angle.Radian #else Float #end;
+typedef Angle = #if thx_unit thx.unit.angle.Radian #else Float #end;
