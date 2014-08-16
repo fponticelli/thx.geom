@@ -16,7 +16,7 @@ abstract Circle({ center : Point, radius : Float }) {
 		return 'Circle(${center.x},${center.y},$radius)';
 
 	// TODO this can probably be approximated with less segments
-	@:to public function toPath() {
+	@:to public function toSpline() {
 		var segments = 32,
 			angle    = Math.PI / segments,
 			points   = [],
@@ -26,12 +26,12 @@ abstract Circle({ center : Point, radius : Float }) {
 		for(i in 0...segments * 2)
 			points.push(center.pointAt(angle * i, radius));
 
-		nodes.push(new PathNode(points[0], points[1], points[points.length-1]));
+		nodes.push(new SplineNode(points[0], points[1], points[points.length-1]));
 		for(i in 1...segments-1) {
 			j = i * 2;
-			nodes.push(new PathNode(points[j], points[j+1], points[j-1]));
+			nodes.push(new SplineNode(points[j], points[j+1], points[j-1]));
 		}
-		nodes.push(new PathNode(points[points.length-2], points[points.length-1], points[points.length-3]));
-		return new Path(nodes, true);
+		nodes.push(new SplineNode(points[points.length-2], points[points.length-1], points[points.length-3]));
+		return new Spline(nodes, true);
 	}
 }

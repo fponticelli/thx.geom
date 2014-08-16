@@ -2,7 +2,7 @@ package thx.geom;
 
 using thx.core.Iterators;
 
-class Path {
+class Spline {
 	@:isVar public var area(get, null) : Float;
 	@:isVar public var length(get, null) : Float;
 	@:isVar public var isSelfIntersecting(get, null) : Bool;
@@ -11,16 +11,16 @@ class Path {
 
 	public static function fromPoints(arr : Array<Array<Point>>, ?closed : Bool) {
 		var nodes = arr.map(function(c) {
-				return new PathNode(c[0], c[1], c[2]);
+				return new SplineNode(c[0], c[1], c[2]);
 			});
-		return new Path(nodes, closed);
+		return new Spline(nodes, closed);
 	}
 
 	public static function fromArray(arr : Array<Point>, ?closed : Bool) {
 		var nodes = arr.map(function(c) {
-				return new PathNode(c, null, null);
+				return new SplineNode(c, null, null);
 			});
-		return new Path(nodes, closed);
+		return new Spline(nodes, closed);
 	}
 
 	public static function fromCoords(arr : Array<Array<Float>>, ?closed : Bool) {
@@ -28,14 +28,14 @@ class Path {
 				var p    = new Point(c[0], c[1]),
 					nout = null == c[2] ? Point.zero : new Point(c[2], c[3]),
 					nin  = null == c[4] ? Point.zero : new Point(c[4], c[5]);
-				return new PathNode(p, nout, nin);
+				return new SplineNode(p, nout, nin);
 			});
-		return new Path(nodes, closed);
+		return new Spline(nodes, closed);
 	}
 
-	var nodes : Array<PathNode>;
+	var nodes : Array<SplineNode>;
 	public var closed(default, null) : Bool;
-	public function new(nodes : Array<PathNode>, closed = true) {
+	public function new(nodes : Array<SplineNode>, closed = true) {
 		this.nodes = nodes;
 		this.closed = closed;
 	}
@@ -74,7 +74,7 @@ class Path {
 
 	public function transform(matrix : Matrix4x4) {
 		var ismirror = matrix.isMirroring(),
-			result = new Path(iterator().map(function(node) return node.transform(matrix)), closed);
+			result = new Spline(iterator().map(function(node) return node.transform(matrix)), closed);
 		if(ismirror)
 			result = result.flip();
 		return result;
@@ -83,7 +83,7 @@ class Path {
 	public function flip() {
 		var arr = iterator().map(function(node) return node.flip());
 		arr.reverse();
-		return new Path(arr, closed);
+		return new Spline(arr, closed);
 	}
 
 	function get_area() : Float {
@@ -160,6 +160,6 @@ class Path {
 //	}
 
 	public function toString() {
-		return 'Path(${nodes.map(function(n) return "["+n.toStringValues()+"]").join(", ")},$closed)';
+		return 'Spline(${nodes.map(function(n) return "["+n.toStringValues()+"]").join(", ")},$closed)';
 	}
 }

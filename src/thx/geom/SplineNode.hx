@@ -1,6 +1,6 @@
 package thx.geom;
 
-class PathNode {
+class SplineNode {
 	public var point(default, null) : Point;
 	public var normalIn(default, null) : Point;
 	public var normalOut(default, null) : Point;
@@ -12,14 +12,14 @@ class PathNode {
 	}
 
 	public function transform(matrix : Matrix4x4)
-		return new PathNode(
+		return new SplineNode(
 			point.transform(matrix),
 			normalIn.transform(matrix),
 			normalOut.transform(matrix)
 		);
 
 	public function flip()
-		return new PathNode(point, normalIn, normalOut);
+		return new SplineNode(point, normalIn, normalOut);
 
 	public function toStringValues() {
 		var nout = null == normalOut ? 'null' : '${normalOut.y},${normalOut.y}',
@@ -28,6 +28,6 @@ class PathNode {
 	}
 
 	public function toString() {
-		return 'PathNode(${toStringValues()})';
+		return 'SplineNode(${toStringValues()})';
 	}
 }

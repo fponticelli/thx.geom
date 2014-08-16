@@ -42,8 +42,8 @@ abstract Box(Array<Point>) {
 	@:to public function toString()
 		return 'Box(${topLeft.x},${topLeft.y},$width,$height)';
 
-	@:to public function toPath() {
-		return Path.fromArray([
+	@:to public function toSpline() {
+		return Spline.fromArray([
 				topLeft,
 				topRight,
 				bottomRight,

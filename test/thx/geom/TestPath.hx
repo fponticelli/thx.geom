@@ -7,7 +7,7 @@ class TestPath {
 
 	public function testLength() {
 		var box  = new Box(new Point(0, 0), new Point(10, 10)),
-			path = box.toPath();
+			path = box.toSpline();
 
 		
 	}
