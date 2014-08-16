@@ -61,15 +61,26 @@ class Spline {
 		}
 	}
 
+	static function createEdge(a, b, nout, nin) : Edge {
+		if(null == nout && null == nin)
+			return new EdgeLinear(a, b);
+		else if(null != nout)
+			return new EdgeCubic(a, nout, b);
+		else if(null != nin)
+			return new EdgeCubic(a, nin, b);
+		else
+			return new EdgeQuadratic(a, nout, nin, b);
+	}
+
 	public function iterateEdges(f : Edge -> Void) {
 		if(null != edges)
 			edges.map(f);
 		else {
 			edges = [];
 			iterate(function(a, b, nout, nin) {
-				var side = new Edge(new Vertex(a, nout), new Vertex(b, nin));
-				edges.push(side);
-				f(side);
+				var edge = createEdge(a, b, nout, nin);
+				edges.push(edge);
+				f(edge);
 			});
 		}
 	}

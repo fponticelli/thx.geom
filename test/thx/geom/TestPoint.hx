@@ -33,15 +33,15 @@ class TestPoint {
 	}
 
 	public function testDistanceTo() {
-
+		Assert.equals(10, new Point(10, 10).distanceTo(new Point(0, 10)));
 	}
 
 	public function testPointAt() {
-
+		Assert.isTrue(new Point(10, 30).equals(new Point(10, 20).pointAt(Math.PI/2, 10)));
 	}
 
 	public function testToAngle() {
-
+		Assert.floatEquals(Math.PI / 4, new Point(1, 1).toAngle());
 	}
 
 	#if thx_unit

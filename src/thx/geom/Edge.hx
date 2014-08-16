@@ -1,6 +1,31 @@
 package thx.geom;
 
-class Edge {
+interface Edge {
+	public var area(get, null) : Float;
+	public var length(get, null) : Float;
+	public var lengthSquared(get, null) : Float;
+	public var isLinear(default, null) : Bool;
+	public var first(default, null) : Point;
+	public var last(default, null) : Point;
+
+	public function equals(other : Edge) : Bool;
+	public function matches(other : Edge) : Bool;
+	public function intersects(other : Edge) : Bool;
+	public function transform(matrix : Matrix4x4) : Edge;
+	public function flip() : Edge;
+	public function direction() : Point;
+	public function intersectionsWithEdge(other : Edge) : Array<Point>;
+	public function intersectionsWithLine(line : Line) : Array<Point>;
+	public function split(v : Float) : Array<Edge>;
+	public function splitLength(distance : Float) : Array<Edge>;
+	public function interpolate(v : Float) : Point;
+	public function interpolateLength(distance : Float) : Point;
+	public function tangent(v : Float) : Vertex;
+	public function tangentLength(distance : Float) : Vertex;
+	public function toString() : String;
+}
+/*
+class Edge2 {
 	public var vertex0(default, null) : Vertex;
 	public var vertex1(default, null) : Vertex;
 	@:isVar public var area(get, null) : Float;
@@ -109,3 +134,4 @@ class Edge {
 	public function toString()
 		return 'Edge (${vertex0.toString()} -> ${vertex1.toString()})';
 }
+*/
