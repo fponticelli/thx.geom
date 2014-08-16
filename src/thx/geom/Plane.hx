@@ -75,8 +75,7 @@ class Plane {
 				f = [];
 				b = [];
 				len = polygon.vertices.length;
-				for (i in 0...len)
-				{
+				for (i in 0...len) {
 					j = (i + 1) % len;
 					ti = types[i];
 					tj = types[j];
@@ -86,8 +85,7 @@ class Plane {
 						f.push(vi);
 					if (ti != FRONT)
 						b.push(vi); // was: (ti != BACK ? vi.clone() : vi);
-					if ((ti | tj) == SPANNING)
-					{
+					if ((ti | tj) == SPANNING) {
 						t = (w - normal.dot(vi.position)) /
 							normal.dot(vj.position.subtractPoint3D(vi.position));
 						v = vi.interpolate(vj, t);

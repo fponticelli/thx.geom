@@ -33,9 +33,7 @@ class Vertex {
 		];
 		if(Number.isNearZero(v[0] - v[2]) && Number.isNearZero(v[1] - v[3]) &&
 		   Number.isNearZero(v[6] - v[4]) && Number.isNearZero(v[7] - v[5]))
-		{
 			return position.distanceToSquared(other.position);
-		}
 		// TODO parameters should not be hard coded, particularly precision
 		return getLengthSquaredIntegrand(v).integrate(0, 1, 16);
 	}
@@ -50,7 +48,7 @@ class Vertex {
 		return position.equals(other.position) && normal.equals(other.normal);
 
 	public function toString()
-		return 'Vertex $position, $normal';
+		return 'Vertex($position,$normal)';
 
 	static function getLengthSquaredIntegrand(v : Array<Float>) {
 		// Calculate the coefficients of a Bezier derivative.

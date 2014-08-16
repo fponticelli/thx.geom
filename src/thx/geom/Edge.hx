@@ -3,8 +3,10 @@ package thx.geom;
 class Edge {
 	public var vertex0(default, null) : Vertex;
 	public var vertex1(default, null) : Vertex;
+	@:isVar public var area(get, null) : Float;
 	@:isVar public var length(get, null) : Float;
 	@:isVar public var lengthSquared(get, null) : Float;
+	@:isVar public var isLinear(get, null) : Bool;
 	public function new(vertex0 : Vertex, vertex1 : Vertex) {
 		this.vertex0 = vertex0;
 		this.vertex1 = vertex1;
@@ -32,20 +34,8 @@ class Edge {
 		return false;
 	}
 
-	public function isLinear() {
+	function get_isLinear()
 		return vertex0.normal.isNearZero() && vertex1.normal.isNearZero();
-	}
-
-/*
-	// TODO add normals to Point and apply them here
-	public function toPolygon(z0 : Float, z1 : Float)
-		return new Polygon([
-			new Point3D(vertex0.position.toVector3D(z0),
-			new Point3D(vertex1.position.toVector3D(z0),
-			new Point3D(vertex1.position.toVector3D(z1),
-			new Point3D(vertex0.position.toVector3D(z1)
-		]);
-*/
 
 	public function transform(matrix : Matrix4x4)
 		return new Edge(
@@ -59,13 +49,54 @@ class Edge {
 	inline public function direction()
 		return vertex1.position.subtractPoint(vertex0.position);
 
-	public function get_lengthSquared() {
+	public function intersectionsWithEdge(other : Edge) {
+		throw 'not implemented';
+	}
+
+	public function intersectionsWithLine(line : Line) {
+		throw 'not implemented';
+	}
+
+	public function at(distance : Float) : Point {
+		throw 'not implemented';
+	}
+
+	public function interpolate(distance : Float) : Point {
+		throw 'not implemented';
+	}
+
+	public function tangent(distance : Float) : Vertex {
+		throw 'not implemented';
+	}
+
+	public function interpolateTangent(distance : Float) : Vertex {
+		throw 'not implemented';
+	}
+
+	function get_lengthSquared() {
+		// TODO this doesn't account for curves
 		if(null == lengthSquared) {
-			var w = vertex1.position.x - vertex0.position.x,
-				h = vertex1.position.y - vertex0.position.y;
-			lengthSquared = w * w + h * h;
+			if(isLinear) {
+				var w = vertex1.position.x - vertex0.position.x,
+					h = vertex1.position.y - vertex0.position.y;
+				lengthSquared = w * w + h * h;
+			} else {
+				throw 'not implemented';
+			}
 		}
 		return lengthSquared;
+	}
+
+	inline private function get_area() {
+		if(null == area) {
+			if(isLinear) {
+				var p = (vertex1.position - vertex0.position);
+				area = p.x * p.y / 2;
+			} else {
+				throw 'not implemented';
+			}
+		}
+		return area;
 	}
 
 	inline private function get_length() {

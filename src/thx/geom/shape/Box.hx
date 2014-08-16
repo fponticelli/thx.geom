@@ -34,13 +34,27 @@ abstract Box(Array<Point>) {
 	inline function get_top() return topRight.y;
 	inline function get_bottom() return bottomLeft.y;
 	inline function get_width() return right - left;
-	inline function get_height() return bottom - top;
+	inline function get_height() return top - bottom;
 
 	public function expandByPoint(point : Point) : Box
 		return new Box(bottomLeft.min(point), topRight.max(point));
 
+	public function expandByPoints(points : Iterable<Point>) : Box {
+		var min = bottomLeft,
+			max = topRight;
+		for(point in points) {
+			min = min.min(point);
+			max = max.max(point);
+		}
+		return new Box(min, max);
+	}
+
+	@:commutative
+	@:op('A==B') public function equals(other : Box)
+		return bottomLeft == other.bottomLeft && topRight == other.topRight;
+
 	@:to public function toString()
-		return 'Box(${topLeft.x},${topLeft.y},$width,$height)';
+		return 'Box(x:${bottomLeft.x},y:${topRight.y},w:$width,h:$height)';
 
 	@:to public function toSpline() {
 		return Spline.fromArray([

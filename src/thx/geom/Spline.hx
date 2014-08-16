@@ -1,12 +1,14 @@
 package thx.geom;
 
 using thx.core.Iterators;
+import thx.geom.shape.Box;
 
 class Spline {
 	@:isVar public var area(get, null) : Float;
 	@:isVar public var length(get, null) : Float;
 	@:isVar public var isSelfIntersecting(get, null) : Bool;
 	@:isVar public var isPolygon(get, null) : Bool;
+	@:isVar public var box(get, null) : Box;
 	var edges : Array<Edge>;
 
 	public static function fromPoints(arr : Array<Array<Point>>, ?closed : Bool) {
@@ -59,7 +61,7 @@ class Spline {
 		}
 	}
 
-	public function iterateSides(f : Edge -> Void) {
+	public function iterateEdges(f : Edge -> Void) {
 		if(null != edges)
 			edges.map(f);
 		else {
@@ -87,55 +89,68 @@ class Spline {
 	}
 
 	function get_area() : Float {
-		compute();
+		if(null == area) {
+			area = 0;
+			iterateEdges(function(edge) {
+				area += edge.area;
+			});
+		}
 		return area;
 	}
 	function get_length() : Float {
-		compute();
+		if(null == length) {
+			length = 0;
+			iterateEdges(function(edge) {
+				length += edge.length;
+			});
+		}
 		return length;
 	}
 	function get_isSelfIntersecting() : Bool {
-		compute();
-		return isSelfIntersecting;
+		return false;
 	}
 	function get_isPolygon() : Bool {
-		compute();
-		return isPolygon;
+		return false;
+	}
+	function get_box() : Box {
+		if(null == box) {
+			if(nodes.length > 0) {
+				box = new Box(nodes[0].point, nodes[0].point);
+				iterate(function(a, b, nout, nin) {
+					box = box.expandByPoints([a, b, nout, nin]);
+				});
+			}
+		}
+		return box;
 	}
 
-	var computed = false;
-	function compute() {
-		if(computed) return;
-		area = 0;
-		length = 0;
-		isSelfIntersecting = false;
-		isPolygon = true;
-		iterateSides(function(side) {
-			length += side.length;
-
-			// TODO AREA
-			// TODO ISSELFINTERSECTING
-
-			if(isPolygon && !side.isLinear())
-				isPolygon = false;
-		});
+	public function contains(p : Point) {
+		throw 'not implemented';
 	}
 
-//  public function at(distance : Float) : Point {
-//
-//	}
+	public function intersectionsWithSpline(other : Spline) {
+		throw 'not implemented';
+	}
 
-//  public function interpolate(distance : Float) : Point {
-//
-//	}
+	public function intersectionsWithLine(line : Line) {
+		throw 'not implemented';
+	}
 
-//  public function tangent(distance : Float) : Vertex {
-//
-//	}
+	public function at(distance : Float) : Point {
+		throw 'not implemented';
+	}
 
-//  public function interpolateTangent(distance : Float) : Vertex {
-//
-//	}
+	public function interpolate(distance : Float) : Point {
+		throw 'not implemented';
+	}
+
+	public function tangent(distance : Float) : Vertex {
+		throw 'not implemented';
+	}
+
+	public function interpolateTangent(distance : Float) : Vertex {
+		throw 'not implemented';
+	}
 
 
 //	public function getArea() {
