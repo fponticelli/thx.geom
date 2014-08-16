@@ -152,6 +152,60 @@ class Spline {
 		throw 'not implemented';
 	}
 
+	public function union(other : Spline) : Null<Spline> {
+		throw 'not implemented';
+	}
+
+	public function difference(other : Spline) : Null<Spline> {
+		throw 'not implemented';
+	}
+
+	public function intersection(other : Spline) : Null<Spline> {
+		throw 'not implemented';
+	}
+
+//https://github.com/andrewseidl/node-quick-hull-2d/blob/master/quickhull.js
+//function cross(o, a, b) {
+//   return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
+//}
+//
+///**
+// * @param points An array of [X, Y] coordinates
+// */
+//function convexHull(points) {
+//   points.sort(function(a, b) {
+//      return a[0] == b[0] ? a[1] - b[1] : a[0] - b[0];
+//   });
+//
+//   var lower = [];
+//   for (var i = 0; i < points.length; i++) {
+//      while (lower.length >= 2 && cross(lower[lower.length - 2], lower[lower.length - 1], points[i]) <= 0) {
+//         lower.pop();
+//      }
+//      lower.push(points[i]);
+//   }
+//
+//   var upper = [];
+//   for (var i = points.length - 1; i >= 0; i--) {
+//      while (upper.length >= 2 && cross(upper[upper.length - 2], upper[upper.length - 1], points[i]) <= 0) {
+//         upper.pop();
+//      }
+//      upper.push(points[i]);
+//   }
+//
+//   upper.pop();
+//   lower.pop();
+//   return lower.concat(upper);
+//}
+
+	public function hull(other : Spline) {
+		throw 'not implemented';
+	}
+
+	public function minkowsky(other : Spline) {
+		throw 'not implemented';
+	}
+
 
 //	public function getArea() {
 //		var area = 0.0;

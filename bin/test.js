@@ -1978,6 +1978,21 @@ thx_geom_Spline.prototype = {
 	,interpolateTangent: function(distance) {
 		throw "not implemented";
 	}
+	,union: function(other) {
+		throw "not implemented";
+	}
+	,difference: function(other) {
+		throw "not implemented";
+	}
+	,intersection: function(other) {
+		throw "not implemented";
+	}
+	,hull: function(other) {
+		throw "not implemented";
+	}
+	,minkowsky: function(other) {
+		throw "not implemented";
+	}
 	,toString: function() {
 		return "Spline(" + this.nodes.map(function(n) {
 			return "[" + n.toStringValues() + "]";
@@ -2033,7 +2048,9 @@ thx_geom_TestEdge.prototype = {
 	}
 	,testLengthNonLinear: function() {
 	}
-	,testIntersectionsWithEdge: function() {
+	,testIntersectionsWithLinearEdge: function() {
+	}
+	,testIntersectionsWithNonEdge: function() {
 	}
 	,testIntersectionsWithLine: function() {
 	}
@@ -2181,13 +2198,25 @@ thx_geom_TestSpline.prototype = {
 	}
 	,testInterpolate: function() {
 	}
-	,testIntersection: function() {
+	,testIntersectionWithSpline: function() {
+	}
+	,testIntersectionWithLine: function() {
 	}
 	,testTangent: function() {
 	}
 	,testInterpolateTangent: function() {
 	}
 	,testContains: function() {
+	}
+	,testUnion: function() {
+	}
+	,testDifference: function() {
+	}
+	,testIntersection: function() {
+	}
+	,testHull: function() {
+	}
+	,testMinkowsky: function() {
 	}
 	,__class__: thx_geom_TestSpline
 };
@@ -2373,14 +2402,14 @@ thx_geom_shape__$Box_Box_$Impl_$.get_height = function(this1) {
 };
 thx_geom_shape__$Box_Box_$Impl_$.expandByPoint = function(this1,point) {
 	var bottomLeft;
-	var this2 = this1[0];
-	var x = Math.min(this2[0],point[0]);
-	var y = Math.min(this2[1],point[1]);
+	var this11 = this1[0];
+	var x = Math.min(this11[0],point[0]);
+	var y = Math.min(this11[1],point[1]);
 	bottomLeft = [x,y];
 	var topRight;
-	var this3 = this1[1];
-	var x1 = Math.max(this3[0],point[0]);
-	var y1 = Math.max(this3[1],point[1]);
+	var this12 = this1[1];
+	var x1 = Math.max(this12[0],point[0]);
+	var y1 = Math.max(this12[1],point[1]);
 	topRight = [x1,y1];
 	return [bottomLeft,topRight];
 };
@@ -2402,15 +2431,15 @@ thx_geom_shape__$Box_Box_$Impl_$.expandByPoints = function(this1,points) {
 thx_geom_shape__$Box_Box_$Impl_$.equals = function(this1,other) {
 	return (function($this) {
 		var $r;
-		var this2 = this1[0];
+		var this11 = this1[0];
 		var p = other[0];
-		$r = this2[0] == p[0] && this2[1] == p[1];
+		$r = this11[0] == p[0] && this11[1] == p[1];
 		return $r;
 	}(this)) && (function($this) {
 		var $r;
-		var this3 = this1[1];
+		var this12 = this1[1];
 		var p1 = other[1];
-		$r = this3[0] == p1[0] && this3[1] == p1[1];
+		$r = this12[0] == p1[0] && this12[1] == p1[1];
 		return $r;
 	}(this));
 };

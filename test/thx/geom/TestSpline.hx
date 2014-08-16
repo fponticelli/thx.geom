@@ -52,7 +52,11 @@ class TestSpline {
 
 	}
 
-	public function testIntersection() {
+	public function testIntersectionWithSpline() {
+
+	}
+
+	public function testIntersectionWithLine() {
 
 	}
 
@@ -65,6 +69,26 @@ class TestSpline {
 	}
 
 	public function testContains() {
+
+	}
+
+	public function testUnion() {
+
+	}
+
+	public function testDifference() {
+
+	}
+
+	public function testIntersection() {
+
+	}
+
+	public function testHull() {
+
+	}
+
+	public function testMinkowsky() {
 
 	}
 }
