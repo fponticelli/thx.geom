@@ -66,7 +66,7 @@ abstract Point(Array<Float>) {
 	inline public function abs() : Point
 		return new Point(Math.abs(x), Math.abs(y));
 
-	inline public function nearEquals(p : Point)
+	public function nearEquals(p : Point)
 		return Math.abs(x - p.x) <= Const.EPSILON && Math.abs(y - p.y) <= Const.EPSILON;
 
 	public function interpolate(p : Point, f : Float)
@@ -75,7 +75,7 @@ abstract Point(Array<Float>) {
 	inline public function isZero()
 		return equals(zero);
 
-	inline public function isNearZero()
+	public function isNearZero()
 		return nearEquals(zero);
 
 	inline public function dot(p : Point) : Float
@@ -99,23 +99,20 @@ abstract Point(Array<Float>) {
 	inline public function cross(p : Point)
 		return x * p.y - y * p.x;
 
-	inline public function min(p : Point) {
+	inline public function min(p : Point)
 		return new Point(
 			Math.min(x, p.x),
 			Math.min(y, p.y)
 		);
-	}
 
-	inline public function max(p : Point) {
+	inline public function max(p : Point)
 		return new Point(
 			Math.max(x, p.x),
 			Math.max(y, p.y)
 		);
-	}
 
-	public function pointAt(angle : Angle, distance : Float) {
+	public function pointAt(angle : Angle, distance : Float)
 		return inst + Point.fromAngle(angle).multiply(distance);
-	}
 
 	@:to inline public function toAngle() : Angle
 		return Math.atan2(y, x);

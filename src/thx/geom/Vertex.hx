@@ -3,8 +3,7 @@ package thx.geom;
 import thx.geom.Point;
 using thx.math.Number;
 
-class Vertex
-{
+class Vertex {
 	inline public function new(position : Point, normal : Point) {
 		this.position = position;
 		this.normal = normal;
@@ -21,12 +20,11 @@ class Vertex
 
 	public function interpolate(other : Vertex, t : Float)
 		return new Vertex(
-			position.lerp(other.position, t),
-			normal.lerp(other.normal, t)
+			position.interpolate(other.position, t),
+			normal.interpolate(other.normal, t)
 		);
 
-	public function getDistanceSquared(other : Vertex)
-	{
+	public function getDistanceSquared(other : Vertex) {
 		var v = [
 			position.x, position.y,
 			position.x + normal.x, position.y + normal.y,
@@ -46,7 +44,7 @@ class Vertex
 		return Math.sqrt(getDistanceSquared(other));
 
 	inline public function transform(matrix : Matrix4x4)
-		return new Vertex(position.multiply4x4(matrix), normal.multiply4x4(matrix));
+		return new Vertex(position.transform(matrix), normal.transform(matrix));
 
 	public function equals(other : Vertex)
 		return position.equals(other.position) && normal.equals(other.normal);
@@ -69,7 +67,7 @@ class Vertex
 			by = 6 * (p1y + c2y) - 12 * c1y,
 			cy = 3 * (c1y - p1y);
 
-		return function(t) {
+		return function(t : Float) {
 			// Calculate quadratic equations of derivatives for x and y
 			var dx = (ax * t + bx) * t + cx,
 				dy = (ay * t + by) * t + cy;

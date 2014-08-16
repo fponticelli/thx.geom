@@ -1,4 +1,5 @@
 (function () { "use strict";
+var $estr = function() { return js_Boot.__string_rec(this,''); };
 function $extend(from, fields) {
 	function Inherit() {} Inherit.prototype = from; var proto = new Inherit();
 	for (var name in fields) proto[name] = fields[name];
@@ -212,6 +213,7 @@ TestAll.__name__ = ["TestAll"];
 TestAll.main = function() {
 	var runner = new utest_Runner();
 	runner.addCase(new TestAll());
+	runner.addCase(new thx_geom_TestPath());
 	runner.addCase(new thx_geom_TestPoint());
 	runner.addCase(new thx_geom_TestPoint3D());
 	utest_ui_Report.create(runner);
@@ -222,20 +224,27 @@ TestAll.prototype = {
 };
 var ValueType = { __ename__ : ["ValueType"], __constructs__ : ["TNull","TInt","TFloat","TBool","TObject","TFunction","TClass","TEnum","TUnknown"] };
 ValueType.TNull = ["TNull",0];
+ValueType.TNull.toString = $estr;
 ValueType.TNull.__enum__ = ValueType;
 ValueType.TInt = ["TInt",1];
+ValueType.TInt.toString = $estr;
 ValueType.TInt.__enum__ = ValueType;
 ValueType.TFloat = ["TFloat",2];
+ValueType.TFloat.toString = $estr;
 ValueType.TFloat.__enum__ = ValueType;
 ValueType.TBool = ["TBool",3];
+ValueType.TBool.toString = $estr;
 ValueType.TBool.__enum__ = ValueType;
 ValueType.TObject = ["TObject",4];
+ValueType.TObject.toString = $estr;
 ValueType.TObject.__enum__ = ValueType;
 ValueType.TFunction = ["TFunction",5];
+ValueType.TFunction.toString = $estr;
 ValueType.TFunction.__enum__ = ValueType;
-ValueType.TClass = function(c) { var $x = ["TClass",6,c]; $x.__enum__ = ValueType; return $x; };
-ValueType.TEnum = function(e) { var $x = ["TEnum",7,e]; $x.__enum__ = ValueType; return $x; };
+ValueType.TClass = function(c) { var $x = ["TClass",6,c]; $x.__enum__ = ValueType; $x.toString = $estr; return $x; };
+ValueType.TEnum = function(e) { var $x = ["TEnum",7,e]; $x.__enum__ = ValueType; $x.toString = $estr; return $x; };
 ValueType.TUnknown = ["TUnknown",8];
+ValueType.TUnknown.toString = $estr;
 ValueType.TUnknown.__enum__ = ValueType;
 var Type = function() { };
 Type.__name__ = ["Type"];
@@ -300,11 +309,12 @@ Type.enumIndex = function(e) {
 };
 var haxe_StackItem = { __ename__ : ["haxe","StackItem"], __constructs__ : ["CFunction","Module","FilePos","Method","LocalFunction"] };
 haxe_StackItem.CFunction = ["CFunction",0];
+haxe_StackItem.CFunction.toString = $estr;
 haxe_StackItem.CFunction.__enum__ = haxe_StackItem;
-haxe_StackItem.Module = function(m) { var $x = ["Module",1,m]; $x.__enum__ = haxe_StackItem; return $x; };
-haxe_StackItem.FilePos = function(s,file,line) { var $x = ["FilePos",2,s,file,line]; $x.__enum__ = haxe_StackItem; return $x; };
-haxe_StackItem.Method = function(classname,method) { var $x = ["Method",3,classname,method]; $x.__enum__ = haxe_StackItem; return $x; };
-haxe_StackItem.LocalFunction = function(v) { var $x = ["LocalFunction",4,v]; $x.__enum__ = haxe_StackItem; return $x; };
+haxe_StackItem.Module = function(m) { var $x = ["Module",1,m]; $x.__enum__ = haxe_StackItem; $x.toString = $estr; return $x; };
+haxe_StackItem.FilePos = function(s,file,line) { var $x = ["FilePos",2,s,file,line]; $x.__enum__ = haxe_StackItem; $x.toString = $estr; return $x; };
+haxe_StackItem.Method = function(classname,method) { var $x = ["Method",3,classname,method]; $x.__enum__ = haxe_StackItem; $x.toString = $estr; return $x; };
+haxe_StackItem.LocalFunction = function(v) { var $x = ["LocalFunction",4,v]; $x.__enum__ = haxe_StackItem; $x.toString = $estr; return $x; };
 var haxe_CallStack = function() { };
 haxe_CallStack.__name__ = ["haxe","CallStack"];
 haxe_CallStack.callStack = function() {
@@ -608,8 +618,152 @@ js_Boot.__instanceof = function(o,cl) {
 		return o.__enum__ == cl;
 	}
 };
+var thx_core_Iterators = function() { };
+thx_core_Iterators.__name__ = ["thx","core","Iterators"];
+thx_core_Iterators.map = function(it,f) {
+	var acc = [];
+	while( it.hasNext() ) {
+		var v = it.next();
+		acc.push(f(v));
+	}
+	return acc;
+};
+thx_core_Iterators.mapi = function(it,f) {
+	var acc = [];
+	var i = 0;
+	while( it.hasNext() ) {
+		var v = it.next();
+		acc.push(f(v,i++));
+	}
+	return acc;
+};
+thx_core_Iterators.toArray = function(it) {
+	var items = [];
+	while( it.hasNext() ) {
+		var item = it.next();
+		items.push(item);
+	}
+	return items;
+};
+thx_core_Iterators.order = function(it,sort) {
+	var n = thx_core_Iterators.toArray(it);
+	n.sort(sort);
+	return n;
+};
+thx_core_Iterators.reduce = function(it,callback,initial) {
+	thx_core_Iterators.map(it,function(v) {
+		initial = callback(initial,v);
+	});
+	return initial;
+};
+thx_core_Iterators.reducei = function(it,callback,initial) {
+	thx_core_Iterators.mapi(it,function(v,i) {
+		initial = callback(initial,v,i);
+	});
+	return initial;
+};
+thx_core_Iterators.isEmpty = function(it) {
+	return !it.hasNext();
+};
+thx_core_Iterators.filter = function(it,predicate) {
+	return thx_core_Iterators.reduce(it,function(acc,item) {
+		if(predicate(item)) acc.push(item);
+		return acc;
+	},[]);
+};
 var thx_geom_Const = function() { };
 thx_geom_Const.__name__ = ["thx","geom","Const"];
+var thx_geom_Edge = function(vertex0,vertex1) {
+	this.vertex0 = vertex0;
+	this.vertex1 = vertex1;
+};
+thx_geom_Edge.__name__ = ["thx","geom","Edge"];
+thx_geom_Edge.prototype = {
+	vertex0: null
+	,vertex1: null
+	,length: null
+	,lengthSquared: null
+	,intersects: function(other) {
+		if(this.vertex0.equals(other.vertex1) || this.vertex1.equals(other.vertex0)) {
+			if((function($this) {
+				var $r;
+				var this1;
+				{
+					var this2;
+					var this3;
+					var this4 = other.vertex1.position;
+					var p = other.vertex0.position;
+					var p_0 = -p[0];
+					var p_1 = -p[1];
+					this3 = [this4[0] + p_0,this4[1] + p_1];
+					var v = Math.sqrt(this3[0] * this3[0] + this3[1] * this3[1]);
+					this2 = [this3[0] / v,this3[1] / v];
+					var p1;
+					var this5;
+					var this6 = $this.vertex1.position;
+					var p2 = $this.vertex0.position;
+					var p_01 = -p2[0];
+					var p_11 = -p2[1];
+					this5 = [this6[0] + p_01,this6[1] + p_11];
+					var v1 = Math.sqrt(this5[0] * this5[0] + this5[1] * this5[1]);
+					p1 = [this5[0] / v1,this5[1] / v1];
+					this1 = [this2[0] + p1[0],this2[1] + p1[1]];
+				}
+				$r = Math.sqrt(this1[0] * this1[0] + this1[1] * this1[1]);
+				return $r;
+			}(this)) < 1e-5) return true;
+		} else {
+			var d0;
+			var this7 = this.vertex1.position;
+			var p3 = this.vertex0.position;
+			var p_02 = -p3[0];
+			var p_12 = -p3[1];
+			d0 = [this7[0] + p_02,this7[1] + p_12];
+			var d1;
+			var this8 = other.vertex1.position;
+			var p4 = other.vertex0.position;
+			var p_03 = -p4[0];
+			var p_13 = -p4[1];
+			d1 = [this8[0] + p_03,this8[1] + p_13];
+			if(Math.abs(d0[0] * d1[1] - d0[1] * d1[0]) < 1e-9) return false;
+			var alphas = thx_geom__$Point_Point_$Impl_$.solve2Linear(-d0[0],d1[0],-d0[1],d1[1],this.vertex0.position[0] - other.vertex0.position[0],this.vertex0.position[1] - other.vertex0.position[1]);
+			if(alphas[0] > 1e-6 && alphas[0] < 0.999999 && alphas[1] > 1e-5 && alphas[1] < 0.999999) return true;
+		}
+		return false;
+	}
+	,isLinear: function() {
+		return thx_geom__$Point_Point_$Impl_$.isNearZero(this.vertex0.normal) && thx_geom__$Point_Point_$Impl_$.isNearZero(this.vertex1.normal);
+	}
+	,transform: function(matrix) {
+		return new thx_geom_Edge(this.vertex0.transform(matrix),this.vertex1.transform(matrix));
+	}
+	,flip: function() {
+		return new thx_geom_Edge(this.vertex1,this.vertex0);
+	}
+	,direction: function() {
+		var this1 = this.vertex1.position;
+		var p = this.vertex0.position;
+		var p_0 = -p[0];
+		var p_1 = -p[1];
+		return [this1[0] + p_0,this1[1] + p_1];
+	}
+	,get_lengthSquared: function() {
+		if(null == this.lengthSquared) {
+			var w = this.vertex1.position[0] - this.vertex0.position[0];
+			var h = this.vertex1.position[1] - this.vertex0.position[1];
+			this.lengthSquared = w * w + h * h;
+		}
+		return this.lengthSquared;
+	}
+	,get_length: function() {
+		if(null == this.length) this.length = Math.sqrt(this.get_lengthSquared());
+		return this.length;
+	}
+	,toString: function() {
+		return "Edge (" + this.vertex0.toString() + " -> " + this.vertex1.toString() + ")";
+	}
+	,__class__: thx_geom_Edge
+};
 var thx_geom_Line = function(normal,w) {
 	var l = Math.sqrt(normal[0] * normal[0] + normal[1] * normal[1]);
 	this.w = w * l;
@@ -1438,6 +1592,156 @@ thx_geom_OrthoNormalBasis.prototype = {
 	}
 	,__class__: thx_geom_OrthoNormalBasis
 };
+var thx_geom_Path = function(nodes,closed) {
+	if(closed == null) closed = true;
+	this.computed = false;
+	this.nodes = nodes;
+	this.closed = closed;
+};
+thx_geom_Path.__name__ = ["thx","geom","Path"];
+thx_geom_Path.fromPoints = function(arr,closed) {
+	var nodes = arr.map(function(c) {
+		return new thx_geom_PathNode(c[0],c[1],c[2]);
+	});
+	return new thx_geom_Path(nodes,closed);
+};
+thx_geom_Path.fromArray = function(arr,closed) {
+	var nodes = arr.map(function(c) {
+		return new thx_geom_PathNode(c,null,null);
+	});
+	return new thx_geom_Path(nodes,closed);
+};
+thx_geom_Path.fromCoords = function(arr,closed) {
+	var nodes = arr.map(function(c) {
+		var p = [c[0],c[1]];
+		var nout;
+		if(null == c[2]) nout = thx_geom__$Point_Point_$Impl_$.zero; else nout = [c[2],c[3]];
+		var nin;
+		if(null == c[4]) nin = thx_geom__$Point_Point_$Impl_$.zero; else nin = [c[4],c[5]];
+		return new thx_geom_PathNode(p,nout,nin);
+	});
+	return new thx_geom_Path(nodes,closed);
+};
+thx_geom_Path.prototype = {
+	area: null
+	,length: null
+	,isSelfIntersecting: null
+	,isPolygon: null
+	,edges: null
+	,nodes: null
+	,closed: null
+	,iterator: function() {
+		return HxOverrides.iter(this.nodes);
+	}
+	,iterate: function(fstart,fit) {
+		var a;
+		var b;
+		if(null != fstart) fstart(this.nodes[0].point);
+		var _g1 = 0;
+		var _g = this.nodes.length - 1;
+		while(_g1 < _g) {
+			var i = _g1++;
+			a = this.nodes[i];
+			b = this.nodes[i + 1];
+			fit(a.point,b.point,a.normalOut,b.normalIn);
+		}
+		if(this.closed) {
+			a = this.nodes[this.nodes.length - 1];
+			b = this.nodes[0];
+			fit(a.point,b.point,a.normalOut,b.normalIn);
+		}
+	}
+	,iterateSides: function(f) {
+		var _g = this;
+		if(null != this.edges) this.edges.map(f); else {
+			this.edges = [];
+			this.iterate(null,function(a,b,nout,nin) {
+				var side = new thx_geom_Edge(new thx_geom_Vertex(a,nout),new thx_geom_Vertex(b,nin));
+				_g.edges.push(side);
+				f(side);
+			});
+		}
+	}
+	,transform: function(matrix) {
+		var ismirror = thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.isMirroring(matrix);
+		var result = new thx_geom_Path(thx_core_Iterators.map(this.iterator(),function(node) {
+			return node.transform(matrix);
+		}),this.closed);
+		if(ismirror) result = result.flip();
+		return result;
+	}
+	,flip: function() {
+		var arr = thx_core_Iterators.map(this.iterator(),function(node) {
+			return node.flip();
+		});
+		arr.reverse();
+		return new thx_geom_Path(arr,this.closed);
+	}
+	,get_area: function() {
+		this.compute();
+		return this.area;
+	}
+	,get_length: function() {
+		this.compute();
+		return this.length;
+	}
+	,get_isSelfIntersecting: function() {
+		this.compute();
+		return this.isSelfIntersecting;
+	}
+	,get_isPolygon: function() {
+		this.compute();
+		return this.isPolygon;
+	}
+	,computed: null
+	,compute: function() {
+		var _g = this;
+		if(this.computed) return;
+		this.area = 0;
+		this.length = 0;
+		this.isSelfIntersecting = false;
+		this.isPolygon = true;
+		this.iterateSides(function(side) {
+			if(null == side.length) side.length = Math.sqrt(side.get_lengthSquared());
+			_g.length += side.length;
+			if(_g.get_isPolygon() && !side.isLinear()) _g.isPolygon = false;
+		});
+	}
+	,toString: function() {
+		return "Path(" + this.nodes.map(function(n) {
+			return "[" + n.toStringValues() + "]";
+		}).join(", ") + "," + Std.string(this.closed) + ")";
+	}
+	,__class__: thx_geom_Path
+};
+var thx_geom_PathNode = function(point,normalout,normalin) {
+	this.point = point;
+	this.normalOut = normalout;
+	this.normalIn = normalin;
+};
+thx_geom_PathNode.__name__ = ["thx","geom","PathNode"];
+thx_geom_PathNode.prototype = {
+	point: null
+	,normalIn: null
+	,normalOut: null
+	,transform: function(matrix) {
+		return new thx_geom_PathNode(thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.leftMultiplyPoint(matrix,this.point),thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.leftMultiplyPoint(matrix,this.normalIn),thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.leftMultiplyPoint(matrix,this.normalOut));
+	}
+	,flip: function() {
+		return new thx_geom_PathNode(this.point,this.normalIn,this.normalOut);
+	}
+	,toStringValues: function() {
+		var nout;
+		if(null == this.normalOut) nout = "null"; else nout = "" + this.normalOut[1] + "," + this.normalOut[1];
+		var nin;
+		if(null == this.normalIn) nin = "null"; else nin = "" + this.normalIn[1] + "," + this.normalIn[1];
+		return "" + this.point[0] + "," + this.point[1] + "," + nout + "," + nin;
+	}
+	,toString: function() {
+		return "PathNode(" + this.toStringValues() + ")";
+	}
+	,__class__: thx_geom_PathNode
+};
 var thx_geom__$Point_Point_$Impl_$ = function() { };
 thx_geom__$Point_Point_$Impl_$.__name__ = ["thx","geom","_Point","Point_Impl_"];
 thx_geom__$Point_Point_$Impl_$.fromObject = function(o) {
@@ -1528,8 +1832,7 @@ thx_geom__$Point_Point_$Impl_$.isZero = function(this1) {
 	return this1[0] == p[0] && this1[1] == p[1];
 };
 thx_geom__$Point_Point_$Impl_$.isNearZero = function(this1) {
-	var p = thx_geom__$Point_Point_$Impl_$.zero;
-	return Math.abs(this1[0] - p[0]) <= 1e-5 && Math.abs(this1[1] - p[1]) <= 1e-5;
+	return thx_geom__$Point_Point_$Impl_$.nearEquals(this1,thx_geom__$Point_Point_$Impl_$.zero);
 };
 thx_geom__$Point_Point_$Impl_$.dot = function(this1,p) {
 	return this1[0] * p[0] + this1[1] * p[1];
@@ -1651,6 +1954,16 @@ thx_geom_Polygon.prototype = {
 	}
 	,__class__: thx_geom_Polygon
 };
+var thx_geom_TestPath = function() {
+};
+thx_geom_TestPath.__name__ = ["thx","geom","TestPath"];
+thx_geom_TestPath.prototype = {
+	testLength: function() {
+		var box = [[0,0],[10,10]];
+		var path = thx_geom_shape__$Box_Box_$Impl_$.toPath(box);
+	}
+	,__class__: thx_geom_TestPath
+};
 var thx_geom_TestPoint = function() {
 };
 thx_geom_TestPoint.__name__ = ["thx","geom","TestPoint"];
@@ -1686,13 +1999,7 @@ thx_geom_TestPoint.prototype = {
 		var x = Math.cos(angle);
 		var y = Math.sin(angle);
 		p = [x,y];
-		utest_Assert.isTrue((function($this) {
-			var $r;
-			var this_0 = 0;
-			var this_1 = 1;
-			$r = Math.abs(this_0 - p[0]) <= 1e-5 && Math.abs(this_1 - p[1]) <= 1e-5;
-			return $r;
-		}(this)),null,{ fileName : "TestPoint.hx", lineNumber : 24, className : "thx.geom.TestPoint", methodName : "testFromAngle"});
+		utest_Assert.isTrue(thx_geom__$Point_Point_$Impl_$.nearEquals([0,1],p),null,{ fileName : "TestPoint.hx", lineNumber : 24, className : "thx.geom.TestPoint", methodName : "testFromAngle"});
 	}
 	,__class__: thx_geom_TestPoint
 };
@@ -1709,6 +2016,90 @@ thx_geom_TestPoint3D.prototype = {
 		utest_Assert.isTrue(thx_geom__$Point3D_Point3D_$Impl_$.equals(thx_geom__$Point3D_Point3D_$Impl_$.interpolate(a,b,0.5),[15,30,45]),null,{ fileName : "TestPoint3D.hx", lineNumber : 16, className : "thx.geom.TestPoint3D", methodName : "testInterpolate3D"});
 	}
 	,__class__: thx_geom_TestPoint3D
+};
+var thx_geom_Vertex = function(position,normal) {
+	this.position = position;
+	this.normal = normal;
+};
+thx_geom_Vertex.__name__ = ["thx","geom","Vertex"];
+thx_geom_Vertex.linearVertex = function(position) {
+	return new thx_geom_Vertex(position,thx_geom__$Point_Point_$Impl_$.zero);
+};
+thx_geom_Vertex.getLengthSquaredIntegrand = function(v) {
+	var p1x = v[0];
+	var p1y = v[1];
+	var c1x = v[2];
+	var c1y = v[3];
+	var c2x = v[4];
+	var c2y = v[5];
+	var p2x = v[6];
+	var p2y = v[7];
+	var ax = 9 * (c1x - c2x) + 3 * (p2x - p1x);
+	var bx = 6 * (p1x + c2x) - 12 * c1x;
+	var cx = 3 * (c1x - p1x);
+	var ay = 9 * (c1y - c2y) + 3 * (p2y - p1y);
+	var by = 6 * (p1y + c2y) - 12 * c1y;
+	var cy = 3 * (c1y - p1y);
+	return function(t) {
+		var dx = (ax * t + bx) * t + cx;
+		var dy = (ay * t + by) * t + cy;
+		return dx * dx + dy * dy;
+	};
+};
+thx_geom_Vertex.prototype = {
+	position: null
+	,normal: null
+	,flip: function() {
+		return new thx_geom_Vertex(this.position,(function($this) {
+			var $r;
+			var this1 = $this.normal;
+			$r = [-this1[0],-this1[1]];
+			return $r;
+		}(this)));
+	}
+	,interpolate: function(other,t) {
+		return new thx_geom_Vertex(thx_geom__$Point_Point_$Impl_$.interpolate(this.position,other.position,t),thx_geom__$Point_Point_$Impl_$.interpolate(this.normal,other.normal,t));
+	}
+	,getDistanceSquared: function(other) {
+		var v = [this.position[0],this.position[1],this.position[0] + this.normal[0],this.position[1] + this.normal[1],other.position[0] + other.normal[0],other.position[1] + other.normal[1],other.position[0],other.position[1]];
+		if(Math.abs(v[0] - v[2]) <= 10e-10 && Math.abs(v[1] - v[3]) <= 10e-10 && Math.abs(v[6] - v[4]) <= 10e-10 && Math.abs(v[7] - v[5]) <= 10e-10) return thx_geom__$Point_Point_$Impl_$.distanceToSquared(this.position,other.position);
+		return thx_math_Number.integrate(thx_geom_Vertex.getLengthSquaredIntegrand(v),0,1,16);
+	}
+	,getDistance: function(other) {
+		return Math.sqrt(this.getDistanceSquared(other));
+	}
+	,transform: function(matrix) {
+		return new thx_geom_Vertex(thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.leftMultiplyPoint(matrix,this.position),thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.leftMultiplyPoint(matrix,this.normal));
+	}
+	,equals: function(other) {
+		return (function($this) {
+			var $r;
+			var this1 = $this.position;
+			var p = other.position;
+			$r = this1[0] == p[0] && this1[1] == p[1];
+			return $r;
+		}(this)) && (function($this) {
+			var $r;
+			var this2 = $this.normal;
+			var p1 = other.normal;
+			$r = this2[0] == p1[0] && this2[1] == p1[1];
+			return $r;
+		}(this));
+	}
+	,toString: function() {
+		return "Vertex " + (function($this) {
+			var $r;
+			var this1 = $this.position;
+			$r = "Point(" + this1[0] + "," + this1[1] + ")";
+			return $r;
+		}(this)) + ", " + (function($this) {
+			var $r;
+			var this2 = $this.normal;
+			$r = "Point(" + this2[0] + "," + this2[1] + ")";
+			return $r;
+		}(this));
+	}
+	,__class__: thx_geom_Vertex
 };
 var thx_geom_Vertex3D = function(position,normal) {
 	this.position = position;
@@ -1757,6 +2148,95 @@ thx_geom_Vertex3D.prototype = {
 	}
 	,__class__: thx_geom_Vertex3D
 };
+var thx_geom_shape__$Box_Box_$Impl_$ = function() { };
+thx_geom_shape__$Box_Box_$Impl_$.__name__ = ["thx","geom","shape","_Box","Box_Impl_"];
+thx_geom_shape__$Box_Box_$Impl_$.fromPoints = function(a,b) {
+	var bottomLeft;
+	var x = Math.min(a[0],b[0]);
+	var y = Math.min(a[1],b[1]);
+	bottomLeft = [x,y];
+	var topRight;
+	var x1 = Math.max(a[0],b[0]);
+	var y1 = Math.max(a[1],b[1]);
+	topRight = [x1,y1];
+	return [bottomLeft,topRight];
+};
+thx_geom_shape__$Box_Box_$Impl_$._new = function(bottomLeft,topRight) {
+	return [bottomLeft,topRight];
+};
+thx_geom_shape__$Box_Box_$Impl_$.get_topLeft = function(this1) {
+	return [this1[0][0],this1[1][1]];
+};
+thx_geom_shape__$Box_Box_$Impl_$.get_topRight = function(this1) {
+	return this1[1];
+};
+thx_geom_shape__$Box_Box_$Impl_$.get_bottomLeft = function(this1) {
+	return this1[0];
+};
+thx_geom_shape__$Box_Box_$Impl_$.get_bottomRight = function(this1) {
+	return [this1[1][0],this1[0][1]];
+};
+thx_geom_shape__$Box_Box_$Impl_$.get_center = function(this1) {
+	return [this1[0][0] + (this1[1][0] - this1[0][0]) / 2,this1[1][1] + (this1[0][1] - this1[1][1]) / 2];
+};
+thx_geom_shape__$Box_Box_$Impl_$.get_left = function(this1) {
+	return this1[0][0];
+};
+thx_geom_shape__$Box_Box_$Impl_$.get_right = function(this1) {
+	return this1[1][0];
+};
+thx_geom_shape__$Box_Box_$Impl_$.get_top = function(this1) {
+	return this1[1][1];
+};
+thx_geom_shape__$Box_Box_$Impl_$.get_bottom = function(this1) {
+	return this1[0][1];
+};
+thx_geom_shape__$Box_Box_$Impl_$.get_width = function(this1) {
+	return this1[1][0] - this1[0][0];
+};
+thx_geom_shape__$Box_Box_$Impl_$.get_height = function(this1) {
+	return this1[0][1] - this1[1][1];
+};
+thx_geom_shape__$Box_Box_$Impl_$.expandByPoint = function(this1,point) {
+	var bottomLeft;
+	var this2 = this1[0];
+	var x = Math.min(this2[0],point[0]);
+	var y = Math.min(this2[1],point[1]);
+	bottomLeft = [x,y];
+	var topRight;
+	var this3 = this1[1];
+	var x1 = Math.max(this3[0],point[0]);
+	var y1 = Math.max(this3[1],point[1]);
+	topRight = [x1,y1];
+	return [bottomLeft,topRight];
+};
+thx_geom_shape__$Box_Box_$Impl_$.toString = function(this1) {
+	return "Box(" + [this1[0][0],this1[1][1]][0] + "," + [this1[0][0],this1[1][1]][1] + "," + (this1[1][0] - this1[0][0]) + "," + (this1[0][1] - this1[1][1]) + ")";
+};
+thx_geom_shape__$Box_Box_$Impl_$.toPath = function(this1) {
+	return thx_geom_Path.fromArray([[this1[0][0],this1[1][1]],this1[1],[this1[1][0],this1[0][1]],this1[0]],true);
+};
+var thx_math_Number = function() { };
+thx_math_Number.__name__ = ["thx","math","Number"];
+thx_math_Number.isNearZero = function(n) {
+	return Math.abs(n) <= 10e-10;
+};
+thx_math_Number.integrate = function(f,a,b,n) {
+	var x = thx_math_Number.abscissas[n - 2];
+	var w = thx_math_Number.weights[n - 2];
+	var A = 0.5 * (b - a);
+	var B = A + a;
+	var i = 0;
+	var m = n + 1 >> 1;
+	var sum;
+	if((n & 1) == 1) sum = w[i++] * f(B); else sum = 0;
+	var Ax;
+	while(i < m) {
+		Ax = A * x[i];
+		sum += w[i++] * (f(B + Ax) + f(B - Ax));
+	}
+	return A * sum;
+};
 var thx_unit_angle_Const = function() { };
 thx_unit_angle_Const.__name__ = ["thx","unit","angle","Const"];
 var thx_unit_angle__$Degree_Degree_$Impl_$ = function() { };
@@ -1802,6 +2282,9 @@ thx_unit_angle__$Degree_Degree_$Impl_$.subtract = function(this1,r) {
 };
 thx_unit_angle__$Degree_Degree_$Impl_$.subtractFloat = function(this1,v) {
 	return this1 + -v;
+};
+thx_unit_angle__$Degree_Degree_$Impl_$.equals = function(this1,v) {
+	return this1 == v;
 };
 var thx_unit_angle_FloatDegree = function() { };
 thx_unit_angle_FloatDegree.__name__ = ["thx","unit","angle","FloatDegree"];
@@ -1851,6 +2334,9 @@ thx_unit_angle__$Radian_Radian_$Impl_$.subtract = function(this1,r) {
 };
 thx_unit_angle__$Radian_Radian_$Impl_$.subtractFloat = function(this1,v) {
 	return this1 + -v;
+};
+thx_unit_angle__$Radian_Radian_$Impl_$.equals = function(this1,v) {
+	return this1 == v;
 };
 var thx_unit_angle_FloatRadian = function() { };
 thx_unit_angle_FloatRadian.__name__ = ["thx","unit","angle","FloatRadian"];
@@ -2330,16 +2816,17 @@ utest_Assert.typeToString = function(t) {
 	return "<unable to retrieve type name>";
 };
 var utest_Assertation = { __ename__ : ["utest","Assertation"], __constructs__ : ["Success","Failure","Error","SetupError","TeardownError","TimeoutError","AsyncError","Warning"] };
-utest_Assertation.Success = function(pos) { var $x = ["Success",0,pos]; $x.__enum__ = utest_Assertation; return $x; };
-utest_Assertation.Failure = function(msg,pos) { var $x = ["Failure",1,msg,pos]; $x.__enum__ = utest_Assertation; return $x; };
-utest_Assertation.Error = function(e,stack) { var $x = ["Error",2,e,stack]; $x.__enum__ = utest_Assertation; return $x; };
-utest_Assertation.SetupError = function(e,stack) { var $x = ["SetupError",3,e,stack]; $x.__enum__ = utest_Assertation; return $x; };
-utest_Assertation.TeardownError = function(e,stack) { var $x = ["TeardownError",4,e,stack]; $x.__enum__ = utest_Assertation; return $x; };
-utest_Assertation.TimeoutError = function(missedAsyncs,stack) { var $x = ["TimeoutError",5,missedAsyncs,stack]; $x.__enum__ = utest_Assertation; return $x; };
-utest_Assertation.AsyncError = function(e,stack) { var $x = ["AsyncError",6,e,stack]; $x.__enum__ = utest_Assertation; return $x; };
-utest_Assertation.Warning = function(msg) { var $x = ["Warning",7,msg]; $x.__enum__ = utest_Assertation; return $x; };
+utest_Assertation.Success = function(pos) { var $x = ["Success",0,pos]; $x.__enum__ = utest_Assertation; $x.toString = $estr; return $x; };
+utest_Assertation.Failure = function(msg,pos) { var $x = ["Failure",1,msg,pos]; $x.__enum__ = utest_Assertation; $x.toString = $estr; return $x; };
+utest_Assertation.Error = function(e,stack) { var $x = ["Error",2,e,stack]; $x.__enum__ = utest_Assertation; $x.toString = $estr; return $x; };
+utest_Assertation.SetupError = function(e,stack) { var $x = ["SetupError",3,e,stack]; $x.__enum__ = utest_Assertation; $x.toString = $estr; return $x; };
+utest_Assertation.TeardownError = function(e,stack) { var $x = ["TeardownError",4,e,stack]; $x.__enum__ = utest_Assertation; $x.toString = $estr; return $x; };
+utest_Assertation.TimeoutError = function(missedAsyncs,stack) { var $x = ["TimeoutError",5,missedAsyncs,stack]; $x.__enum__ = utest_Assertation; $x.toString = $estr; return $x; };
+utest_Assertation.AsyncError = function(e,stack) { var $x = ["AsyncError",6,e,stack]; $x.__enum__ = utest_Assertation; $x.toString = $estr; return $x; };
+utest_Assertation.Warning = function(msg) { var $x = ["Warning",7,msg]; $x.__enum__ = utest_Assertation; $x.toString = $estr; return $x; };
 var utest__$Dispatcher_EventException = { __ename__ : ["utest","_Dispatcher","EventException"], __constructs__ : ["StopPropagation"] };
 utest__$Dispatcher_EventException.StopPropagation = ["StopPropagation",0];
+utest__$Dispatcher_EventException.StopPropagation.toString = $estr;
 utest__$Dispatcher_EventException.StopPropagation.__enum__ = utest__$Dispatcher_EventException;
 var utest_Dispatcher = function() {
 	this.handlers = new Array();
@@ -2814,17 +3301,23 @@ utest_ui_common_FixtureResult.prototype = {
 };
 var utest_ui_common_HeaderDisplayMode = { __ename__ : ["utest","ui","common","HeaderDisplayMode"], __constructs__ : ["AlwaysShowHeader","NeverShowHeader","ShowHeaderWithResults"] };
 utest_ui_common_HeaderDisplayMode.AlwaysShowHeader = ["AlwaysShowHeader",0];
+utest_ui_common_HeaderDisplayMode.AlwaysShowHeader.toString = $estr;
 utest_ui_common_HeaderDisplayMode.AlwaysShowHeader.__enum__ = utest_ui_common_HeaderDisplayMode;
 utest_ui_common_HeaderDisplayMode.NeverShowHeader = ["NeverShowHeader",1];
+utest_ui_common_HeaderDisplayMode.NeverShowHeader.toString = $estr;
 utest_ui_common_HeaderDisplayMode.NeverShowHeader.__enum__ = utest_ui_common_HeaderDisplayMode;
 utest_ui_common_HeaderDisplayMode.ShowHeaderWithResults = ["ShowHeaderWithResults",2];
+utest_ui_common_HeaderDisplayMode.ShowHeaderWithResults.toString = $estr;
 utest_ui_common_HeaderDisplayMode.ShowHeaderWithResults.__enum__ = utest_ui_common_HeaderDisplayMode;
 var utest_ui_common_SuccessResultsDisplayMode = { __ename__ : ["utest","ui","common","SuccessResultsDisplayMode"], __constructs__ : ["AlwaysShowSuccessResults","NeverShowSuccessResults","ShowSuccessResultsWithNoErrors"] };
 utest_ui_common_SuccessResultsDisplayMode.AlwaysShowSuccessResults = ["AlwaysShowSuccessResults",0];
+utest_ui_common_SuccessResultsDisplayMode.AlwaysShowSuccessResults.toString = $estr;
 utest_ui_common_SuccessResultsDisplayMode.AlwaysShowSuccessResults.__enum__ = utest_ui_common_SuccessResultsDisplayMode;
 utest_ui_common_SuccessResultsDisplayMode.NeverShowSuccessResults = ["NeverShowSuccessResults",1];
+utest_ui_common_SuccessResultsDisplayMode.NeverShowSuccessResults.toString = $estr;
 utest_ui_common_SuccessResultsDisplayMode.NeverShowSuccessResults.__enum__ = utest_ui_common_SuccessResultsDisplayMode;
 utest_ui_common_SuccessResultsDisplayMode.ShowSuccessResultsWithNoErrors = ["ShowSuccessResultsWithNoErrors",2];
+utest_ui_common_SuccessResultsDisplayMode.ShowSuccessResultsWithNoErrors.toString = $estr;
 utest_ui_common_SuccessResultsDisplayMode.ShowSuccessResultsWithNoErrors.__enum__ = utest_ui_common_SuccessResultsDisplayMode;
 var utest_ui_common_IReport = function() { };
 utest_ui_common_IReport.__name__ = ["utest","ui","common","IReport"];
@@ -3619,6 +4112,10 @@ thx_geom_Plane.SPANNING = 3;
 thx_geom__$Point3D_Point3D_$Impl_$.zero = [0,0,0];
 thx_geom_OrthoNormalBasis.z0Plane = new thx_geom_OrthoNormalBasis(new thx_geom_Plane([0,0,1],0),[1,0,0]);
 thx_geom__$Point_Point_$Impl_$.zero = [0,0];
+thx_math_Number.TOLERANCE = 10e-5;
+thx_math_Number.EPSILON = 10e-10;
+thx_math_Number.abscissas = [[0.5773502691896257645091488],[0,0.7745966692414833770358531],[0.3399810435848562648026658,0.8611363115940525752239465],[0,0.5384693101056830910363144,0.9061798459386639927976269],[0.2386191860831969086305017,0.6612093864662645136613996,0.9324695142031520278123016],[0,0.4058451513773971669066064,0.7415311855993944398638648,0.9491079123427585245261897],[0.1834346424956498049394761,0.5255324099163289858177390,0.7966664774136267395915539,0.9602898564975362316835609],[0,0.3242534234038089290385380,0.6133714327005903973087020,0.8360311073266357942994298,0.9681602395076260898355762],[0.1488743389816312108848260,0.4333953941292471907992659,0.6794095682990244062343274,0.8650633666889845107320967,0.9739065285171717200779640],[0,0.2695431559523449723315320,0.5190961292068118159257257,0.7301520055740493240934163,0.8870625997680952990751578,0.9782286581460569928039380],[0.1252334085114689154724414,0.3678314989981801937526915,0.5873179542866174472967024,0.7699026741943046870368938,0.9041172563704748566784659,0.9815606342467192506905491],[0,0.2304583159551347940655281,0.4484927510364468528779129,0.6423493394403402206439846,0.8015780907333099127942065,0.9175983992229779652065478,0.9841830547185881494728294],[0.1080549487073436620662447,0.3191123689278897604356718,0.5152486363581540919652907,0.6872929048116854701480198,0.8272013150697649931897947,0.9284348836635735173363911,0.9862838086968123388415973],[0,0.2011940939974345223006283,0.3941513470775633698972074,0.5709721726085388475372267,0.7244177313601700474161861,0.8482065834104272162006483,0.9372733924007059043077589,0.9879925180204854284895657],[0.0950125098376374401853193,0.2816035507792589132304605,0.4580167776572273863424194,0.6178762444026437484466718,0.7554044083550030338951012,0.8656312023878317438804679,0.9445750230732325760779884,0.9894009349916499325961542]];
+thx_math_Number.weights = [[1.0],[0.8888888888888888888888889,0.5555555555555555555555556],[0.6521451548625461426269361,0.3478548451374538573730639],[0.5688888888888888888888889,0.4786286704993664680412915,0.2369268850561890875142640],[0.4679139345726910473898703,0.3607615730481386075698335,0.1713244923791703450402961],[0.4179591836734693877551020,0.3818300505051189449503698,0.2797053914892766679014678,0.1294849661688696932706114],[0.3626837833783619829651504,0.3137066458778872873379622,0.2223810344533744705443560,0.1012285362903762591525314],[0.3302393550012597631645251,0.3123470770400028400686304,0.2606106964029354623187429,0.1806481606948574040584720,0.0812743883615744119718922],[0.2955242247147528701738930,0.2692667193099963550912269,0.2190863625159820439955349,0.1494513491505805931457763,0.0666713443086881375935688],[0.2729250867779006307144835,0.2628045445102466621806889,0.2331937645919904799185237,0.1862902109277342514260976,0.1255803694649046246346943,0.0556685671161736664827537],[0.2491470458134027850005624,0.2334925365383548087608499,0.2031674267230659217490645,0.1600783285433462263346525,0.1069393259953184309602547,0.0471753363865118271946160],[0.2325515532308739101945895,0.2262831802628972384120902,0.2078160475368885023125232,0.1781459807619457382800467,0.1388735102197872384636018,0.0921214998377284479144218,0.0404840047653158795200216],[0.2152638534631577901958764,0.2051984637212956039659241,0.1855383974779378137417166,0.1572031671581935345696019,0.1215185706879031846894148,0.0801580871597602098056333,0.0351194603317518630318329],[0.2025782419255612728806202,0.1984314853271115764561183,0.1861610000155622110268006,0.1662692058169939335532009,0.1395706779261543144478048,0.1071592204671719350118695,0.0703660474881081247092674,0.0307532419961172683546284],[0.1894506104550684962853967,0.1826034150449235888667637,0.1691565193950025381893121,0.1495959888165767320815017,0.1246289712555338720524763,0.0951585116824927848099251,0.0622535239386478928628438,0.0271524594117540948517806]];
 thx_unit_angle_Const.TO_DEGREE = 180 / Math.PI;
 utest_TestHandler.POLLING_TIME = 10;
 utest_ui_text_HtmlReport.platform = "javascript";
