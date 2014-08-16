@@ -49,24 +49,14 @@ class EdgeQuadratic implements Edge {
 	public function split(v : Float) : Array<Edge>
 		return throw "not implemented";
 
-	public function splitLength(distance : Float) : Array<Edge>
-		return throw "not implemented";
-
 	public function interpolate(v : Float) : Point
-		return throw "not implemented";
-
-	public function interpolateLength(distance : Float) : Point
 		return throw "not implemented";
 
 	public function tangent(v : Float) : Vertex
 		return throw "not implemented";
 
-	public function tangentLength(distance : Float) : Vertex
-		return throw "not implemented";
-
 	public function toString() : String
-		return throw "not implemented";
-
+		return 'Edge($p0,$p1,$p2,$p3)';
 
 	function get_area() : Float
 		return throw "not implemented";

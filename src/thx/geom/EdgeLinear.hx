@@ -42,27 +42,22 @@ class EdgeLinear implements Edge {
 	public function intersectionsWithLine(line : Line) : Array<Point>
 		return throw "not implemented";
 
-	public function split(v : Float) : Array<Edge>
-		return throw "not implemented";
-
-	public function splitLength(distance : Float) : Array<Edge>
-		return throw "not implemented";
+	public function split(v : Float) : Array<Edge> {
+		var mid = interpolate(v);
+		return [
+			new EdgeLinear(p0, mid),
+			new EdgeLinear(mid, p1)
+		];
+	}
 
 	public function interpolate(v : Float) : Point
-		return throw "not implemented";
-
-	public function interpolateLength(distance : Float) : Point
-		return throw "not implemented";
+		return p0.interpolate(p1, v);
 
 	public function tangent(v : Float) : Vertex
 		return throw "not implemented";
 
-	public function tangentLength(distance : Float) : Vertex
-		return throw "not implemented";
-
 	public function toString() : String
-		return throw "not implemented";
-
+		return 'Edge($p0,$p1)';
 
 	function get_area() : Float {
 		if(null == area) {

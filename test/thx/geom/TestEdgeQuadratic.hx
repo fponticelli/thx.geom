@@ -31,23 +31,11 @@ class TestEdgeQuadratic {
 
 	}
 
-	public function testSplitLength() {
-
-	}
-
 	public function testInterpolate() {
 
 	}
 
-	public function testInterpolateLength() {
-
-	}
-
 	public function testTangent() {
-
-	}
-
-	public function testTangentLength() {
 
 	}
 
