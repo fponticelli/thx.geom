@@ -65,11 +65,11 @@ class Spline {
 		if(null == nout && null == nin)
 			return new EdgeLinear(a, b);
 		else if(null != nout)
-			return new EdgeCubic(a, nout, b);
+			return new EdgeCubic(a, nout, b, b);
 		else if(null != nin)
-			return new EdgeCubic(a, nin, b);
+			return new EdgeCubic(a, a, nin, b);
 		else
-			return new EdgeQuadratic(a, nout, nin, b);
+			return new EdgeCubic(a, nout, nin, b);
 	}
 
 	public function iterateEdges(f : Edge -> Void) {
