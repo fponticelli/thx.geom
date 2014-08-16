@@ -57,4 +57,7 @@ class Line {
 			neww = newnormal.dot(newpointOnPlane);
 		return new Line(newnormal, neww);
 	}
+
+	public function toString()
+		return 'Line(${normal.x},${normal.y},w:$w)';
 }

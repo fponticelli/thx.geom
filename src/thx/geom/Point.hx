@@ -132,9 +132,8 @@ abstract Point(Array<Float>) {
 			return null;
 
 		var invdet = 1.0 / det,
-			x = u * d - b * v,
+			x =  u * d - b * v,
 			y = -u * c + a * v;
-
 		return new Point(x * invdet, y * invdet);
 	}
 
