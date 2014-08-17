@@ -43,8 +43,6 @@ class Line3D {
 		this.direction = direction.normalize();
 	}
 
-	// plane: plane.normal * p = plane.w
-	// line: p=line.point + lambda * line.direction
 	public function intersectWithPlane(plane : Plane) {
 		var lambda = (plane.w - plane.normal.dot(this.point)) / plane.normal.dot(direction);
 		return point.addPoint3D(direction.multiply(lambda));

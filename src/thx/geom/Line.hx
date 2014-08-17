@@ -35,15 +35,12 @@ class Line {
 	public function direction()
 		return normal.normal();
 
-	// (py == y) && (normal * p == w)
-	// -> px = (w - normal._y * y) / normal.x
 	public function xAtY(y : Float)
 		return (w - normal.y * y) / normal.x;
 
 	public function absDistanceToPoint(point : Point)
 		return Math.abs(point.dot(normal) - w);
 
-	// intersection between two lines, returns point as Point
 	public function intersectionLine(line : Line) : Null<Point>
 		return Point.solve2Linear(normal.x, normal.y, line.normal.x, line.normal.y, w, line.w);
 

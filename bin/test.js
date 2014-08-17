@@ -964,18 +964,18 @@ thx_geom_EdgeCubic.prototype = {
 			return $r;
 		}(this)) + "," + (function($this) {
 			var $r;
-			var this11 = $this.p1;
-			$r = "Point(" + this11[0] + "," + this11[1] + ")";
+			var this2 = $this.p1;
+			$r = "Point(" + this2[0] + "," + this2[1] + ")";
 			return $r;
 		}(this)) + "," + (function($this) {
 			var $r;
-			var this12 = $this.p2;
-			$r = "Point(" + this12[0] + "," + this12[1] + ")";
+			var this3 = $this.p2;
+			$r = "Point(" + this3[0] + "," + this3[1] + ")";
 			return $r;
 		}(this)) + "," + (function($this) {
 			var $r;
-			var this13 = $this.p3;
-			$r = "Point(" + this13[0] + "," + this13[1] + ")";
+			var this4 = $this.p3;
+			$r = "Point(" + this4[0] + "," + this4[1] + ")";
 			return $r;
 		}(this)) + ")";
 	}
@@ -1058,25 +1058,25 @@ thx_geom_EdgeLinear.prototype = {
 			var $r;
 			var this1;
 			{
-				var this11 = $this.p0;
+				var this2 = $this.p0;
 				var p1 = $this.p1;
-				var x = Math.min(this11[0],p1[0]);
-				var y = Math.min(this11[1],p1[1]);
+				var x = Math.min(this2[0],p1[0]);
+				var y = Math.min(this2[1],p1[1]);
 				this1 = [x,y];
 			}
 			$r = this1[0];
 			return $r;
 		}(this)) || p[0] > (function($this) {
 			var $r;
-			var this12;
+			var this3;
 			{
-				var this13 = $this.p0;
+				var this4 = $this.p0;
 				var p2 = $this.p1;
-				var x1 = Math.max(this13[0],p2[0]);
-				var y1 = Math.max(this13[1],p2[1]);
-				this12 = [x1,y1];
+				var x1 = Math.max(this4[0],p2[0]);
+				var y1 = Math.max(this4[1],p2[1]);
+				this3 = [x1,y1];
 			}
-			$r = this12[0];
+			$r = this3[0];
 			return $r;
 		}(this))) return [];
 		return [p];
@@ -1099,8 +1099,8 @@ thx_geom_EdgeLinear.prototype = {
 			return $r;
 		}(this)) + "," + (function($this) {
 			var $r;
-			var this11 = $this.p1;
-			$r = "Point(" + this11[0] + "," + this11[1] + ")";
+			var this2 = $this.p1;
+			$r = "Point(" + this2[0] + "," + this2[1] + ")";
 			return $r;
 		}(this)) + ")";
 	}
@@ -1127,11 +1127,11 @@ thx_geom_EdgeLinear.prototype = {
 	,get_lengthSquared: function() {
 		if(null == this.lengthSquared) {
 			var this1;
-			var this11 = this.p1;
+			var this2 = this.p1;
 			var p = this.p0;
 			var p_0 = -p[0];
 			var p_1 = -p[1];
-			this1 = [this11[0] + p_0,this11[1] + p_1];
+			this1 = [this2[0] + p_0,this2[1] + p_1];
 			this.lengthSquared = this1[0] * this1[0] + this1[1] * this1[1];
 		}
 		return this.lengthSquared;
@@ -2579,8 +2579,8 @@ thx_geom_Spline.prototype = {
 				return $r;
 			}(this)) || (function($this) {
 				var $r;
-				var this11 = node.normalOut;
-				$r = !(this11[0] == null[0] && this11[1] == null[1]);
+				var this2 = node.normalOut;
+				$r = !(this2[0] == null[0] && this2[1] == null[1]);
 				return $r;
 			}(this))) return false;
 		}
@@ -3075,14 +3075,14 @@ thx_geom_shape__$Box_Box_$Impl_$.get_height = function(this1) {
 };
 thx_geom_shape__$Box_Box_$Impl_$.expandByPoint = function(this1,point) {
 	var bottomLeft;
-	var this11 = this1[0];
-	var x = Math.min(this11[0],point[0]);
-	var y = Math.min(this11[1],point[1]);
+	var this2 = this1[0];
+	var x = Math.min(this2[0],point[0]);
+	var y = Math.min(this2[1],point[1]);
 	bottomLeft = [x,y];
 	var topRight;
-	var this12 = this1[1];
-	var x1 = Math.max(this12[0],point[0]);
-	var y1 = Math.max(this12[1],point[1]);
+	var this3 = this1[1];
+	var x1 = Math.max(this3[0],point[0]);
+	var y1 = Math.max(this3[1],point[1]);
 	topRight = [x1,y1];
 	return [bottomLeft,topRight];
 };
@@ -3107,15 +3107,15 @@ thx_geom_shape__$Box_Box_$Impl_$.intersects = function(this1,other) {
 thx_geom_shape__$Box_Box_$Impl_$.equals = function(this1,other) {
 	return (function($this) {
 		var $r;
-		var this11 = this1[0];
+		var this2 = this1[0];
 		var p = other[0];
-		$r = this11[0] == p[0] && this11[1] == p[1];
+		$r = this2[0] == p[0] && this2[1] == p[1];
 		return $r;
 	}(this)) && (function($this) {
 		var $r;
-		var this12 = this1[1];
+		var this3 = this1[1];
 		var p1 = other[1];
-		$r = this12[0] == p1[0] && this12[1] == p1[1];
+		$r = this3[0] == p1[0] && this3[1] == p1[1];
 		return $r;
 	}(this));
 };
@@ -5007,7 +5007,7 @@ if(Array.prototype.map == null) Array.prototype.map = function(f) {
 };
 thx_core_Ints.pattern_parse = new EReg("^[+-]?(\\d+|0x[0-9A-F]+)$","i");
 thx_geom_Const.EPSILON = 1e-5;
-thx_geom_Const.KAPPA = 4 * (Math.sqrt(2) - 1) / 3;
+thx_geom_Const.KAPPA = 0.5522847498307936;
 thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.unity = [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1];
 thx_geom_Plane.COPLANAR = 0;
 thx_geom_Plane.FRONT = 1;

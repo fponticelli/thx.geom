@@ -64,10 +64,10 @@ abstract Box(Array<Point>) {
 
 	@:to public function toSpline() {
 		return Spline.fromArray([
-				topLeft,
-				topRight,
-				bottomRight,
-				bottomLeft
-			], true);
+			topLeft,
+			topRight,
+			bottomRight,
+			bottomLeft
+		], true);
 	}
 }
