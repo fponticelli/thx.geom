@@ -44,7 +44,7 @@ class Line {
 		return Math.abs(point.dot(normal) - w);
 
 	// intersection between two lines, returns point as Point
-	public function intersectionWithLine(line : Line) : Null<Point>
+	public function intersectionLine(line : Line) : Null<Point>
 		return Point.solve2Linear(normal.x, normal.y, line.normal.x, line.normal.y, w, line.w);
 
 	public function transform(matrix : Matrix4x4) {

@@ -1,6 +1,7 @@
 package thx.geom;
 
 import thx.geom.shape.Box;
+using thx.core.Arrays;
 
 class Path {
 	@:isVar public var area(get, null) : Float;
@@ -14,7 +15,10 @@ class Path {
 		this.splines = splines;
 
 	public function contains(p : Point) : Bool {
-		return throw 'not implemented';
+		for(spline in splines)
+			if(spline.contains(p))
+				return true;
+		return false;
 	}
 
 	public function union(other : Path) : Null<Path> {
@@ -29,12 +33,13 @@ class Path {
 		return throw 'not implemented';
 	}
 
-	public function transform(matrix : Matrix4x4) {
-		return throw 'not implemented';
-	}
+	public function transform(matrix : Matrix4x4)
+		return new Path(splines.map(function(spline) return spline.transform(matrix)));
 
 	public function flip() {
-		return throw 'not implemented';
+		var s = splines.map(function(spline) return spline.flip());
+		s.reverse();
+		return new Path(s);
 	}
 
 	public function intersectsPath(other : Path) : Bool
@@ -46,19 +51,23 @@ class Path {
 	public function intersectsLine(line : Line) : Bool
 		return intersectionsLine(line).length > 0;
 
-	public function intersectionsPath(other : Path) : Array<Point> {
-		return throw 'not implemented';
-	}
+	public function intersectionsPath(other : Path) : Array<Point>
+		return splines.map(function(spline) {
+			return spline.intersectionsPath(other);
+		}).flatten();
 
-	public function intersectionsSpline(other : Spline) : Array<Point> {
-		return throw 'not implemented';
-	}
+	public function intersectionsSpline(other : Spline) : Array<Point>
+		return splines.map(function(spline) {
+			return spline.intersectionsSpline(other);
+		}).flatten();
 
 	public function intersectionsLine(line : Line) : Array<Point> {
-		return throw 'not implemented';
+		return splines.map(function(spline) {
+			return spline.intersectionsLine(line);
+		}).flatten();
 	}
 
-	public function split(value : Float) : Point {
+	public function split(value : Float) : Array<Path> {
 		return throw 'not implemented';
 	}
 

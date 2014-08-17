@@ -45,8 +45,8 @@ class EdgeLinear implements Edge {
 			return [];
 		if(Std.is(other, EdgeLinear)) {
 			var other : EdgeLinear = cast other;
-			var ps = intersectionsWithLine(other.line);
-			if(ps.length == 0 || other.intersectsWithLine(line))
+			var ps = intersectionsLine(other.line);
+			if(ps.length == 0 || other.intersectsLine(line))
 				return ps;
 			else
 				return [];
@@ -57,12 +57,12 @@ class EdgeLinear implements Edge {
 		}
 	}
 
-	public function intersectsWithLine(line : Line) : Bool
-		return intersectionsWithLine(line).length > 0;
+	public function intersectsLine(line : Line) : Bool
+		return intersectionsLine(line).length > 0;
 
-	public function intersectionsWithLine(line : Line) : Array<Point> {
+	public function intersectionsLine(line : Line) : Array<Point> {
 		var l = Line.fromPoints(p0, p1),
-			p = l.intersectionWithLine(line);
+			p = l.intersectionLine(line);
 		if(null == p || p.x < p0.min(p1).x || p.x > p0.max(p1).x)
 			return [];
 		return [p];
@@ -78,6 +78,9 @@ class EdgeLinear implements Edge {
 
 	public function interpolate(v : Float) : Point
 		return p0.interpolate(p1, v);
+
+	public function toArray()
+		return [p0,p1];
 
 	public function toString() : String
 		return 'Edge($p0,$p1)';

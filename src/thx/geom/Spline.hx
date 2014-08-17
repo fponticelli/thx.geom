@@ -1,5 +1,6 @@
 package thx.geom;
 
+using thx.core.Arrays;
 using thx.core.Iterators;
 import thx.geom.shape.Box;
 
@@ -10,6 +11,25 @@ class Spline {
 	@:isVar public var isPolygon(get, null) : Bool;
 	@:isVar public var box(get, null) : Box;
 	@:isVar public var edges(get, null) : Array<Edge>;
+
+	public static function fromEdges(arr : Array<Edge>, ?closed : Bool) {
+		var nodes = [], points;
+		if(arr.length > 0) {
+			var prev = arr[arr.length-1].toArray();
+			arr.map(function(edge) {
+				points = edge.toArray();
+				nodes.push(new SplineNode(
+					points[0],
+					points.length == 4 ? points[1] : null,
+					prev[2]
+				));
+				prev = points;
+			});
+		}
+		var spline = new Spline(nodes, closed);
+		spline.edges = arr;
+		return spline;
+	}
 
 	public static function fromPoints(arr : Array<Array<Point>>, ?closed : Bool) {
 		var nodes = arr.map(function(c) {
@@ -100,8 +120,17 @@ class Spline {
 		return new Spline(arr, isClosed);
 	}
 
-	public function contains(p : Point) {
-		throw 'not implemented';
+	public function contains(p : Point) : Bool {
+		return throw 'not implemented';
+	}
+
+	public function selfIntersections() {
+		var intersections = [];
+		edges.eachPair(function(a,b) {
+			intersections = intersections.concat(a.intersections(b));
+			return true;
+		});
+		return intersections;
 	}
 
 	public function intersectsPath(other : Path) : Bool
@@ -113,24 +142,55 @@ class Spline {
 	public function intersectsLine(line : Line) : Bool
 		return intersectionsLine(line).length > 0;
 
-	public function intersectionsPath(other : Path) : Array<Point> {
-		throw 'not implemented';
-	}
+	public function intersectionsPath(other : Path) : Array<Point>
+		return other.intersectionsSpline(this);
 
-	public function intersectionsSpline(other : Spline) : Array<Point> {
-		throw 'not implemented';
-	}
+	public function intersectionsSpline(other : Spline) : Array<Point>
+		return edges.map(function(a) {
+			return other.edges.map(function(b) return a.intersections(b)).flatten();
+		}).flatten();
 
-	public function intersectionsLine(line : Line) : Array<Point> {
-		throw 'not implemented';
-	}
+	public function intersectionsLine(line : Line) : Array<Point>
+		return edges.map(function(edge) {
+			return edge.intersectionsLine(line);
+		}).flatten();
 
-	public function split(value : Float) : Point {
-		throw 'not implemented';
+	public function split(value : Float) : Array<Spline> {
+		if(value < 0 || value > 1) return null;
+		var len = length,
+			nor,
+			i = 0, edge,
+			before = [],
+			after = [],
+			edges = edges;
+		while(i < edges.length) {
+			edge = edges[i];
+			nor = edge.length / len;
+			if(value <= nor) {
+				var n = edge.split(value);
+				before.push(n[0]);
+				after = [n[1]].concat(edges.slice(i+1));
+				break;
+			}
+			before.push(edge);
+		}
+		return [
+			Spline.fromEdges(before, isClosed),
+			Spline.fromEdges(after, isClosed)
+		];
 	}
 
 	public function interpolate(value : Float) : Point {
-		throw 'not implemented';
+		if(value < 0 || value > 1) return null;
+		var len = length,
+			nor;
+		for(edge in edges) {
+			nor = edge.length / len;
+			if(value <= nor)
+				return edge.interpolate(value);
+			value -= nor;
+		}
+		return null;
 	}
 
 	public function toString() {
@@ -155,18 +215,12 @@ class Spline {
 		}
 		return length;
 	}
+
 	function get_isSelfIntersecting() : Bool {
 		if(null == isSelfIntersecting) {
 			var edges = edges;
 			isSelfIntersecting = false;
-			for(i in 0...edges.length) {
-				for(j in i + 1...edges.length) {
-					if(edges[j].intersects(edges[i])) {
-						isSelfIntersecting = true;
-						break;
-					}
-				}
-			}
+			edges.eachPair(function(a, b) return !(isSelfIntersecting = a.intersects(b)));
 		}
 		return isSelfIntersecting;
 	}

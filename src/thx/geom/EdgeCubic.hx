@@ -46,10 +46,10 @@ class EdgeCubic implements Edge {
 	public function intersections(other : Edge) : Array<Point>
 		return throw "not implemented";
 
-	public function intersectsWithLine(line : Line) : Bool
-		return intersectionsWithLine(line).length > 0;
+	public function intersectsLine(line : Line) : Bool
+		return intersectionsLine(line).length > 0;
 
-	public function intersectionsWithLine(line : Line) : Array<Point>
+	public function intersectionsLine(line : Line) : Array<Point>
 		return throw "not implemented";
 
 	public function split(v : Float) : Array<Edge>
@@ -57,6 +57,9 @@ class EdgeCubic implements Edge {
 
 	public function interpolate(v : Float) : Point
 		return throw "not implemented";
+
+	public function toArray()
+		return [p0,p1,p2,p3];
 
 	public function toString() : String
 		return 'Edge($p0,$p1,$p2,$p3)';
