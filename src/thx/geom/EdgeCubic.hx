@@ -65,14 +65,16 @@ class EdgeCubic implements Edge {
 		return throw "not implemented";
 
 	function get_box() : Box {
-		if(null == box) {
+		if(null == box)
 			box = Box.fromPoints(p0, p1).expandByPoints([p2, p3]);
-		}
 		return box;
 	}
 
-	function get_length() : Float
-		return throw "not implemented";
+	function get_length() : Float {
+		if(null == length)
+			length = Math.sqrt(lengthSquared);
+		return length;
+	}
 
 	function get_lengthSquared() : Float
 		return throw "not implemented";

@@ -9,7 +9,7 @@ class Spline {
 	@:isVar public var isSelfIntersecting(get, null) : Bool;
 	@:isVar public var isPolygon(get, null) : Bool;
 	@:isVar public var box(get, null) : Box;
-	var edges : Array<Edge>;
+	@:isVar public var edges(get, null) : Array<Edge>;
 
 	public static function fromPoints(arr : Array<Array<Point>>, ?closed : Bool) {
 		var nodes = arr.map(function(c) {
@@ -36,10 +36,10 @@ class Spline {
 	}
 
 	var nodes : Array<SplineNode>;
-	public var closed(default, null) : Bool;
+	public var isClosed(default, null) : Bool;
 	public function new(nodes : Array<SplineNode>, closed = true) {
 		this.nodes = nodes;
-		this.closed = closed;
+		this.isClosed = closed;
 	}
 
 	public function iterator()
@@ -54,7 +54,7 @@ class Spline {
 			b = nodes[i+1];
 			fit(a.point, b.point, a.normalOut, b.normalIn);
 		}
-		if(closed) {
+		if(isClosed) {
 			a = nodes[nodes.length-1];
 			b = nodes[0];
 			fit(a.point, b.point, a.normalOut, b.normalIn);
@@ -73,21 +73,22 @@ class Spline {
 	}
 
 	public function iterateEdges(f : Edge -> Void) {
-		if(null != edges)
-			edges.map(f);
-		else {
+		edges.map(f);
+	}
+
+	function get_edges() {
+		if(null == edges) {
 			edges = [];
 			iterate(function(a, b, nout, nin) {
-				var edge = createEdge(a, b, nout, nin);
-				edges.push(edge);
-				f(edge);
+				edges.push(createEdge(a, b, nout, nin));
 			});
 		}
+		return edges;
 	}
 
 	public function transform(matrix : Matrix4x4) {
 		var ismirror = matrix.isMirroring(),
-			result = new Spline(iterator().map(function(node) return node.transform(matrix)), closed);
+			result = new Spline(iterator().map(function(node) return node.transform(matrix)), isClosed);
 		if(ismirror)
 			result = result.flip();
 		return result;
@@ -96,7 +97,44 @@ class Spline {
 	public function flip() {
 		var arr = iterator().map(function(node) return node.flip());
 		arr.reverse();
-		return new Spline(arr, closed);
+		return new Spline(arr, isClosed);
+	}
+
+	public function contains(p : Point) {
+		throw 'not implemented';
+	}
+
+	public function intersectsPath(other : Path) : Bool
+		return intersectionsPath(other).length > 0;
+
+	public function intersectsSpline(other : Spline) : Bool
+		return intersectionsSpline(other).length > 0;
+
+	public function intersectsLine(line : Line) : Bool
+		return intersectionsLine(line).length > 0;
+
+	public function intersectionsPath(other : Path) : Array<Point> {
+		throw 'not implemented';
+	}
+
+	public function intersectionsSpline(other : Spline) : Array<Point> {
+		throw 'not implemented';
+	}
+
+	public function intersectionsLine(line : Line) : Array<Point> {
+		throw 'not implemented';
+	}
+
+	public function split(value : Float) : Point {
+		throw 'not implemented';
+	}
+
+	public function interpolate(value : Float) : Point {
+		throw 'not implemented';
+	}
+
+	public function toString() {
+		return 'Spline(${nodes.map(function(n) return "["+n.toStringValues()+"]").join(", ")},$isClosed)';
 	}
 
 	function get_area() : Float {
@@ -118,7 +156,19 @@ class Spline {
 		return length;
 	}
 	function get_isSelfIntersecting() : Bool {
-		return false;
+		if(null == isSelfIntersecting) {
+			var edges = edges;
+			isSelfIntersecting = false;
+			for(i in 0...edges.length) {
+				for(j in i + 1...edges.length) {
+					if(edges[j].intersects(edges[i])) {
+						isSelfIntersecting = true;
+						break;
+					}
+				}
+			}
+		}
+		return isSelfIntersecting;
 	}
 	function get_isPolygon() : Bool {
 		return false;
@@ -133,113 +183,5 @@ class Spline {
 			}
 		}
 		return box;
-	}
-
-	public function contains(p : Point) {
-		throw 'not implemented';
-	}
-
-	public function intersectionsWithSpline(other : Spline) {
-		throw 'not implemented';
-	}
-
-	public function intersectionsWithLine(line : Line) {
-		throw 'not implemented';
-	}
-
-	public function at(distance : Float) : Point {
-		throw 'not implemented';
-	}
-
-	public function interpolate(distance : Float) : Point {
-		throw 'not implemented';
-	}
-
-	public function tangent(distance : Float) : Vertex {
-		throw 'not implemented';
-	}
-
-	public function interpolateTangent(distance : Float) : Vertex {
-		throw 'not implemented';
-	}
-
-	public function union(other : Spline) : Null<Spline> {
-		throw 'not implemented';
-	}
-
-	public function difference(other : Spline) : Null<Spline> {
-		throw 'not implemented';
-	}
-
-	public function intersection(other : Spline) : Null<Spline> {
-		throw 'not implemented';
-	}
-
-//https://github.com/andrewseidl/node-quick-hull-2d/blob/master/quickhull.js
-//function cross(o, a, b) {
-//   return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
-//}
-//
-///**
-// * @param points An array of [X, Y] coordinates
-// */
-//function convexHull(points) {
-//   points.sort(function(a, b) {
-//      return a[0] == b[0] ? a[1] - b[1] : a[0] - b[0];
-//   });
-//
-//   var lower = [];
-//   for (var i = 0; i < points.length; i++) {
-//      while (lower.length >= 2 && cross(lower[lower.length - 2], lower[lower.length - 1], points[i]) <= 0) {
-//         lower.pop();
-//      }
-//      lower.push(points[i]);
-//   }
-//
-//   var upper = [];
-//   for (var i = points.length - 1; i >= 0; i--) {
-//      while (upper.length >= 2 && cross(upper[upper.length - 2], upper[upper.length - 1], points[i]) <= 0) {
-//         upper.pop();
-//      }
-//      upper.push(points[i]);
-//   }
-//
-//   upper.pop();
-//   lower.pop();
-//   return lower.concat(upper);
-//}
-
-	public function hull(other : Spline) {
-		throw 'not implemented';
-	}
-
-	public function minkowsky(other : Spline) {
-		throw 'not implemented';
-	}
-
-
-//	public function getArea() {
-//		var area = 0.0;
-//		for(side in edges)
-//			area += side.vertex0.position.cross(side.vertex1.position);
-//		return area / 2;
-//	}
-
-//	public function isSelfIntersecting() {
-//		var length = edges.length,
-//			side0, side1;
-//		for(i in 0...length) {
-//			side0 = edges[i];
-//			for(j in i + 1...length) {
-//				side1 = edges[j];
-//				if(side1.intersects(side0)) {
-//					return true;
-//				}
-//			}
-//		}
-//	}
-
-	public function toString() {
-		return 'Spline(${nodes.map(function(n) return "["+n.toStringValues()+"]").join(", ")},$closed)';
 	}
 }
