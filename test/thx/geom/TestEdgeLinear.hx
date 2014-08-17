@@ -42,27 +42,26 @@ class TestEdgeLinear {
 		Assert.isTrue(point.equals(new Point(20, 20)));
 	}
 
-	public function testTangent() {
-
-	}
-
 	public function testIntersectionsWithEdgeLinear() {
+		var a = new Point(10, 10),
+			b = new Point(50, 50),
+			c = new Point( 0, 60),
+			d = new Point(60,  0);
 
+		var e0 = new EdgeLinear(a, b),
+			e1 = new EdgeLinear(c, d),
+			e2 = new EdgeLinear(b, c),
+			e3 = new EdgeLinear(a, d);
+
+		Assert.isTrue(e0.intersects(e1));
+		var ps = e0.intersections(e1);
+		Assert.equals(1, ps.length);
+		Assert.isTrue(ps[0].nearEquals(new Point(30, 30)));
+		Assert.isFalse(e2.intersects(e3));
+		Assert.same([], e2.intersections(e3));
 	}
 
 	public function testIntersectionsWithEdgeCubic() {
-
-	}
-
-	public function testIntersectionsWithEdgeQuadratic() {
-
-	}
-
-	public function testIntersectionsWithNonCrossingEdge() {
-
-	}
-
-	public function testIntersectionsWithLine() {
 
 	}
 }

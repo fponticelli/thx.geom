@@ -1,6 +1,9 @@
 package thx.geom;
 
+import thx.geom.shape.Box;
+
 class EdgeCubic implements Edge {
+	@:isVar public var box(get, null) : Box;
 	@:isVar public var area(get, null) : Float;
 	@:isVar public var length(get, null) : Float;
 	@:isVar public var lengthSquared(get, null) : Float;
@@ -28,9 +31,6 @@ class EdgeCubic implements Edge {
 	public function matches(other : Edge) : Bool
 		return first.nearEquals(other.first) && last.nearEquals(other.last);
 
-	public function intersects(other : Edge) : Bool
-		return intersectionsWithEdge(other).length > 0;
-
 	public function transform(matrix : Matrix4x4) : EdgeCubic
 		return new EdgeCubic(p0.transform(matrix), p1.transform(matrix), p2.transform(matrix), p3.transform(matrix));
 
@@ -40,8 +40,14 @@ class EdgeCubic implements Edge {
 	public function direction() : Point
 		return last - first;
 
-	public function intersectionsWithEdge(other : Edge) : Array<Point>
+	public function intersects(other : Edge) : Bool
+		return intersections(other).length > 0;
+
+	public function intersections(other : Edge) : Array<Point>
 		return throw "not implemented";
+
+	public function intersectsWithLine(line : Line) : Bool
+		return intersectionsWithLine(line).length > 0;
 
 	public function intersectionsWithLine(line : Line) : Array<Point>
 		return throw "not implemented";
@@ -52,14 +58,18 @@ class EdgeCubic implements Edge {
 	public function interpolate(v : Float) : Point
 		return throw "not implemented";
 
-	public function tangent(v : Float) : Vertex
-		return throw "not implemented";
-
 	public function toString() : String
 		return 'Edge($p0,$p1,$p2,$p3)';
 
 	function get_area() : Float
 		return throw "not implemented";
+
+	function get_box() : Box {
+		if(null == box) {
+			box = Box.fromPoints(p0, p1).expandByPoints([p2, p3]);
+		}
+		return box;
+	}
 
 	function get_length() : Float
 		return throw "not implemented";

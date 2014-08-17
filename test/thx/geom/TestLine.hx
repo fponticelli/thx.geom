@@ -30,12 +30,12 @@ class TestLine {
 		Assert.equals(10, v.absDistanceToPoint(Point.zero));
 	}
 
-	public function testIntersectWithLine() {
-		Assert.isTrue(new Point(50,20).equals(line.intersectWithLine(h)));
-		Assert.isTrue(new Point(10,10).equals(line.intersectWithLine(v)));
-		Assert.isTrue(new Point(10,20).equals(v.intersectWithLine(h)));
-		Assert.isTrue(new Point(10,20).equals(h.intersectWithLine(v)));
+	public function testIntersectionWithLine() {
+		Assert.isTrue(new Point(50,20).equals(line.intersectionWithLine(h)));
+		Assert.isTrue(new Point(10,10).equals(line.intersectionWithLine(v)));
+		Assert.isTrue(new Point(10,20).equals(v.intersectionWithLine(h)));
+		Assert.isTrue(new Point(10,20).equals(h.intersectionWithLine(v)));
 		var off = line.offset(10);
-		Assert.isNull(line.intersectWithLine(off));
+		Assert.isNull(line.intersectionWithLine(off));
 	}
 }

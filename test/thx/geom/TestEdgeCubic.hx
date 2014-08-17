@@ -50,10 +50,6 @@ class TestEdgeCubic {
 
 	}
 
-	public function testTangent() {
-
-	}
-
 	public function testIntersectionsWithEdgeLinear() {
 
 	}

@@ -1,9 +1,13 @@
 package thx.geom;
 
+import thx.geom.shape.Box;
+
 class EdgeLinear implements Edge {
 	@:isVar public var area(get, null) : Float;
+	@:isVar public var box(get, null) : Box;
 	@:isVar public var length(get, null) : Float;
 	@:isVar public var lengthSquared(get, null) : Float;
+	@:isVar public var line(get, null) : Line;
 	public var isLinear(default, null) : Bool;
 	public var p0(default, null) : Point;
 	public var p1(default, null) : Point;
@@ -24,9 +28,6 @@ class EdgeLinear implements Edge {
 	public function matches(other : Edge) : Bool
 		return first.nearEquals(other.first) && last.nearEquals(other.last);
 
-	public function intersects(other : Edge) : Bool
-		return intersectionsWithEdge(other).length > 0;
-
 	public function transform(matrix : Matrix4x4) : EdgeLinear
 		return new EdgeLinear(p0.transform(matrix), p1.transform(matrix));
 
@@ -36,11 +37,36 @@ class EdgeLinear implements Edge {
 	public function direction() : Point
 		return last - first;
 
-	public function intersectionsWithEdge(other : Edge) : Array<Point>
-		return throw "not implemented";
+	public function intersects(other : Edge) : Bool
+		return intersections(other).length > 0;
 
-	public function intersectionsWithLine(line : Line) : Array<Point>
-		return throw "not implemented";
+	public function intersections(other : Edge) : Array<Point> {
+		if(!box.intersects(other.box))
+			return [];
+		if(Std.is(other, EdgeLinear)) {
+			var other : EdgeLinear = cast other;
+			var ps = intersectionsWithLine(other.line);
+			if(ps.length == 0 || other.intersectsWithLine(line))
+				return ps;
+			else
+				return [];
+		} else {
+			var other : EdgeCubic = cast other;
+			// TODO
+			return throw "not implemented";
+		}
+	}
+
+	public function intersectsWithLine(line : Line) : Bool
+		return intersectionsWithLine(line).length > 0;
+
+	public function intersectionsWithLine(line : Line) : Array<Point> {
+		var l = Line.fromPoints(p0, p1),
+			p = l.intersectionWithLine(line);
+		if(null == p || p.x < p0.min(p1).x || p.x > p0.max(p1).x)
+			return [];
+		return [p];
+	}
 
 	public function split(v : Float) : Array<Edge> {
 		var mid = interpolate(v);
@@ -53,9 +79,6 @@ class EdgeLinear implements Edge {
 	public function interpolate(v : Float) : Point
 		return p0.interpolate(p1, v);
 
-	public function tangent(v : Float) : Vertex
-		return throw "not implemented";
-
 	public function toString() : String
 		return 'Edge($p0,$p1)';
 
@@ -65,6 +88,13 @@ class EdgeLinear implements Edge {
 			area = p.x * p.y / 2;
 		}
 		return area;
+	}
+
+	function get_box() : Box {
+		if(null == box) {
+			box = Box.fromPoints(p0, p1);
+		}
+		return box;
 	}
 
 	function get_length() : Float {
@@ -77,5 +107,11 @@ class EdgeLinear implements Edge {
 		if(null == lengthSquared)
 			lengthSquared = (p1-p0).lengthSquared;
 		return lengthSquared;
+	}
+
+	function get_line() : Line {
+		if(null == line)
+			line = Line.fromPoints(p0, p1);
+		return line;
 	}
 }

@@ -213,11 +213,9 @@ TestAll.main = function() {
 	var runner = new utest_Runner();
 	runner.addCase(new TestAll());
 	runner.addCase(new thx_geom_TestEdgeLinear());
-	runner.addCase(new thx_geom_TestEdgeCubic());
 	runner.addCase(new thx_geom_TestLine());
 	runner.addCase(new thx_geom_TestPoint());
 	runner.addCase(new thx_geom_TestPoint3D());
-	runner.addCase(new thx_geom_TestSpline());
 	utest_ui_Report.create(runner);
 	runner.run();
 };
@@ -670,7 +668,8 @@ thx_geom_Const.__name__ = ["thx","geom","Const"];
 var thx_geom_Edge = function() { };
 thx_geom_Edge.__name__ = ["thx","geom","Edge"];
 thx_geom_Edge.prototype = {
-	area: null
+	box: null
+	,area: null
 	,length: null
 	,lengthSquared: null
 	,isLinear: null
@@ -678,11 +677,12 @@ thx_geom_Edge.prototype = {
 	,last: null
 	,equals: null
 	,matches: null
-	,intersects: null
 	,transform: null
 	,flip: null
 	,direction: null
-	,intersectionsWithEdge: null
+	,intersects: null
+	,intersections: null
+	,intersectsWithLine: null
 	,intersectionsWithLine: null
 	,split: null
 	,interpolate: null
@@ -700,7 +700,8 @@ var thx_geom_EdgeCubic = function(p0,p1,p2,p3) {
 thx_geom_EdgeCubic.__name__ = ["thx","geom","EdgeCubic"];
 thx_geom_EdgeCubic.__interfaces__ = [thx_geom_Edge];
 thx_geom_EdgeCubic.prototype = {
-	area: null
+	box: null
+	,area: null
 	,length: null
 	,lengthSquared: null
 	,isLinear: null
@@ -718,9 +719,6 @@ thx_geom_EdgeCubic.prototype = {
 	,matches: function(other) {
 		return thx_geom__$Point_Point_$Impl_$.nearEquals(this.first,other.first) && thx_geom__$Point_Point_$Impl_$.nearEquals(this.last,other.last);
 	}
-	,intersects: function(other) {
-		return this.intersectionsWithEdge(other).length > 0;
-	}
 	,transform: function(matrix) {
 		return new thx_geom_EdgeCubic(thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.leftMultiplyPoint(matrix,this.p0),thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.leftMultiplyPoint(matrix,this.p1),thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.leftMultiplyPoint(matrix,this.p2),thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.leftMultiplyPoint(matrix,this.p3));
 	}
@@ -734,8 +732,14 @@ thx_geom_EdgeCubic.prototype = {
 		var p_1 = -p[1];
 		return [this1[0] + p_0,this1[1] + p_1];
 	}
-	,intersectionsWithEdge: function(other) {
+	,intersects: function(other) {
+		return this.intersections(other).length > 0;
+	}
+	,intersections: function(other) {
 		throw "not implemented";
+	}
+	,intersectsWithLine: function(line) {
+		return this.intersectionsWithLine(line).length > 0;
 	}
 	,intersectionsWithLine: function(line) {
 		throw "not implemented";
@@ -757,23 +761,27 @@ thx_geom_EdgeCubic.prototype = {
 			return $r;
 		}(this)) + "," + (function($this) {
 			var $r;
-			var this11 = $this.p1;
-			$r = "Point(" + this11[0] + "," + this11[1] + ")";
+			var this2 = $this.p1;
+			$r = "Point(" + this2[0] + "," + this2[1] + ")";
 			return $r;
 		}(this)) + "," + (function($this) {
 			var $r;
-			var this12 = $this.p2;
-			$r = "Point(" + this12[0] + "," + this12[1] + ")";
+			var this3 = $this.p2;
+			$r = "Point(" + this3[0] + "," + this3[1] + ")";
 			return $r;
 		}(this)) + "," + (function($this) {
 			var $r;
-			var this13 = $this.p3;
-			$r = "Point(" + this13[0] + "," + this13[1] + ")";
+			var this4 = $this.p3;
+			$r = "Point(" + this4[0] + "," + this4[1] + ")";
 			return $r;
 		}(this)) + ")";
 	}
 	,get_area: function() {
 		throw "not implemented";
+	}
+	,get_box: function() {
+		if(null == this.box) this.box = thx_geom_shape__$Box_Box_$Impl_$.expandByPoints(thx_geom_shape__$Box_Box_$Impl_$.fromPoints(this.p0,this.p1),[this.p2,this.p3]);
+		return this.box;
 	}
 	,get_length: function() {
 		throw "not implemented";
@@ -792,8 +800,10 @@ thx_geom_EdgeLinear.__name__ = ["thx","geom","EdgeLinear"];
 thx_geom_EdgeLinear.__interfaces__ = [thx_geom_Edge];
 thx_geom_EdgeLinear.prototype = {
 	area: null
+	,box: null
 	,length: null
 	,lengthSquared: null
+	,line: null
 	,isLinear: null
 	,p0: null
 	,p1: null
@@ -806,9 +816,6 @@ thx_geom_EdgeLinear.prototype = {
 	}
 	,matches: function(other) {
 		return thx_geom__$Point_Point_$Impl_$.nearEquals(this.first,other.first) && thx_geom__$Point_Point_$Impl_$.nearEquals(this.last,other.last);
-	}
-	,intersects: function(other) {
-		return this.intersectionsWithEdge(other).length > 0;
 	}
 	,transform: function(matrix) {
 		return new thx_geom_EdgeLinear(thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.leftMultiplyPoint(matrix,this.p0),thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.leftMultiplyPoint(matrix,this.p1));
@@ -823,11 +830,52 @@ thx_geom_EdgeLinear.prototype = {
 		var p_1 = -p[1];
 		return [this1[0] + p_0,this1[1] + p_1];
 	}
-	,intersectionsWithEdge: function(other) {
-		throw "not implemented";
+	,intersects: function(other) {
+		return this.intersections(other).length > 0;
+	}
+	,intersections: function(other) {
+		if(!thx_geom_shape__$Box_Box_$Impl_$.intersects(this.get_box(),other.get_box())) return [];
+		if(js_Boot.__instanceof(other,thx_geom_EdgeLinear)) {
+			var other1 = other;
+			var ps = this.intersectionsWithLine(other1.get_line());
+			if(ps.length == 0 || other1.intersectsWithLine(this.get_line())) return ps; else return [];
+		} else {
+			var other2 = other;
+			throw "not implemented";
+		}
+	}
+	,intersectsWithLine: function(line) {
+		return this.intersectionsWithLine(line).length > 0;
 	}
 	,intersectionsWithLine: function(line) {
-		throw "not implemented";
+		var l = thx_geom_Line.fromPoints(this.p0,this.p1);
+		var p = l.intersectionWithLine(line);
+		if(null == p || p[0] < (function($this) {
+			var $r;
+			var this1;
+			{
+				var this2 = $this.p0;
+				var p1 = $this.p1;
+				var x = Math.min(this2[0],p1[0]);
+				var y = Math.min(this2[1],p1[1]);
+				this1 = [x,y];
+			}
+			$r = this1[0];
+			return $r;
+		}(this)) || p[0] > (function($this) {
+			var $r;
+			var this3;
+			{
+				var this4 = $this.p0;
+				var p2 = $this.p1;
+				var x1 = Math.max(this4[0],p2[0]);
+				var y1 = Math.max(this4[1],p2[1]);
+				this3 = [x1,y1];
+			}
+			$r = this3[0];
+			return $r;
+		}(this))) return [];
+		return [p];
 	}
 	,split: function(v) {
 		var mid = this.interpolate(v);
@@ -847,8 +895,8 @@ thx_geom_EdgeLinear.prototype = {
 			return $r;
 		}(this)) + "," + (function($this) {
 			var $r;
-			var this11 = $this.p1;
-			$r = "Point(" + this11[0] + "," + this11[1] + ")";
+			var this2 = $this.p1;
+			$r = "Point(" + this2[0] + "," + this2[1] + ")";
 			return $r;
 		}(this)) + ")";
 	}
@@ -864,6 +912,10 @@ thx_geom_EdgeLinear.prototype = {
 		}
 		return this.area;
 	}
+	,get_box: function() {
+		if(null == this.box) this.box = thx_geom_shape__$Box_Box_$Impl_$.fromPoints(this.p0,this.p1);
+		return this.box;
+	}
 	,get_length: function() {
 		if(null == this.length) this.length = Math.sqrt(this.get_lengthSquared());
 		return this.length;
@@ -871,14 +923,18 @@ thx_geom_EdgeLinear.prototype = {
 	,get_lengthSquared: function() {
 		if(null == this.lengthSquared) {
 			var this1;
-			var this11 = this.p1;
+			var this2 = this.p1;
 			var p = this.p0;
 			var p_0 = -p[0];
 			var p_1 = -p[1];
-			this1 = [this11[0] + p_0,this11[1] + p_1];
+			this1 = [this2[0] + p_0,this2[1] + p_1];
 			this.lengthSquared = this1[0] * this1[0] + this1[1] * this1[1];
 		}
 		return this.lengthSquared;
+	}
+	,get_line: function() {
+		if(null == this.line) this.line = thx_geom_Line.fromPoints(this.p0,this.p1);
+		return this.line;
 	}
 	,__class__: thx_geom_EdgeLinear
 };
@@ -946,7 +1002,7 @@ thx_geom_Line.prototype = {
 			return $r;
 		}(this)) - this.w);
 	}
-	,intersectWithLine: function(line) {
+	,intersectionWithLine: function(line) {
 		return thx_geom__$Point_Point_$Impl_$.solve2Linear(this.normal[0],this.normal[1],line.normal[0],line.normal[1],this.w,line.w);
 	}
 	,transform: function(matrix) {
@@ -2122,140 +2178,6 @@ thx_geom_SplineNode.prototype = {
 	}
 	,__class__: thx_geom_SplineNode
 };
-var thx_geom_TestEdgeCubic = function() {
-	this.edge = new thx_geom_EdgeCubic([10,10],[60,60],[110,60],[160,10]);
-};
-thx_geom_TestEdgeCubic.__name__ = ["thx","geom","TestEdgeCubic"];
-thx_geom_TestEdgeCubic.areaPoint = function(p) {
-	return p[0] * p[1] / 2;
-};
-thx_geom_TestEdgeCubic.prototype = {
-	edge: null
-	,testIsLinear: function() {
-		utest_Assert.isFalse(this.edge.isLinear,null,{ fileName : "TestEdgeCubic.hx", lineNumber : 19, className : "thx.geom.TestEdgeCubic", methodName : "testIsLinear"});
-	}
-	,testArea: function() {
-		var max = thx_geom_TestEdgeCubic.areaPoint((function($this) {
-			var $r;
-			var this1 = $this.edge.p1;
-			var p = $this.edge.p0;
-			$r = (function($this) {
-				var $r;
-				var p_0 = -p[0];
-				var p_1 = -p[1];
-				$r = [this1[0] + p_0,this1[1] + p_1];
-				return $r;
-			}($this));
-			return $r;
-		}(this))) + thx_geom_TestEdgeCubic.areaPoint((function($this) {
-			var $r;
-			var this11 = $this.edge.p2;
-			var p1 = $this.edge.p1;
-			$r = (function($this) {
-				var $r;
-				var p_01 = -p1[0];
-				var p_11 = -p1[1];
-				$r = [this11[0] + p_01,this11[1] + p_11];
-				return $r;
-			}($this));
-			return $r;
-		}(this))) + thx_geom_TestEdgeCubic.areaPoint((function($this) {
-			var $r;
-			var this12 = $this.edge.p3;
-			var p2 = $this.edge.p2;
-			$r = (function($this) {
-				var $r;
-				var p_02 = -p2[0];
-				var p_12 = -p2[1];
-				$r = [this12[0] + p_02,this12[1] + p_12];
-				return $r;
-			}($this));
-			return $r;
-		}(this)));
-		var min = thx_geom_TestEdgeCubic.areaPoint((function($this) {
-			var $r;
-			var this13 = $this.edge.p3;
-			var p3 = $this.edge.p0;
-			$r = (function($this) {
-				var $r;
-				var p_03 = -p3[0];
-				var p_13 = -p3[1];
-				$r = [this13[0] + p_03,this13[1] + p_13];
-				return $r;
-			}($this));
-			return $r;
-		}(this)));
-		var area = this.edge.get_area();
-		utest_Assert.isTrue(area > min,null,{ fileName : "TestEdgeCubic.hx", lineNumber : 31, className : "thx.geom.TestEdgeCubic", methodName : "testArea"});
-		utest_Assert.isTrue(area < max,null,{ fileName : "TestEdgeCubic.hx", lineNumber : 32, className : "thx.geom.TestEdgeCubic", methodName : "testArea"});
-	}
-	,testLength: function() {
-		var max;
-		max = (function($this) {
-			var $r;
-			var this1;
-			{
-				var this11 = $this.edge.p1;
-				var p = $this.edge.p0;
-				var p_0 = -p[0];
-				var p_1 = -p[1];
-				this1 = [this11[0] + p_0,this11[1] + p_1];
-			}
-			$r = Math.sqrt(this1[0] * this1[0] + this1[1] * this1[1]);
-			return $r;
-		}(this)) + (function($this) {
-			var $r;
-			var this12;
-			{
-				var this13 = $this.edge.p2;
-				var p1 = $this.edge.p1;
-				var p_01 = -p1[0];
-				var p_11 = -p1[1];
-				this12 = [this13[0] + p_01,this13[1] + p_11];
-			}
-			$r = Math.sqrt(this12[0] * this12[0] + this12[1] * this12[1]);
-			return $r;
-		}(this)) + (function($this) {
-			var $r;
-			var this14;
-			{
-				var this15 = $this.edge.p3;
-				var p2 = $this.edge.p2;
-				var p_02 = -p2[0];
-				var p_12 = -p2[1];
-				this14 = [this15[0] + p_02,this15[1] + p_12];
-			}
-			$r = Math.sqrt(this14[0] * this14[0] + this14[1] * this14[1]);
-			return $r;
-		}(this));
-		var min;
-		var this16;
-		var this17 = this.edge.p3;
-		var p3 = this.edge.p0;
-		var p_03 = -p3[0];
-		var p_13 = -p3[1];
-		this16 = [this17[0] + p_03,this17[1] + p_13];
-		min = Math.sqrt(this16[0] * this16[0] + this16[1] * this16[1]);
-		var length = this.edge.get_length();
-		utest_Assert.isTrue(length > min,null,{ fileName : "TestEdgeCubic.hx", lineNumber : 41, className : "thx.geom.TestEdgeCubic", methodName : "testLength"});
-		utest_Assert.isTrue(length < max,null,{ fileName : "TestEdgeCubic.hx", lineNumber : 42, className : "thx.geom.TestEdgeCubic", methodName : "testLength"});
-	}
-	,testSplit: function() {
-	}
-	,testInterpolate: function() {
-	}
-	,testTangent: function() {
-	}
-	,testIntersectionsWithEdgeLinear: function() {
-	}
-	,testIntersectionsWithEdgeCubic: function() {
-	}
-	,testIntersectionsWithNonCrossingEdge: function() {
-	}
-	,testIntersectionsWithLine: function() {
-	}
-	,__class__: thx_geom_TestEdgeCubic
-};
 var thx_geom_TestEdgeLinear = function() {
 	var p0 = [10,10];
 	var p1 = [60,60];
@@ -2310,14 +2232,22 @@ thx_geom_TestEdgeLinear.prototype = {
 	,testTangent: function() {
 	}
 	,testIntersectionsWithEdgeLinear: function() {
+		var a = [10,10];
+		var b = [50,50];
+		var c = [0,60];
+		var d = [60,0];
+		var e0 = new thx_geom_EdgeLinear(a,b);
+		var e1 = new thx_geom_EdgeLinear(c,d);
+		var e2 = new thx_geom_EdgeLinear(b,c);
+		var e3 = new thx_geom_EdgeLinear(a,d);
+		utest_Assert.isTrue(e0.intersects(e1),null,{ fileName : "TestEdgeLinear.hx", lineNumber : 60, className : "thx.geom.TestEdgeLinear", methodName : "testIntersectionsWithEdgeLinear"});
+		var ps = e0.intersections(e1);
+		utest_Assert.equals(1,ps.length,null,{ fileName : "TestEdgeLinear.hx", lineNumber : 62, className : "thx.geom.TestEdgeLinear", methodName : "testIntersectionsWithEdgeLinear"});
+		utest_Assert.isTrue(thx_geom__$Point_Point_$Impl_$.nearEquals(ps[0],[30,30]),null,{ fileName : "TestEdgeLinear.hx", lineNumber : 63, className : "thx.geom.TestEdgeLinear", methodName : "testIntersectionsWithEdgeLinear"});
+		utest_Assert.isFalse(e2.intersects(e3),null,{ fileName : "TestEdgeLinear.hx", lineNumber : 64, className : "thx.geom.TestEdgeLinear", methodName : "testIntersectionsWithEdgeLinear"});
+		utest_Assert.same([],e2.intersections(e3),null,null,{ fileName : "TestEdgeLinear.hx", lineNumber : 65, className : "thx.geom.TestEdgeLinear", methodName : "testIntersectionsWithEdgeLinear"});
 	}
 	,testIntersectionsWithEdgeCubic: function() {
-	}
-	,testIntersectionsWithEdgeQuadratic: function() {
-	}
-	,testIntersectionsWithNonCrossingEdge: function() {
-	}
-	,testIntersectionsWithLine: function() {
 	}
 	,__class__: thx_geom_TestEdgeLinear
 };
@@ -2345,41 +2275,41 @@ thx_geom_TestLine.prototype = {
 		utest_Assert.equals(20,this.h.absDistanceToPoint(thx_geom__$Point_Point_$Impl_$.zero),null,{ fileName : "TestLine.hx", lineNumber : 29, className : "thx.geom.TestLine", methodName : "testAbsDistanceToPoint"});
 		utest_Assert.equals(10,this.v.absDistanceToPoint(thx_geom__$Point_Point_$Impl_$.zero),null,{ fileName : "TestLine.hx", lineNumber : 30, className : "thx.geom.TestLine", methodName : "testAbsDistanceToPoint"});
 	}
-	,testIntersectWithLine: function() {
+	,testIntersectionWithLine: function() {
 		utest_Assert.isTrue((function($this) {
 			var $r;
 			var this_0 = 50;
 			var this_1 = 20;
-			var p = $this.line.intersectWithLine($this.h);
+			var p = $this.line.intersectionWithLine($this.h);
 			$r = this_0 == p[0] && this_1 == p[1];
 			return $r;
-		}(this)),null,{ fileName : "TestLine.hx", lineNumber : 34, className : "thx.geom.TestLine", methodName : "testIntersectWithLine"});
+		}(this)),null,{ fileName : "TestLine.hx", lineNumber : 34, className : "thx.geom.TestLine", methodName : "testIntersectionWithLine"});
 		utest_Assert.isTrue((function($this) {
 			var $r;
 			var this_01 = 10;
 			var this_11 = 10;
-			var p1 = $this.line.intersectWithLine($this.v);
+			var p1 = $this.line.intersectionWithLine($this.v);
 			$r = this_01 == p1[0] && this_11 == p1[1];
 			return $r;
-		}(this)),null,{ fileName : "TestLine.hx", lineNumber : 35, className : "thx.geom.TestLine", methodName : "testIntersectWithLine"});
+		}(this)),null,{ fileName : "TestLine.hx", lineNumber : 35, className : "thx.geom.TestLine", methodName : "testIntersectionWithLine"});
 		utest_Assert.isTrue((function($this) {
 			var $r;
 			var this_02 = 10;
 			var this_12 = 20;
-			var p2 = $this.v.intersectWithLine($this.h);
+			var p2 = $this.v.intersectionWithLine($this.h);
 			$r = this_02 == p2[0] && this_12 == p2[1];
 			return $r;
-		}(this)),null,{ fileName : "TestLine.hx", lineNumber : 36, className : "thx.geom.TestLine", methodName : "testIntersectWithLine"});
+		}(this)),null,{ fileName : "TestLine.hx", lineNumber : 36, className : "thx.geom.TestLine", methodName : "testIntersectionWithLine"});
 		utest_Assert.isTrue((function($this) {
 			var $r;
 			var this_03 = 10;
 			var this_13 = 20;
-			var p3 = $this.h.intersectWithLine($this.v);
+			var p3 = $this.h.intersectionWithLine($this.v);
 			$r = this_03 == p3[0] && this_13 == p3[1];
 			return $r;
-		}(this)),null,{ fileName : "TestLine.hx", lineNumber : 37, className : "thx.geom.TestLine", methodName : "testIntersectWithLine"});
+		}(this)),null,{ fileName : "TestLine.hx", lineNumber : 37, className : "thx.geom.TestLine", methodName : "testIntersectionWithLine"});
 		var off = this.line.offset(10);
-		utest_Assert.isNull(this.line.intersectWithLine(off),null,{ fileName : "TestLine.hx", lineNumber : 39, className : "thx.geom.TestLine", methodName : "testIntersectWithLine"});
+		utest_Assert.isNull(this.line.intersectionWithLine(off),null,{ fileName : "TestLine.hx", lineNumber : 39, className : "thx.geom.TestLine", methodName : "testIntersectionWithLine"});
 	}
 	,__class__: thx_geom_TestLine
 };
@@ -2511,50 +2441,6 @@ thx_geom_TestPoint3D.prototype = {
 		utest_Assert.isTrue(thx_geom__$Point3D_Point3D_$Impl_$.equals(thx_geom__$Point3D_Point3D_$Impl_$.interpolate(a,b,0.5),[15,30,45]),null,{ fileName : "TestPoint3D.hx", lineNumber : 16, className : "thx.geom.TestPoint3D", methodName : "testInterpolate3D"});
 	}
 	,__class__: thx_geom_TestPoint3D
-};
-var thx_geom_TestSpline = function() {
-};
-thx_geom_TestSpline.__name__ = ["thx","geom","TestSpline"];
-thx_geom_TestSpline.prototype = {
-	testLength: function() {
-	}
-	,testBox: function() {
-	}
-	,testArea: function() {
-	}
-	,testIsSelfIntersecting: function() {
-	}
-	,testIsNotSelfIntersecting: function() {
-	}
-	,testIsPolygon: function() {
-	}
-	,testIsNotPolygon: function() {
-	}
-	,testAt: function() {
-	}
-	,testInterpolate: function() {
-	}
-	,testIntersectionWithSpline: function() {
-	}
-	,testIntersectionWithLine: function() {
-	}
-	,testTangent: function() {
-	}
-	,testInterpolateTangent: function() {
-	}
-	,testContains: function() {
-	}
-	,testUnion: function() {
-	}
-	,testDifference: function() {
-	}
-	,testIntersection: function() {
-	}
-	,testHull: function() {
-	}
-	,testMinkowsky: function() {
-	}
-	,__class__: thx_geom_TestSpline
 };
 var thx_geom_Vertex = function(position,normal) {
 	this.position = position;
@@ -2738,14 +2624,14 @@ thx_geom_shape__$Box_Box_$Impl_$.get_height = function(this1) {
 };
 thx_geom_shape__$Box_Box_$Impl_$.expandByPoint = function(this1,point) {
 	var bottomLeft;
-	var this11 = this1[0];
-	var x = Math.min(this11[0],point[0]);
-	var y = Math.min(this11[1],point[1]);
+	var this2 = this1[0];
+	var x = Math.min(this2[0],point[0]);
+	var y = Math.min(this2[1],point[1]);
 	bottomLeft = [x,y];
 	var topRight;
-	var this12 = this1[1];
-	var x1 = Math.max(this12[0],point[0]);
-	var y1 = Math.max(this12[1],point[1]);
+	var this3 = this1[1];
+	var x1 = Math.max(this3[0],point[0]);
+	var y1 = Math.max(this3[1],point[1]);
 	topRight = [x1,y1];
 	return [bottomLeft,topRight];
 };
@@ -2764,18 +2650,21 @@ thx_geom_shape__$Box_Box_$Impl_$.expandByPoints = function(this1,points) {
 	}
 	return [min,max];
 };
+thx_geom_shape__$Box_Box_$Impl_$.intersects = function(this1,other) {
+	return this1[1][0] >= other[0][0] && this1[1][0] <= other[1][0] || this1[0][1] >= other[1][1] && this1[0][1] <= other[0][1];
+};
 thx_geom_shape__$Box_Box_$Impl_$.equals = function(this1,other) {
 	return (function($this) {
 		var $r;
-		var this11 = this1[0];
+		var this2 = this1[0];
 		var p = other[0];
-		$r = this11[0] == p[0] && this11[1] == p[1];
+		$r = this2[0] == p[0] && this2[1] == p[1];
 		return $r;
 	}(this)) && (function($this) {
 		var $r;
-		var this12 = this1[1];
+		var this3 = this1[1];
 		var p1 = other[1];
-		$r = this12[0] == p1[0] && this12[1] == p1[1];
+		$r = this3[0] == p1[0] && this3[1] == p1[1];
 		return $r;
 	}(this));
 };
@@ -2784,43 +2673,6 @@ thx_geom_shape__$Box_Box_$Impl_$.toString = function(this1) {
 };
 thx_geom_shape__$Box_Box_$Impl_$.toSpline = function(this1) {
 	return thx_geom_Spline.fromArray([[this1[0][0],this1[1][1]],this1[1],[this1[1][0],this1[0][1]],this1[0]],true);
-};
-var thx_geom_shape__$Circle_Circle_$Impl_$ = function() { };
-thx_geom_shape__$Circle_Circle_$Impl_$.__name__ = ["thx","geom","shape","_Circle","Circle_Impl_"];
-thx_geom_shape__$Circle_Circle_$Impl_$._new = function(center,radius) {
-	return { center : center, radius : radius};
-};
-thx_geom_shape__$Circle_Circle_$Impl_$.get_center = function(this1) {
-	return this1.center;
-};
-thx_geom_shape__$Circle_Circle_$Impl_$.get_radius = function(this1) {
-	return this1.radius;
-};
-thx_geom_shape__$Circle_Circle_$Impl_$.toString = function(this1) {
-	return "Circle(" + this1.center[0] + "," + this1.center[1] + "," + this1.radius + ")";
-};
-thx_geom_shape__$Circle_Circle_$Impl_$.toSpline = function(this1) {
-	var segments = 32;
-	var angle = Math.PI / segments;
-	var points = [];
-	var nodes = [];
-	var j;
-	var _g1 = 0;
-	var _g = segments * 2;
-	while(_g1 < _g) {
-		var i = _g1++;
-		points.push(thx_geom__$Point_Point_$Impl_$.pointAt(this1.center,angle * i,this1.radius));
-	}
-	nodes.push(new thx_geom_SplineNode(points[0],points[1],points[points.length - 1]));
-	var _g11 = 1;
-	var _g2 = segments - 1;
-	while(_g11 < _g2) {
-		var i1 = _g11++;
-		j = i1 * 2;
-		nodes.push(new thx_geom_SplineNode(points[j],points[j + 1],points[j - 1]));
-	}
-	nodes.push(new thx_geom_SplineNode(points[points.length - 2],points[points.length - 1],points[points.length - 3]));
-	return new thx_geom_Spline(nodes,true);
 };
 var thx_math_Number = function() { };
 thx_math_Number.__name__ = ["thx","math","Number"];
@@ -4703,6 +4555,7 @@ if(Array.prototype.map == null) Array.prototype.map = function(f) {
 	return a;
 };
 thx_geom_Const.EPSILON = 1e-5;
+thx_geom_Const.KAPPA = 4 * (Math.sqrt(2) - 1) / 3;
 thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.unity = [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1];
 thx_geom_Plane.COPLANAR = 0;
 thx_geom_Plane.FRONT = 1;
