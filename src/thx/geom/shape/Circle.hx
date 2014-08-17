@@ -1,6 +1,8 @@
 package thx.geom.shape;
 
+import thx.geom.Matrix4x4;
 import thx.geom.Point;
+import thx.geom.Const;
 
 abstract Circle({ center : Point, radius : Float }) {
 	inline public function new(center : Point, radius : Float)
@@ -15,23 +17,13 @@ abstract Circle({ center : Point, radius : Float }) {
 	@:to public function toString()
 		return 'Circle(${center.x},${center.y},$radius)';
 
-	// TODO this can probably be approximated with less segments
+	public static var unitaryCircle(default, null) : Spline = new Spline([
+		new SplineNode(new Point( 1,  0), new Point(1,-Const.KAPPA), new Point(1,Const.KAPPA)),
+		new SplineNode(new Point( 0,  1), new Point(Const.KAPPA,1), new Point(-Const.KAPPA,1)),
+		new SplineNode(new Point(-1,  0), new Point(-1,Const.KAPPA), new Point(-1,-Const.KAPPA)),
+		new SplineNode(new Point( 0, -1), new Point(-Const.KAPPA,-1), new Point(Const.KAPPA,-1))
+	], true);
 	@:to public function toSpline() {
-		var segments = 32,
-			angle    = Math.PI / segments,
-			points   = [],
-			nodes    = [],
-			j;
-
-		for(i in 0...segments * 2)
-			points.push(center.pointAt(angle * i, radius));
-
-		nodes.push(new SplineNode(points[0], points[1], points[points.length-1]));
-		for(i in 1...segments-1) {
-			j = i * 2;
-			nodes.push(new SplineNode(points[j], points[j+1], points[j-1]));
-		}
-		nodes.push(new SplineNode(points[points.length-2], points[points.length-1], points[points.length-3]));
-		return new Spline(nodes, true);
+		return unitaryCircle.transform(Matrix4x4.scaling(new Point3D(radius, radius, 1)).multiply(Matrix4x4.translation(new Point3D(center.x, center.y, 0))));
 	}
 }
