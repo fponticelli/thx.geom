@@ -44,7 +44,18 @@ class EdgeCubic implements Edge {
 		return intersections(other).length > 0;
 
 	public function intersections(other : Edge) : Array<Point>
-		return throw "not implemented";
+		if(Std.is(other, EdgeLinear))
+			return intersectionsEdgeLinear(cast other);
+		else
+			return intersectionsEdgeCubic(cast other);
+
+	public function intersectionsEdgeLinear(other : EdgeLinear) : Array<Point> {
+		return throw 'not implemented';
+	}
+
+	public function intersectionsEdgeCubic(other : EdgeCubic) : Array<Point> {
+		return throw 'not implemented';
+	}
 
 	public function intersectsLine(line : Line) : Bool
 		return intersectionsLine(line).length > 0;

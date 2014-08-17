@@ -44,18 +44,22 @@ class EdgeLinear implements Edge {
 		if(!box.intersects(other.box))
 			return [];
 		if(Std.is(other, EdgeLinear)) {
-			var other : EdgeLinear = cast other;
-			var ps = intersectionsLine(other.line);
-			if(ps.length == 0 || other.intersectsLine(line))
-				return ps;
-			else
-				return [];
+			return intersectionsEdgeLinear(cast other);
 		} else {
-			var other : EdgeCubic = cast other;
-			// TODO
-			return throw "not implemented";
+			return intersectionsEdgeCubic(cast other);
 		}
 	}
+
+	public function intersectionsEdgeLinear(other : EdgeLinear) : Array<Point> {
+		var ps = intersectionsLine(other.line);
+		if(ps.length == 0 || other.intersectsLine(line))
+			return ps;
+		else
+			return [];
+	}
+
+	public function intersectionsEdgeCubic(other : EdgeCubic) : Array<Point>
+		return other.intersectionsEdgeLinear(this);
 
 	public function intersectsLine(line : Line) : Bool
 		return intersectionsLine(line).length > 0;
