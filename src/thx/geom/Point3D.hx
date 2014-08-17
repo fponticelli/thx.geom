@@ -9,8 +9,6 @@ abstract Point3D(Array<Float>) {
 	@:from inline static public function fromArray(arr : Array<Float>)
 		return new Point3D(arr[0],arr[1],arr[2]);
 
-
-
 	inline public function new(x : Float, y : Float, z : Float)
 		this = [x,y,z];
 

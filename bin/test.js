@@ -2040,10 +2040,36 @@ thx_geom_Path.prototype = {
 		}));
 	}
 	,split: function(value) {
-		throw "not implemented";
+		var len = this.get_length();
+		var l;
+		var spline;
+		var _g1 = 0;
+		var _g = this.splines.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			spline = this.splines[i];
+			l = spline.get_length() / len;
+			if(value <= l) {
+				var n = spline.split(value);
+				return [new thx_geom_Path(this.splines.slice(0,i).concat([n[0]])),new thx_geom_Path([n[1]].concat(this.splines.slice(i)))];
+			}
+			value -= l;
+		}
+		return [];
 	}
 	,interpolate: function(value) {
-		throw "not implemented";
+		var len = this.get_length();
+		var l;
+		var _g = 0;
+		var _g1 = this.splines;
+		while(_g < _g1.length) {
+			var spline = _g1[_g];
+			++_g;
+			l = spline.get_length() / len;
+			if(value <= l) return spline.interpolate(value);
+			value -= l;
+		}
+		return null;
 	}
 	,hull: function(other) {
 		throw "not implemented";
@@ -2057,23 +2083,61 @@ thx_geom_Path.prototype = {
 		}).join(", ") + "," + Std.string(this.get_isClosed()) + ")";
 	}
 	,get_isClosed: function() {
-		if(null == this.isClosed) throw "not implemented";
+		if(null == this.isClosed) {
+			this.isClosed = true;
+			var _g = 0;
+			var _g1 = this.splines;
+			while(_g < _g1.length) {
+				var spline = _g1[_g];
+				++_g;
+				if(!spline.isClosed) {
+					this.isClosed = false;
+					break;
+				}
+			}
+		}
 		return this.isClosed;
 	}
 	,get_area: function() {
-		if(null == this.area) throw "not implemented";
+		if(null == this.area) this.area = this.splines.reduce(function(acc,spline) {
+			return acc + spline.get_area();
+		},0);
 		return this.area;
 	}
 	,get_length: function() {
-		if(null == this.length) throw "not implemented";
+		if(null == this.length) this.length = this.splines.reduce(function(acc,spline) {
+			return acc + spline.get_length();
+		},0);
 		return this.length;
 	}
 	,get_isSelfIntersecting: function() {
-		if(null == this.isSelfIntersecting) throw "not implemented";
+		if(null == this.isSelfIntersecting) {
+			this.isSelfIntersecting = false;
+			var _g = 0;
+			var _g1 = this.splines;
+			while(_g < _g1.length) {
+				var spline = _g1[_g];
+				++_g;
+				if(spline.get_isSelfIntersecting()) {
+					this.isSelfIntersecting = true;
+					break;
+				}
+			}
+		}
 		return this.isSelfIntersecting;
 	}
 	,get_box: function() {
-		if(null == this.box) throw "not implemented";
+		if(null == this.box) {
+			if(this.splines.length == 0) return null;
+			this.box = this.splines[0].get_box();
+			var _g1 = 1;
+			var _g = this.splines.length;
+			while(_g1 < _g) {
+				var i = _g1++;
+				var obox = this.splines[i].get_box();
+				this.box = thx_geom_shape__$Box_Box_$Impl_$.expandByPoints(this.box,[obox[0],obox[1]]);
+			}
+		}
 		return this.box;
 	}
 	,__class__: thx_geom_Path
@@ -2342,6 +2406,7 @@ thx_geom_Spline.prototype = {
 	,length: null
 	,isSelfIntersecting: null
 	,isPolygon: null
+	,isEmpty: null
 	,box: null
 	,edges: null
 	,nodes: null
@@ -2434,23 +2499,21 @@ thx_geom_Spline.prototype = {
 		if(value < 0 || value > 1) return null;
 		var len = this.get_length();
 		var nor;
-		var i = 0;
 		var edge;
-		var before = [];
-		var after = [];
 		var edges = this.get_edges();
-		while(i < edges.length) {
+		var _g1 = 0;
+		var _g = edges.length;
+		while(_g1 < _g) {
+			var i = _g1++;
 			edge = edges[i];
 			nor = edge.get_length() / len;
 			if(value <= nor) {
 				var n = edge.split(value);
-				before.push(n[0]);
-				after = [n[1]].concat(edges.slice(i + 1));
-				break;
+				return [thx_geom_Spline.fromEdges(edges.slice(0,i).concat([n[0]]),this.isClosed),thx_geom_Spline.fromEdges([n[1]].concat(edges.slice(i + 1)),this.isClosed)];
 			}
-			before.push(edge);
+			value -= nor;
 		}
-		return [thx_geom_Spline.fromEdges(before,this.isClosed),thx_geom_Spline.fromEdges(after,this.isClosed)];
+		return [];
 	}
 	,interpolate: function(value) {
 		if(value < 0 || value > 1) return null;
@@ -2504,7 +2567,27 @@ thx_geom_Spline.prototype = {
 		return this.isSelfIntersecting;
 	}
 	,get_isPolygon: function() {
-		return false;
+		var _g = 0;
+		var _g1 = this.nodes;
+		while(_g < _g1.length) {
+			var node = _g1[_g];
+			++_g;
+			if((function($this) {
+				var $r;
+				var this1 = node.normalIn;
+				$r = !(this1[0] == null[0] && this1[1] == null[1]);
+				return $r;
+			}(this)) || (function($this) {
+				var $r;
+				var this11 = node.normalOut;
+				$r = !(this11[0] == null[0] && this11[1] == null[1]);
+				return $r;
+			}(this))) return false;
+		}
+		return true;
+	}
+	,get_isEmpty: function() {
+		return this.nodes.length > 1;
 	}
 	,get_box: function() {
 		var _g = this;

@@ -9,6 +9,7 @@ class Spline {
 	@:isVar public var length(get, null) : Float;
 	@:isVar public var isSelfIntersecting(get, null) : Bool;
 	@:isVar public var isPolygon(get, null) : Bool;
+	@:isVar public var isEmpty(get, null) : Bool;
 	@:isVar public var box(get, null) : Box;
 	@:isVar public var edges(get, null) : Array<Edge>;
 
@@ -159,25 +160,21 @@ class Spline {
 		if(value < 0 || value > 1) return null;
 		var len = length,
 			nor,
-			i = 0, edge,
-			before = [],
-			after = [],
+			edge,
 			edges = edges;
-		while(i < edges.length) {
+		for(i in 0...edges.length) {
 			edge = edges[i];
 			nor = edge.length / len;
 			if(value <= nor) {
 				var n = edge.split(value);
-				before.push(n[0]);
-				after = [n[1]].concat(edges.slice(i+1));
-				break;
+				return [
+					Spline.fromEdges(edges.slice(0, i).concat([n[0]]), isClosed),
+					Spline.fromEdges([n[1]].concat(edges.slice(i+1)), isClosed)
+				];
 			}
-			before.push(edge);
+			value -= nor;
 		}
-		return [
-			Spline.fromEdges(before, isClosed),
-			Spline.fromEdges(after, isClosed)
-		];
+		return [];
 	}
 
 	public function interpolate(value : Float) : Point {
@@ -193,9 +190,8 @@ class Spline {
 		return null;
 	}
 
-	public function toString() {
+	public function toString()
 		return 'Spline(${nodes.map(function(n) return "["+n.toStringValues()+"]").join(", ")},$isClosed)';
-	}
 
 	function get_area() : Float {
 		if(null == area) {
@@ -225,8 +221,13 @@ class Spline {
 		return isSelfIntersecting;
 	}
 	function get_isPolygon() : Bool {
-		return false;
+		for(node in nodes)
+			if(node.normalIn != null || node.normalOut != null)
+				return false;
+		return true;
 	}
+	function get_isEmpty() : Bool
+		return nodes.length > 1; // a spline with zero or one node is not much of a spline
 	function get_box() : Box {
 		if(null == box) {
 			if(nodes.length > 0) {

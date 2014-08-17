@@ -12,7 +12,7 @@ class Path {
 
 	var splines : Array<Spline>;
 	public function new(splines : Array<Spline>)
-		this.splines = splines;
+		this.splines = splines; // TODO? .filter(function(spline) return !spline.isEmpty);
 
 	public function contains(p : Point) : Bool {
 		for(spline in splines)
@@ -68,11 +68,32 @@ class Path {
 	}
 
 	public function split(value : Float) : Array<Path> {
-		return throw 'not implemented';
+		var len = length,
+			l, spline;
+		for(i in 0...splines.length) {
+			spline = splines[i];
+			l = spline.length / len;
+			if(value <= l) {
+				var n = spline.split(value);
+				return [
+					new Path(splines.slice(0, i).concat([n[0]])),
+					new Path([n[1]].concat(splines.slice(i)))
+				];
+			}
+			value -= l;
+		}
+		return [];
 	}
 
-	public function interpolate(value : Float) : Point {
-		return throw 'not implemented';
+	public function interpolate(value : Float) : Null<Point> {
+		var len = length, l;
+		for(spline in splines) {
+			l = spline.length / len;
+			if(value <= l)
+				return spline.interpolate(value);
+			value -= l;
+		}
+		return null;
 	}
 
 	public function hull(other : Spline) {
@@ -89,31 +110,47 @@ class Path {
 
 	function get_isClosed() : Bool {
 		if(null == isClosed) {
-			return throw 'not implemented';
+			isClosed = true;
+			for(spline in splines) {
+				if(!spline.isClosed) {
+					isClosed = false;
+					break;
+				}
+			}
 		}
 		return isClosed;
 	}
 	function get_area() : Float {
-		if(null == area) {
-			return throw 'not implemented';
-		}
+		if(null == area)
+			area = splines.reduce(function(acc, spline) return acc + spline.area, 0);
 		return area;
 	}
 	function get_length() : Float {
-		if(null == length) {
-			return throw 'not implemented';
-		}
+		if(null == length)
+			length = splines.reduce(function(acc, spline) return acc + spline.length, 0);
 		return length;
 	}
 	function get_isSelfIntersecting() : Bool {
 		if(null == isSelfIntersecting) {
-			return throw 'not implemented';
+			isSelfIntersecting = false;
+			for(spline in splines) {
+				if(spline.isSelfIntersecting) {
+					isSelfIntersecting = true;
+					break;
+				}
+			}
 		}
 		return isSelfIntersecting;
 	}
 	function get_box() : Box {
 		if(null == box) {
-			return throw 'not implemented';
+			if(splines.length == 0)
+				return null;
+			box = splines[0].box;
+			for(i in 1...splines.length) {
+				var obox = splines[i].box;
+				box = box.expandByPoints([obox.bottomLeft, obox.topRight]);
+			}
 		}
 		return box;
 	}
