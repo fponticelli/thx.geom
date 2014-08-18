@@ -964,18 +964,18 @@ thx_geom_EdgeCubic.prototype = {
 			return $r;
 		}(this)) + "," + (function($this) {
 			var $r;
-			var this2 = $this.p1;
-			$r = "Point(" + this2[0] + "," + this2[1] + ")";
+			var this11 = $this.p1;
+			$r = "Point(" + this11[0] + "," + this11[1] + ")";
 			return $r;
 		}(this)) + "," + (function($this) {
 			var $r;
-			var this3 = $this.p2;
-			$r = "Point(" + this3[0] + "," + this3[1] + ")";
+			var this12 = $this.p2;
+			$r = "Point(" + this12[0] + "," + this12[1] + ")";
 			return $r;
 		}(this)) + "," + (function($this) {
 			var $r;
-			var this4 = $this.p3;
-			$r = "Point(" + this4[0] + "," + this4[1] + ")";
+			var this13 = $this.p3;
+			$r = "Point(" + this13[0] + "," + this13[1] + ")";
 			return $r;
 		}(this)) + ")";
 	}
@@ -1054,32 +1054,60 @@ thx_geom_EdgeLinear.prototype = {
 	,intersectionsLine: function(line) {
 		var l = thx_geom_Line.fromPoints(this.p0,this.p1);
 		var p = l.intersectionLine(line);
-		if(null == p || p[0] < (function($this) {
-			var $r;
-			var this1;
-			{
-				var this2 = $this.p0;
-				var p1 = $this.p1;
-				var x = Math.min(this2[0],p1[0]);
-				var y = Math.min(this2[1],p1[1]);
-				this1 = [x,y];
-			}
-			$r = this1[0];
-			return $r;
-		}(this)) || p[0] > (function($this) {
-			var $r;
-			var this3;
-			{
-				var this4 = $this.p0;
-				var p2 = $this.p1;
-				var x1 = Math.max(this4[0],p2[0]);
-				var y1 = Math.max(this4[1],p2[1]);
-				this3 = [x1,y1];
-			}
-			$r = this3[0];
-			return $r;
-		}(this))) return [];
-		return [p];
+		if(null != p) {
+			if(this.p0[0] == this.p1[0]) {
+				if(p[1] >= (function($this) {
+					var $r;
+					var this1;
+					{
+						var this11 = $this.p0;
+						var p1 = $this.p1;
+						var x = Math.min(this11[0],p1[0]);
+						var y = Math.min(this11[1],p1[1]);
+						this1 = [x,y];
+					}
+					$r = this1[1];
+					return $r;
+				}(this)) && p[1] <= (function($this) {
+					var $r;
+					var this12;
+					{
+						var this13 = $this.p0;
+						var p2 = $this.p1;
+						var x1 = Math.max(this13[0],p2[0]);
+						var y1 = Math.max(this13[1],p2[1]);
+						this12 = [x1,y1];
+					}
+					$r = this12[1];
+					return $r;
+				}(this))) return [p];
+			} else if(p[0] >= (function($this) {
+				var $r;
+				var this14;
+				{
+					var this15 = $this.p0;
+					var p3 = $this.p1;
+					var x2 = Math.min(this15[0],p3[0]);
+					var y2 = Math.min(this15[1],p3[1]);
+					this14 = [x2,y2];
+				}
+				$r = this14[0];
+				return $r;
+			}(this)) && p[0] <= (function($this) {
+				var $r;
+				var this16;
+				{
+					var this17 = $this.p0;
+					var p4 = $this.p1;
+					var x3 = Math.max(this17[0],p4[0]);
+					var y3 = Math.max(this17[1],p4[1]);
+					this16 = [x3,y3];
+				}
+				$r = this16[0];
+				return $r;
+			}(this))) return [p];
+		}
+		return [];
 	}
 	,split: function(v) {
 		var mid = this.interpolate(v);
@@ -1099,8 +1127,8 @@ thx_geom_EdgeLinear.prototype = {
 			return $r;
 		}(this)) + "," + (function($this) {
 			var $r;
-			var this2 = $this.p1;
-			$r = "Point(" + this2[0] + "," + this2[1] + ")";
+			var this11 = $this.p1;
+			$r = "Point(" + this11[0] + "," + this11[1] + ")";
 			return $r;
 		}(this)) + ")";
 	}
@@ -1127,11 +1155,11 @@ thx_geom_EdgeLinear.prototype = {
 	,get_lengthSquared: function() {
 		if(null == this.lengthSquared) {
 			var this1;
-			var this2 = this.p1;
+			var this11 = this.p1;
 			var p = this.p0;
 			var p_0 = -p[0];
 			var p_1 = -p[1];
-			this1 = [this2[0] + p_0,this2[1] + p_1];
+			this1 = [this11[0] + p_0,this11[1] + p_1];
 			this.lengthSquared = this1[0] * this1[0] + this1[1] * this1[1];
 		}
 		return this.lengthSquared;
@@ -1373,6 +1401,15 @@ thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.rotation = function(rotationCenter,rotati
 };
 thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.translation = function(vec) {
 	return [1,0,0,0,0,1,0,0,0,0,1,0,vec[0],vec[1],vec[2],1];
+};
+thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.mirrorX = function() {
+	return thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.mirroring(thx_geom_Transformables.MX);
+};
+thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.mirrorY = function() {
+	return thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.mirroring(thx_geom_Transformables.MY);
+};
+thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.mirrorZ = function() {
+	return thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.mirroring(thx_geom_Transformables.MZ);
 };
 thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.mirroring = function(plane) {
 	var nx = plane.normal[0];
@@ -2535,6 +2572,9 @@ thx_geom_Spline.prototype = {
 			return "[" + n.toStringValues() + "]";
 		}).join(", ") + "," + Std.string(this.isClosed) + ")";
 	}
+	,toPath: function() {
+		return new thx_geom_Path([this]);
+	}
 	,get_area: function() {
 		var _g = this;
 		if(null == this.area) {
@@ -2579,8 +2619,8 @@ thx_geom_Spline.prototype = {
 				return $r;
 			}(this)) || (function($this) {
 				var $r;
-				var this2 = node.normalOut;
-				$r = !(this2[0] == null[0] && this2[1] == null[1]);
+				var this11 = node.normalOut;
+				$r = !(this11[0] == null[0] && this11[1] == null[1]);
 				return $r;
 			}(this))) return false;
 		}
@@ -2893,6 +2933,47 @@ thx_geom_TestPoint3D.prototype = {
 	}
 	,__class__: thx_geom_TestPoint3D
 };
+var thx_geom_Transformables = function() { };
+thx_geom_Transformables.__name__ = ["thx","geom","Transformables"];
+thx_geom_Transformables.mirror = function(t,plane) {
+	return t.transform(thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.mirroring(plane));
+};
+thx_geom_Transformables.mirrorX = function(t) {
+	return t.transform(thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.mirroring(thx_geom_Transformables.MX));
+};
+thx_geom_Transformables.mirrorY = function(t) {
+	return t.transform(thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.mirroring(thx_geom_Transformables.MY));
+};
+thx_geom_Transformables.mirrorZ = function(t) {
+	return t.transform(thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.mirroring(thx_geom_Transformables.MZ));
+};
+thx_geom_Transformables.translate = function(t,v) {
+	return t.transform(thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.translation(v));
+};
+thx_geom_Transformables.translateX = function(t,x) {
+	return t.transform(thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.translation([x,0,0]));
+};
+thx_geom_Transformables.translateY = function(t,y) {
+	return t.transform(thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.translation([0,y,0]));
+};
+thx_geom_Transformables.translateZ = function(t,z) {
+	return t.transform(thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.translation([0,0,z]));
+};
+thx_geom_Transformables.scale = function(t,f) {
+	return t.transform(thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.scaling(f));
+};
+thx_geom_Transformables.rotateX = function(t,angle) {
+	return t.transform(thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.rotationX(angle));
+};
+thx_geom_Transformables.rotateY = function(t,angle) {
+	return t.transform(thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.rotationY(angle));
+};
+thx_geom_Transformables.rotateZ = function(t,angle) {
+	return t.transform(thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.rotationZ(angle));
+};
+thx_geom_Transformables.rotateOnAxis = function(t,center,axis,angle) {
+	return t.transform(thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.rotation(center,axis,angle));
+};
 var thx_geom_Vertex = function(position,normal) {
 	this.position = position;
 	this.normal = normal;
@@ -3075,14 +3156,14 @@ thx_geom_shape__$Box_Box_$Impl_$.get_height = function(this1) {
 };
 thx_geom_shape__$Box_Box_$Impl_$.expandByPoint = function(this1,point) {
 	var bottomLeft;
-	var this2 = this1[0];
-	var x = Math.min(this2[0],point[0]);
-	var y = Math.min(this2[1],point[1]);
+	var this11 = this1[0];
+	var x = Math.min(this11[0],point[0]);
+	var y = Math.min(this11[1],point[1]);
 	bottomLeft = [x,y];
 	var topRight;
-	var this3 = this1[1];
-	var x1 = Math.max(this3[0],point[0]);
-	var y1 = Math.max(this3[1],point[1]);
+	var this12 = this1[1];
+	var x1 = Math.max(this12[0],point[0]);
+	var y1 = Math.max(this12[1],point[1]);
 	topRight = [x1,y1];
 	return [bottomLeft,topRight];
 };
@@ -3102,20 +3183,20 @@ thx_geom_shape__$Box_Box_$Impl_$.expandByPoints = function(this1,points) {
 	return [min,max];
 };
 thx_geom_shape__$Box_Box_$Impl_$.intersects = function(this1,other) {
-	return this1[1][0] >= other[0][0] && this1[1][0] <= other[1][0] || this1[0][1] >= other[1][1] && this1[0][1] <= other[0][1];
+	return this1[1][0] >= other[0][0] && this1[0][0] <= other[1][0] || this1[0][1] >= other[1][1] && this1[1][1] <= other[0][1];
 };
 thx_geom_shape__$Box_Box_$Impl_$.equals = function(this1,other) {
 	return (function($this) {
 		var $r;
-		var this2 = this1[0];
+		var this11 = this1[0];
 		var p = other[0];
-		$r = this2[0] == p[0] && this2[1] == p[1];
+		$r = this11[0] == p[0] && this11[1] == p[1];
 		return $r;
 	}(this)) && (function($this) {
 		var $r;
-		var this3 = this1[1];
+		var this12 = this1[1];
 		var p1 = other[1];
-		$r = this3[0] == p1[0] && this3[1] == p1[1];
+		$r = this12[0] == p1[0] && this12[1] == p1[1];
 		return $r;
 	}(this));
 };
@@ -5008,7 +5089,7 @@ if(Array.prototype.map == null) Array.prototype.map = function(f) {
 thx_core_Ints.pattern_parse = new EReg("^[+-]?(\\d+|0x[0-9A-F]+)$","i");
 thx_geom_Const.EPSILON = 1e-5;
 thx_geom_Const.KAPPA = 0.5522847498307936;
-thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.unity = [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1];
+thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.identity = [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1];
 thx_geom_Plane.COPLANAR = 0;
 thx_geom_Plane.FRONT = 1;
 thx_geom_Plane.BACK = 2;
@@ -5016,6 +5097,9 @@ thx_geom_Plane.SPANNING = 3;
 thx_geom__$Point3D_Point3D_$Impl_$.zero = [0,0,0];
 thx_geom_OrthoNormalBasis.z0Plane = new thx_geom_OrthoNormalBasis(new thx_geom_Plane([0,0,1],0),[1,0,0]);
 thx_geom__$Point_Point_$Impl_$.zero = [0,0];
+thx_geom_Transformables.MX = new thx_geom_Plane([1,0,0],0);
+thx_geom_Transformables.MY = new thx_geom_Plane([0,1,0],0);
+thx_geom_Transformables.MZ = new thx_geom_Plane([0,0,1],0);
 thx_math_Number.TOLERANCE = 10e-5;
 thx_math_Number.EPSILON = 10e-10;
 thx_math_Number.abscissas = [[0.5773502691896257645091488],[0,0.7745966692414833770358531],[0.3399810435848562648026658,0.8611363115940525752239465],[0,0.5384693101056830910363144,0.9061798459386639927976269],[0.2386191860831969086305017,0.6612093864662645136613996,0.9324695142031520278123016],[0,0.4058451513773971669066064,0.7415311855993944398638648,0.9491079123427585245261897],[0.1834346424956498049394761,0.5255324099163289858177390,0.7966664774136267395915539,0.9602898564975362316835609],[0,0.3242534234038089290385380,0.6133714327005903973087020,0.8360311073266357942994298,0.9681602395076260898355762],[0.1488743389816312108848260,0.4333953941292471907992659,0.6794095682990244062343274,0.8650633666889845107320967,0.9739065285171717200779640],[0,0.2695431559523449723315320,0.5190961292068118159257257,0.7301520055740493240934163,0.8870625997680952990751578,0.9782286581460569928039380],[0.1252334085114689154724414,0.3678314989981801937526915,0.5873179542866174472967024,0.7699026741943046870368938,0.9041172563704748566784659,0.9815606342467192506905491],[0,0.2304583159551347940655281,0.4484927510364468528779129,0.6423493394403402206439846,0.8015780907333099127942065,0.9175983992229779652065478,0.9841830547185881494728294],[0.1080549487073436620662447,0.3191123689278897604356718,0.5152486363581540919652907,0.6872929048116854701480198,0.8272013150697649931897947,0.9284348836635735173363911,0.9862838086968123388415973],[0,0.2011940939974345223006283,0.3941513470775633698972074,0.5709721726085388475372267,0.7244177313601700474161861,0.8482065834104272162006483,0.9372733924007059043077589,0.9879925180204854284895657],[0.0950125098376374401853193,0.2816035507792589132304605,0.4580167776572273863424194,0.6178762444026437484466718,0.7554044083550030338951012,0.8656312023878317438804679,0.9445750230732325760779884,0.9894009349916499325961542]];

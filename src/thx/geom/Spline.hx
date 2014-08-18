@@ -148,7 +148,8 @@ class Spline {
 
 	public function intersectionsSpline(other : Spline) : Array<Point>
 		return edges.map(function(a) {
-			return other.edges.map(function(b) return a.intersections(b)).flatten();
+			return other.edges.map(function(b) return a.intersections(b))
+				.flatten();
 		}).flatten();
 
 	public function intersectionsLine(line : Line) : Array<Point>
@@ -192,6 +193,9 @@ class Spline {
 
 	public function toString()
 		return 'Spline(${nodes.map(function(n) return "["+n.toStringValues()+"]").join(", ")},$isClosed)';
+
+	public function toPath()
+		return new Path([this]);
 
 	function get_area() : Float {
 		if(null == area) {

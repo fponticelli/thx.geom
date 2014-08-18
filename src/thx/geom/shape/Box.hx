@@ -51,8 +51,8 @@ abstract Box(Array<Point>) {
 
 	public function intersects(other : Box) {
 		return
-			right >= other.left && right <= other.right ||
-			bottom >= other.top && bottom <= other.bottom;
+			right >= other.left && left <= other.right ||
+			bottom >= other.top && top <= other.bottom;
 	}
 
 	@:commutative

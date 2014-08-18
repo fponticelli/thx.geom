@@ -67,9 +67,15 @@ class EdgeLinear implements Edge {
 	public function intersectionsLine(line : Line) : Array<Point> {
 		var l = Line.fromPoints(p0, p1),
 			p = l.intersectionLine(line);
-		if(null == p || p.x < p0.min(p1).x || p.x > p0.max(p1).x)
-			return [];
-		return [p];
+		if(null != p) {
+			if(p0.x == p1.x) { // vertical line
+				if(p.y >= p0.min(p1).y && p.y <= p0.max(p1).y)
+					return [p];
+			} else if(p.x >= p0.min(p1).x && p.x <= p0.max(p1).x) {
+				return [p];
+			}
+		}
+		return [];
 	}
 
 	public function split(v : Float) : Array<Edge> {

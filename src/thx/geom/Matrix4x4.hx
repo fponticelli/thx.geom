@@ -1,8 +1,10 @@
 package thx.geom;
 
+import thx.geom.Transformable;
+
 abstract Matrix4x4(Array<Float>)
 {
-	public static var unity(default, null) : Matrix4x4 = new Matrix4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+	public static var identity(default, null) : Matrix4x4 = new Matrix4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 
 	@:from public static function fromArray(e : Array<Float>) {
 		if(e.length != 16)
@@ -47,12 +49,19 @@ abstract Matrix4x4(Array<Float>)
 	static public function translation(vec : Point3D)
 		return new Matrix4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, vec.x, vec.y, vec.z, 1);
 
+	public static inline function mirrorX<T>()
+		return mirroring(Transformables.MX);
+	public static inline function mirrorY<T>()
+		return mirroring(Transformables.MY);
+	public static inline function mirrorZ<T>()
+		return mirroring(Transformables.MZ);
+
 	// Create an affine matrix for mirroring into an arbitrary plane:
 	static public function mirroring(plane : Plane) {
 		var nx = plane.normal.x,
 			ny = plane.normal.y,
 			nz = plane.normal.z,
-			w = plane.w;
+			w  = plane.w;
 		return new Matrix4x4(
 			(1.0 - 2.0 * nx * nx), (-2.0 * ny * nx), (-2.0 * nz * nx), 0,
 			(-2.0 * nx * ny), (1.0 - 2.0 * ny * ny), (-2.0 * nz * ny), 0,
