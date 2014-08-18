@@ -13,11 +13,14 @@ class EdgeLinear implements Edge {
 	public var p1(default, null) : Point;
 	public var first(default, null) : Point;
 	public var last(default, null) : Point;
+	public var normalIn(default, null) : Point;
+	public var normalOut(default, null) : Point;
 
 	public function new(p0 : Point, p1 : Point) {
 		isLinear = true;
 		first = this.p0 = p0;
 		last = this.p1 = p1;
+		normalIn = normalOut = null;
 	}
 	public function equals(other : Edge) : Bool {
 		if(!Std.is(other, EdgeLinear)) return false;
@@ -101,6 +104,9 @@ class EdgeLinear implements Edge {
 
 	public function toString() : String
 		return 'Edge($p0,$p1)';
+
+	public function toSpline()
+		return Spline.fromEdges([this], false);
 
 	function get_area() : Float {
 		if(null == area) {

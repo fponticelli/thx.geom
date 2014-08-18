@@ -14,8 +14,8 @@ class SplineNode {
 	public function transform(matrix : Matrix4x4)
 		return new SplineNode(
 			position.transform(matrix),
-			null != normalIn ? normalIn.transform(matrix) : null,
-			null != normalOut ? normalOut.transform(matrix) : null
+			null != normalOut ? normalOut.transform(matrix) : null,
+			null != normalIn ? normalIn.transform(matrix) : null
 		);
 
 	public function flip()

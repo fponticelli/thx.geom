@@ -16,19 +16,56 @@ class Spline {
 	public static function fromEdges(arr : Array<Edge>, ?closed : Bool) {
 		var nodes = [], points;
 		if(arr.length > 0) {
-			var prev = arr[arr.length-1].toArray();
-			arr.map(function(edge) {
-				points = edge.toArray();
+			var edge = arr[0], prev = closed ? arr[arr.length-1] : new EdgeLinear(Point.zero, Point.zero);
+			if(arr.length == 1) {
 				nodes.push(new SplineNode(
-					points[0],
-					points.length == 4 ? points[1] : null,
-					prev[2]
+					edge.first,
+					edge.normalOut,
+					null
 				));
-				prev = points;
-			});
+				nodes.push(new SplineNode(
+					edge.last,
+					null,
+					edge.normalIn
+				));
+			} else {
+				for(i in 0...arr.length) {
+					edge = arr[i];
+					nodes.push(new SplineNode(
+						edge.first,
+						edge.normalOut,
+						prev.normalIn));
+					prev = edge;
+				}
+				if(!closed) {
+					nodes.push(new SplineNode(
+						edge.last,
+						null,
+						edge.normalIn
+					));
+				}
+			}
+			/*
+			var last = arr[arr.length-1].toArray();
+			for(i in 0...arr.length) {
+				points = arr[i].toArray();
+				if(points.length == 2) {
+					nodes.push(new SplineNode(points[0], null, last[2]));
+				} else {
+					nodes.push(new SplineNode(points[0], points[1], last[2]));
+				}
+				last = points;
+			}
+			var first = arr[0].toArray();
+			if(last.length == 2) {
+				nodes.push(new SplineNode(last[1], null, first[2]));
+			} else {
+				nodes.push(new SplineNode(last[3], first[2], last[2]));
+			}
+			*/
 		}
 		var spline = new Spline(nodes, closed);
-		spline.edges = arr;
+		//spline.edges = arr;
 		return spline;
 	}
 
@@ -110,6 +147,7 @@ class Spline {
 	public function transform(matrix : Matrix4x4) {
 		var ismirror = matrix.isMirroring(),
 			result = new Spline(iterator().map(function(node) return node.transform(matrix)), isClosed);
+		//result = Spline.fromEdges(edges.map(function(edge) return edge.transform(matrix)), isClosed);
 		if(ismirror)
 			result = result.flip();
 		return result;
@@ -191,11 +229,24 @@ class Spline {
 		return null;
 	}
 
-	public function toString()
-		return 'Spline(${nodes.map(function(n) return "["+n.toStringValues()+"]").join(", ")},$isClosed)';
+	public function toLinear() {
+		var edges = edges.map(function(edge) {
+			if(Std.is(edge, EdgeLinear))
+				return [cast edge];
+			else
+				return (cast edge : EdgeCubic).linearSegments;
+		}).flatten();
+		return Spline.fromEdges(cast edges, isClosed);
+	}
 
 	public function toPath()
 		return new Path([this]);
+
+	public function toPoints()
+		return nodes.map(function(node) return node.position);
+
+	public function toString()
+		return 'Spline(${nodes.map(function(n) return "["+n.toStringValues()+"]").join(", ")},$isClosed)';
 
 	function get_area() : Float {
 		if(null == area) {

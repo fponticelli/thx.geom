@@ -10,6 +10,8 @@ interface Edge {
 	public var isLinear(default, null) : Bool;
 	public var first(default, null) : Point;
 	public var last(default, null) : Point;
+	public var normalIn(default, null) : Point;
+	public var normalOut(default, null) : Point;
 
 	public function equals(other : Edge) : Bool;
 	public function matches(other : Edge) : Bool;
@@ -25,4 +27,5 @@ interface Edge {
 	public function interpolateNode(v : Float) : SplineNode;
 	public function toArray() : Array<Point>;
 	public function toString() : String;
+	public function toSpline() : Spline;
 }

@@ -872,6 +872,8 @@ thx_geom_Edge.prototype = {
 	,isLinear: null
 	,first: null
 	,last: null
+	,normalIn: null
+	,normalOut: null
 	,equals: null
 	,matches: null
 	,transform: null
@@ -886,13 +888,14 @@ thx_geom_Edge.prototype = {
 	,interpolateNode: null
 	,toArray: null
 	,toString: null
+	,toSpline: null
 	,__class__: thx_geom_Edge
 };
 var thx_geom_EdgeCubic = function(p0,p1,p2,p3) {
 	this.isLinear = false;
 	this.first = this.p0 = p0;
-	this.p1 = p1;
-	this.p2 = p2;
+	this.normalOut = this.p1 = p1;
+	this.normalIn = this.p2 = p2;
 	this.last = this.p3 = p3;
 };
 thx_geom_EdgeCubic.__name__ = ["thx","geom","EdgeCubic"];
@@ -902,6 +905,8 @@ thx_geom_EdgeCubic.prototype = {
 	,area: null
 	,length: null
 	,lengthSquared: null
+	,linearSegments: null
+	,linearSpline: null
 	,isLinear: null
 	,p0: null
 	,p1: null
@@ -909,6 +914,8 @@ thx_geom_EdgeCubic.prototype = {
 	,p3: null
 	,first: null
 	,last: null
+	,normalIn: null
+	,normalOut: null
 	,equals: function(other) {
 		if(!js_Boot.__instanceof(other,thx_geom_EdgeCubic)) return false;
 		var t = other;
@@ -937,10 +944,12 @@ thx_geom_EdgeCubic.prototype = {
 		if(js_Boot.__instanceof(other,thx_geom_EdgeLinear)) return this.intersectionsEdgeLinear(other); else return this.intersectionsEdgeCubic(other);
 	}
 	,intersectionsEdgeLinear: function(other) {
-		throw "not implemented";
+		return thx_core_Arrays.flatten(this.get_linearSegments().map(function(edge) {
+			return edge.intersectionsEdgeLinear(other);
+		}));
 	}
 	,intersectionsEdgeCubic: function(other) {
-		throw "not implemented";
+		return this.get_linearSpline().intersectionsSpline(other.get_linearSpline());
 	}
 	,intersectsLine: function(line) {
 		return this.intersectionsLine(line).length > 0;
@@ -960,6 +969,9 @@ thx_geom_EdgeCubic.prototype = {
 	}
 	,interpolateNode: function(v) {
 		throw "not implemented";
+	}
+	,toEdgeLinear: function() {
+		return new thx_geom_EdgeLinear(this.first,this.last);
 	}
 	,toArray: function() {
 		return [this.p0,this.p1,this.p2,this.p3];
@@ -987,8 +999,52 @@ thx_geom_EdgeCubic.prototype = {
 			return $r;
 		}(this)) + ")";
 	}
+	,toSpline: function() {
+		return thx_geom_Spline.fromEdges([this],false);
+	}
+	,isNearFlat: function() {
+		var sum = thx_geom__$Point_Point_$Impl_$.distanceTo(this.p0,this.p1) + thx_geom__$Point_Point_$Impl_$.distanceTo(this.p1,this.p2) + thx_geom__$Point_Point_$Impl_$.distanceTo(this.p2,this.p3);
+		var len = thx_geom__$Point_Point_$Impl_$.distanceTo(this.p0,this.p3);
+		return sum / len <= thx_geom_EdgeCubic.NEAR_FLAT;
+	}
+	,subdivide: function() {
+		var l1;
+		var this1;
+		var this11 = this.p0;
+		var p = this.p1;
+		this1 = [this11[0] + p[0],this11[1] + p[1]];
+		l1 = [this1[0] / 2,this1[1] / 2];
+		var m;
+		var this12;
+		var this13 = this.p1;
+		var p1 = this.p2;
+		this12 = [this13[0] + p1[0],this13[1] + p1[1]];
+		m = [this12[0] / 2,this12[1] / 2];
+		var r2;
+		var this14;
+		var this15 = this.p2;
+		var p2 = this.p3;
+		this14 = [this15[0] + p2[0],this15[1] + p2[1]];
+		r2 = [this14[0] / 2,this14[1] / 2];
+		var l2;
+		var this1_0 = l1[0] + m[0];
+		var this1_1 = l1[1] + m[1];
+		l2 = [this1_0 / 2,this1_1 / 2];
+		var r1;
+		var this1_01 = m[0] + r2[0];
+		var this1_11 = m[1] + r2[1];
+		r1 = [this1_01 / 2,this1_11 / 2];
+		var l3;
+		var this1_02 = l2[0] + r1[0];
+		var this1_12 = l2[1] + r1[1];
+		l3 = [this1_02 / 2,this1_12 / 2];
+		return [new thx_geom_EdgeCubic(this.p0,l1,l2,l3),new thx_geom_EdgeCubic(l3,r1,r2,this.p3)];
+	}
 	,get_area: function() {
-		throw "not implemented";
+		if(null == this.area) this.area = thx_core_Arrays.reduce(this.get_linearSegments(),function(acc,edge) {
+			return acc + edge.get_area();
+		},0);
+		return this.area;
 	}
 	,get_box: function() {
 		if(null == this.box) this.box = thx_geom_shape__$Box_Box_$Impl_$.expandByPoints(thx_geom_shape__$Box_Box_$Impl_$.fromPoints(this.p0,this.p1),[this.p2,this.p3]);
@@ -999,7 +1055,26 @@ thx_geom_EdgeCubic.prototype = {
 		return this.length;
 	}
 	,get_lengthSquared: function() {
-		throw "not implemented";
+		if(null == this.lengthSquared) this.lengthSquared = thx_core_Arrays.reduce(this.get_linearSegments(),function(acc,edge) {
+			return acc + edge.get_lengthSquared();
+		},0);
+		return this.lengthSquared;
+	}
+	,get_linearSegments: function() {
+		if(null == this.linearSegments) {
+			var tosplit = [this];
+			var edge;
+			this.linearSegments = [];
+			while(tosplit.length > 0) {
+				edge = tosplit.shift();
+				if(edge.isNearFlat()) this.linearSegments.push(edge.toEdgeLinear()); else tosplit = edge.subdivide().concat(tosplit);
+			}
+		}
+		return this.linearSegments;
+	}
+	,get_linearSpline: function() {
+		if(null == this.linearSpline) this.linearSpline = thx_geom_Spline.fromEdges(this.get_linearSegments(),false);
+		return this.linearSpline;
 	}
 	,__class__: thx_geom_EdgeCubic
 };
@@ -1007,6 +1082,7 @@ var thx_geom_EdgeLinear = function(p0,p1) {
 	this.isLinear = true;
 	this.first = this.p0 = p0;
 	this.last = this.p1 = p1;
+	this.normalIn = this.normalOut = null;
 };
 thx_geom_EdgeLinear.__name__ = ["thx","geom","EdgeLinear"];
 thx_geom_EdgeLinear.__interfaces__ = [thx_geom_Edge];
@@ -1021,6 +1097,8 @@ thx_geom_EdgeLinear.prototype = {
 	,p1: null
 	,first: null
 	,last: null
+	,normalIn: null
+	,normalOut: null
 	,equals: function(other) {
 		if(!js_Boot.__instanceof(other,thx_geom_EdgeLinear)) return false;
 		var t = other;
@@ -1144,6 +1222,9 @@ thx_geom_EdgeLinear.prototype = {
 			$r = "Point(" + this11[0] + "," + this11[1] + ")";
 			return $r;
 		}(this)) + ")";
+	}
+	,toSpline: function() {
+		return thx_geom_Spline.fromEdges([this],false);
 	}
 	,get_area: function() {
 		if(null == this.area) {
@@ -2053,6 +2134,9 @@ thx_geom_Path.prototype = {
 	,intersection: function(other) {
 		throw "not implemented";
 	}
+	,intersections: function(other) {
+		throw "not implemented";
+	}
 	,transform: function(matrix) {
 		return new thx_geom_Path(this.splines.map(function(spline) {
 			return spline.transform(matrix);
@@ -2088,6 +2172,22 @@ thx_geom_Path.prototype = {
 		return thx_core_Arrays.flatten(this.splines.map(function(spline) {
 			return spline.intersectionsLine(line);
 		}));
+	}
+	,selfIntersections: function() {
+		var intersections = [];
+		var _g1 = 0;
+		var _g = this.splines.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			intersections = intersections.concat(this.splines[i].selfIntersections());
+			var _g3 = 1;
+			var _g2 = this.splines.length;
+			while(_g3 < _g2) {
+				var j = _g3++;
+				intersections = intersections.concat(this.splines[i].intersectionsSpline(this.splines[j]));
+			}
+		}
+		return intersections;
 	}
 	,split: function(value) {
 		var len = this.get_length();
@@ -2126,6 +2226,11 @@ thx_geom_Path.prototype = {
 	}
 	,minkowsky: function(other) {
 		throw "not implemented";
+	}
+	,toPoints: function() {
+		return thx_core_Arrays.flatten(this.splines.map(function(spline) {
+			return spline.toPoints();
+		}));
 	}
 	,toString: function() {
 		return "Path(" + this.splines.map(function(s) {
@@ -2295,11 +2400,17 @@ thx_geom__$Point_Point_$Impl_$.normalize = function(this1) {
 	return [this1[0] / v,this1[1] / v];
 };
 thx_geom__$Point_Point_$Impl_$.distanceTo = function(this1,p) {
-	var this2;
-	var p_0 = -p[0];
-	var p_1 = -p[1];
-	this2 = [this1[0] + p_0,this1[1] + p_1];
-	return Math.sqrt(this2[0] * this2[0] + this2[1] * this2[1]);
+	return Math.abs((function($this) {
+		var $r;
+		var this2;
+		{
+			var p_0 = -p[0];
+			var p_1 = -p[1];
+			this2 = [this1[0] + p_0,this1[1] + p_1];
+		}
+		$r = Math.sqrt(this2[0] * this2[0] + this2[1] * this2[1]);
+		return $r;
+	}(this)));
 };
 thx_geom__$Point_Point_$Impl_$.distanceToSquared = function(this1,p) {
 	var this2;
@@ -2414,15 +2525,25 @@ thx_geom_Spline.fromEdges = function(arr,closed) {
 	var nodes = [];
 	var points;
 	if(arr.length > 0) {
-		var prev = arr[arr.length - 1].toArray();
-		arr.map(function(edge) {
-			points = edge.toArray();
-			nodes.push(new thx_geom_SplineNode(points[0],points.length == 4?points[1]:null,prev[2]));
-			prev = points;
-		});
+		var edge = arr[0];
+		var prev;
+		if(closed) prev = arr[arr.length - 1]; else prev = new thx_geom_EdgeLinear(thx_geom__$Point_Point_$Impl_$.zero,thx_geom__$Point_Point_$Impl_$.zero);
+		if(arr.length == 1) {
+			nodes.push(new thx_geom_SplineNode(edge.first,edge.normalOut,null));
+			nodes.push(new thx_geom_SplineNode(edge.last,null,edge.normalIn));
+		} else {
+			var _g1 = 0;
+			var _g = arr.length;
+			while(_g1 < _g) {
+				var i = _g1++;
+				edge = arr[i];
+				nodes.push(new thx_geom_SplineNode(edge.first,edge.normalOut,prev.normalIn));
+				prev = edge;
+			}
+			if(!closed) nodes.push(new thx_geom_SplineNode(edge.last,null,edge.normalIn));
+		}
 	}
 	var spline = new thx_geom_Spline(nodes,closed);
-	spline.edges = arr;
 	return spline;
 };
 thx_geom_Spline.fromPoints = function(arr,closed) {
@@ -2580,13 +2701,24 @@ thx_geom_Spline.prototype = {
 		}
 		return null;
 	}
+	,toLinear: function() {
+		var edges = thx_core_Arrays.flatten(this.get_edges().map(function(edge) {
+			if(js_Boot.__instanceof(edge,thx_geom_EdgeLinear)) return [edge]; else return edge.get_linearSegments();
+		}));
+		return thx_geom_Spline.fromEdges(edges,this.isClosed);
+	}
+	,toPath: function() {
+		return new thx_geom_Path([this]);
+	}
+	,toPoints: function() {
+		return this.nodes.map(function(node) {
+			return node.position;
+		});
+	}
 	,toString: function() {
 		return "Spline(" + this.nodes.map(function(n) {
 			return "[" + n.toStringValues() + "]";
 		}).join(", ") + "," + Std.string(this.isClosed) + ")";
-	}
-	,toPath: function() {
-		return new thx_geom_Path([this]);
 	}
 	,get_area: function() {
 		var _g = this;
@@ -2667,7 +2799,7 @@ thx_geom_SplineNode.prototype = {
 	,normalIn: null
 	,normalOut: null
 	,transform: function(matrix) {
-		return new thx_geom_SplineNode(thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.leftMultiplyPoint(matrix,this.position),null != this.normalIn?thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.leftMultiplyPoint(matrix,this.normalIn):null,null != this.normalOut?thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.leftMultiplyPoint(matrix,this.normalOut):null);
+		return new thx_geom_SplineNode(thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.leftMultiplyPoint(matrix,this.position),null != this.normalOut?thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.leftMultiplyPoint(matrix,this.normalOut):null,null != this.normalIn?thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.leftMultiplyPoint(matrix,this.normalIn):null);
 	}
 	,flip: function() {
 		return new thx_geom_SplineNode(this.position,this.normalIn,this.normalOut);
@@ -5102,6 +5234,7 @@ if(Array.prototype.map == null) Array.prototype.map = function(f) {
 thx_core_Ints.pattern_parse = new EReg("^[+-]?(\\d+|0x[0-9A-F]+)$","i");
 thx_geom_Const.EPSILON = 1e-5;
 thx_geom_Const.KAPPA = 0.5522847498307936;
+thx_geom_EdgeCubic.NEAR_FLAT = 1.001;
 thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.identity = [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1];
 thx_geom_Plane.COPLANAR = 0;
 thx_geom_Plane.FRONT = 1;

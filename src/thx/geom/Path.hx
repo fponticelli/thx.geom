@@ -71,6 +71,17 @@ class Path {
 		}).flatten();
 	}
 
+	public function selfIntersections() {
+		var intersections = [];
+		for(i in 0...splines.length) {
+			intersections = intersections.concat(splines[i].selfIntersections());
+			for(j in 1...splines.length) {
+				intersections = intersections.concat(splines[i].intersectionsSpline(splines[j]));
+			}
+		}
+		return intersections;
+	}
+
 	public function split(value : Float) : Array<Path> {
 		var len = length,
 			l, spline;
@@ -108,9 +119,11 @@ class Path {
 		return throw 'not implemented';
 	}
 
-	public function toString() {
+	public function toPoints()
+		return splines.map(function(spline) return spline.toPoints()).flatten();
+
+	public function toString()
 		return 'Path(${splines.map(function(s) return "["+s.toString()+"]").join(", ")},$isClosed)';
-	}
 
 	function get_isClosed() : Bool {
 		if(null == isClosed) {

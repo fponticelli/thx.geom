@@ -9,7 +9,7 @@ abstract Point(Array<Float>) {
 	@:from static inline function fromArray(arr : Array<Int>)
 		return new Point(arr[0], arr[1]);
 
-	@:from static inline public function fromAngle(angle : Angle)
+	static inline public function fromAngle(angle : Angle)
 		return new Point(Math.cos(angle), Math.sin(angle));
 
 	inline public function new(x : Float, y : Float)
@@ -88,7 +88,7 @@ abstract Point(Array<Float>) {
 		return divide(length);
 
 	public function distanceTo(p : Point)
-		return subtractPoint(p).length;
+		return Math.abs(subtractPoint(p).length);
 
 	public function distanceToSquared(p : Point)
 		return subtractPoint(p).lengthSquared;
