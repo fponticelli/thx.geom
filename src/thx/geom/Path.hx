@@ -33,6 +33,10 @@ class Path {
 		return throw 'not implemented';
 	}
 
+	public function intersections(other : Path) : Array<Point> {
+		return throw 'not implemented';
+	}
+
 	public function transform(matrix : Matrix4x4)
 		return new Path(splines.map(function(spline) return spline.transform(matrix)));
 

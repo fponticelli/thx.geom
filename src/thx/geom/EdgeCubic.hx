@@ -63,10 +63,24 @@ class EdgeCubic implements Edge {
 	public function intersectionsLine(line : Line) : Array<Point>
 		return throw "not implemented";
 
-	public function split(v : Float) : Array<Edge>
-		return throw "not implemented";
+	public function split(v : Float) : Array<Edge> {
+		var node = interpolateNode(v);
+		if(null == node)
+			return [];
+		return [
+			new EdgeCubic(p0, p1, node.normalIn, node.position),
+			new EdgeCubic(node.position, node.normalOut, p2, p3)
+		];
+	}
 
-	public function interpolate(v : Float) : Point
+	public function interpolate(v : Float) : Point {
+		var n = interpolateNode(v);
+		if(null == n)
+			return null;
+		return n.position;
+	}
+
+	public function interpolateNode(v : Float) : SplineNode
 		return throw "not implemented";
 
 	public function toArray()

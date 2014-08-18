@@ -69,16 +69,16 @@ class Spline {
 	public function iterate(?fstart : Point -> Void, fit : Point -> Point -> Point -> Point -> Void) {
 		var a,b;
 		if(null != fstart)
-			fstart(nodes[0].point);
+			fstart(nodes[0].position);
 		for(i in 0...nodes.length - 1) {
 			a = nodes[i];
 			b = nodes[i+1];
-			fit(a.point, b.point, a.normalOut, b.normalIn);
+			fit(a.position, b.position, a.normalOut, b.normalIn);
 		}
 		if(isClosed) {
 			a = nodes[nodes.length-1];
 			b = nodes[0];
-			fit(a.point, b.point, a.normalOut, b.normalIn);
+			fit(a.position, b.position, a.normalOut, b.normalIn);
 		}
 	}
 
@@ -235,7 +235,7 @@ class Spline {
 	function get_box() : Box {
 		if(null == box) {
 			if(nodes.length > 0) {
-				box = new Box(nodes[0].point, nodes[0].point);
+				box = new Box(nodes[0].position, nodes[0].position);
 				iterate(function(a, b, nout, nin) {
 					box = box.expandByPoints([a, b, nout, nin]);
 				});

@@ -22,6 +22,7 @@ interface Edge {
 	public function intersectionsLine(line : Line) : Array<Point>;
 	public function split(v : Float) : Array<Edge>;
 	public function interpolate(v : Float) : Point;
+	public function interpolateNode(v : Float) : SplineNode;
 	public function toArray() : Array<Point>;
 	public function toString() : String;
 }

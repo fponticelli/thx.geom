@@ -883,6 +883,7 @@ thx_geom_Edge.prototype = {
 	,intersectionsLine: null
 	,split: null
 	,interpolate: null
+	,interpolateNode: null
 	,toArray: null
 	,toString: null
 	,__class__: thx_geom_Edge
@@ -948,9 +949,16 @@ thx_geom_EdgeCubic.prototype = {
 		throw "not implemented";
 	}
 	,split: function(v) {
-		throw "not implemented";
+		var node = this.interpolateNode(v);
+		if(null == node) return [];
+		return [new thx_geom_EdgeCubic(this.p0,this.p1,node.normalIn,node.position),new thx_geom_EdgeCubic(node.position,node.normalOut,this.p2,this.p3)];
 	}
 	,interpolate: function(v) {
+		var n = this.interpolateNode(v);
+		if(null == n) return null;
+		return n.position;
+	}
+	,interpolateNode: function(v) {
 		throw "not implemented";
 	}
 	,toArray: function() {
@@ -1115,6 +1123,11 @@ thx_geom_EdgeLinear.prototype = {
 	}
 	,interpolate: function(v) {
 		return thx_geom__$Point_Point_$Impl_$.interpolate(this.p0,this.p1,v);
+	}
+	,interpolateNode: function(v) {
+		var p = this.interpolate(v);
+		if(null == v) return null;
+		return new thx_geom_SplineNode(p,null,null);
 	}
 	,toArray: function() {
 		return [this.p0,this.p1];
@@ -2454,19 +2467,19 @@ thx_geom_Spline.prototype = {
 	,iterate: function(fstart,fit) {
 		var a;
 		var b;
-		if(null != fstart) fstart(this.nodes[0].point);
+		if(null != fstart) fstart(this.nodes[0].position);
 		var _g1 = 0;
 		var _g = this.nodes.length - 1;
 		while(_g1 < _g) {
 			var i = _g1++;
 			a = this.nodes[i];
 			b = this.nodes[i + 1];
-			fit(a.point,b.point,a.normalOut,b.normalIn);
+			fit(a.position,b.position,a.normalOut,b.normalIn);
 		}
 		if(this.isClosed) {
 			a = this.nodes[this.nodes.length - 1];
 			b = this.nodes[0];
-			fit(a.point,b.point,a.normalOut,b.normalIn);
+			fit(a.position,b.position,a.normalOut,b.normalIn);
 		}
 	}
 	,iterateEdges: function(f) {
@@ -2633,7 +2646,7 @@ thx_geom_Spline.prototype = {
 		var _g = this;
 		if(null == this.box) {
 			if(this.nodes.length > 0) {
-				this.box = [this.nodes[0].point,this.nodes[0].point];
+				this.box = [this.nodes[0].position,this.nodes[0].position];
 				this.iterate(null,function(a,b,nout,nin) {
 					_g.box = thx_geom_shape__$Box_Box_$Impl_$.expandByPoints(_g.get_box(),[a,b,nout,nin]);
 				});
@@ -2643,28 +2656,28 @@ thx_geom_Spline.prototype = {
 	}
 	,__class__: thx_geom_Spline
 };
-var thx_geom_SplineNode = function(point,normalout,normalin) {
-	this.point = point;
-	if(null == normalout || thx_geom__$Point_Point_$Impl_$.nearEquals(normalout,point)) this.normalOut = null; else this.normalOut = normalout;
-	if(null == normalin || thx_geom__$Point_Point_$Impl_$.nearEquals(normalin,point)) this.normalIn = null; else this.normalIn = normalin;
+var thx_geom_SplineNode = function(position,normalout,normalin) {
+	this.position = position;
+	if(null == normalout || thx_geom__$Point_Point_$Impl_$.nearEquals(normalout,position)) this.normalOut = null; else this.normalOut = normalout;
+	if(null == normalin || thx_geom__$Point_Point_$Impl_$.nearEquals(normalin,position)) this.normalIn = null; else this.normalIn = normalin;
 };
 thx_geom_SplineNode.__name__ = ["thx","geom","SplineNode"];
 thx_geom_SplineNode.prototype = {
-	point: null
+	position: null
 	,normalIn: null
 	,normalOut: null
 	,transform: function(matrix) {
-		return new thx_geom_SplineNode(thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.leftMultiplyPoint(matrix,this.point),null != this.normalIn?thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.leftMultiplyPoint(matrix,this.normalIn):null,null != this.normalOut?thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.leftMultiplyPoint(matrix,this.normalOut):null);
+		return new thx_geom_SplineNode(thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.leftMultiplyPoint(matrix,this.position),null != this.normalIn?thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.leftMultiplyPoint(matrix,this.normalIn):null,null != this.normalOut?thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.leftMultiplyPoint(matrix,this.normalOut):null);
 	}
 	,flip: function() {
-		return new thx_geom_SplineNode(this.point,this.normalIn,this.normalOut);
+		return new thx_geom_SplineNode(this.position,this.normalIn,this.normalOut);
 	}
 	,toStringValues: function() {
 		var nout;
 		if(null == this.normalOut) nout = "null"; else nout = "" + this.normalOut[1] + "," + this.normalOut[1];
 		var nin;
 		if(null == this.normalIn) nin = "null"; else nin = "" + this.normalIn[1] + "," + this.normalIn[1];
-		return "" + this.point[0] + "," + this.point[1] + "," + nout + "," + nin;
+		return "" + this.position[0] + "," + this.position[1] + "," + nout + "," + nin;
 	}
 	,toString: function() {
 		return "SplineNode(" + this.toStringValues() + ")";

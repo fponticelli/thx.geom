@@ -89,6 +89,13 @@ class EdgeLinear implements Edge {
 	public function interpolate(v : Float) : Point
 		return p0.interpolate(p1, v);
 
+	public function interpolateNode(v : Float) : SplineNode {
+		var p = interpolate(v);
+		if(null == v)
+			return null;
+		return new SplineNode(p, null, null);
+	}
+
 	public function toArray()
 		return [p0,p1];
 
