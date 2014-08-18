@@ -8,6 +8,8 @@ class EdgeLinear implements Edge {
 	@:isVar public var length(get, null) : Float;
 	@:isVar public var lengthSquared(get, null) : Float;
 	@:isVar public var line(get, null) : Line;
+	public var linearSegments(get, null) : Array<EdgeLinear>;
+	public var linearSpline(get, null) : Spline;
 	public var isLinear(default, null) : Bool;
 	public var p0(default, null) : Point;
 	public var p1(default, null) : Point;
@@ -140,4 +142,10 @@ class EdgeLinear implements Edge {
 			line = Line.fromPoints(p0, p1);
 		return line;
 	}
+
+	function get_linearSegments()
+		return [this];
+
+	function get_linearSpline()
+		return linearSpline = Spline.fromEdges([this], false);
 }

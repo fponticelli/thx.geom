@@ -12,6 +12,8 @@ interface Edge {
 	public var last(default, null) : Point;
 	public var normalIn(default, null) : Point;
 	public var normalOut(default, null) : Point;
+	public var linearSegments(get, null) : Array<EdgeLinear>;
+	public var linearSpline(get, null) : Spline;
 
 	public function equals(other : Edge) : Bool;
 	public function matches(other : Edge) : Bool;

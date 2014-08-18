@@ -86,8 +86,14 @@ class EdgeCubic implements Edge {
 		return n.position;
 	}
 
-	public function interpolateNode(v : Float) : SplineNode
-		return throw "not implemented";
+	public function interpolateNode(v : Float) : SplineNode {
+		var edges = subdivide(v);
+		return new SplineNode(
+			edges[0].last,
+			edges[1].normalOut,
+			edges[0].normalIn
+		);
+	}
 
 	public function toEdgeLinear()
 		return new EdgeLinear(first, last);
@@ -107,13 +113,13 @@ class EdgeCubic implements Edge {
 		return (sum / len) <= NEAR_FLAT;
 	}
 
-	public function subdivide() {
-		var l1 = (p0 + p1) / 2,
-			m  = (p1 + p2) / 2,
-			r2 = (p2 + p3) / 2,
-			l2 = (l1 +  m) / 2,
-			r1 = ( m + r2) / 2,
-			l3 = (l2 + r1) / 2;
+	public function subdivide(v : Float = 0.5) {
+		var l1 = p0 + (p1 - p0) * v,
+			m  = p1 + (p2 - p1) * v,
+			r2 = p2 + (p3 - p2) * v,
+			l2 = l1 + ( m - l1) * v,
+			r1 =  m + (r2 -  m) * v,
+			l3 = l2 + (r1 - l2) * v;
 		return [
 			new EdgeCubic(p0, l1, l2, l3),
 			new EdgeCubic(l3, r1, r2, p3)

@@ -45,24 +45,6 @@ class Spline {
 					));
 				}
 			}
-			/*
-			var last = arr[arr.length-1].toArray();
-			for(i in 0...arr.length) {
-				points = arr[i].toArray();
-				if(points.length == 2) {
-					nodes.push(new SplineNode(points[0], null, last[2]));
-				} else {
-					nodes.push(new SplineNode(points[0], points[1], last[2]));
-				}
-				last = points;
-			}
-			var first = arr[0].toArray();
-			if(last.length == 2) {
-				nodes.push(new SplineNode(last[1], null, first[2]));
-			} else {
-				nodes.push(new SplineNode(last[3], first[2], last[2]));
-			}
-			*/
 		}
 		var spline = new Spline(nodes, closed);
 		//spline.edges = arr;
@@ -230,12 +212,8 @@ class Spline {
 	}
 
 	public function toLinear() {
-		var edges = edges.map(function(edge) {
-			if(Std.is(edge, EdgeLinear))
-				return [cast edge];
-			else
-				return (cast edge : EdgeCubic).linearSegments;
-		}).flatten();
+		var edges = edges.map(function(edge)
+			return edge.linearSegments).flatten();
 		return Spline.fromEdges(cast edges, isClosed);
 	}
 
