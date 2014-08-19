@@ -6,9 +6,6 @@ Geometry types for Haxe
 TODO
 --------
 
-  * EdgeCubic
-    * intersectionsLine
-    * interpolateNode
   * Path
     * union
     * difference

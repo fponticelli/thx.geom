@@ -957,7 +957,7 @@ thx_geom_EdgeCubic.prototype = {
 		return this.intersectionsLine(line).length > 0;
 	}
 	,intersectionsLine: function(line) {
-		throw "not implemented";
+		return this.get_linearSpline().intersectionsLine(line);
 	}
 	,split: function(v) {
 		var node = this.interpolateNode(v);
@@ -1097,7 +1097,6 @@ thx_geom_EdgeCubic.prototype = {
 			var edge;
 			this.linearSegments = [];
 			while(tosplit.length > 0) {
-				haxe_Log.trace(tosplit,{ fileName : "EdgeCubic.hx", lineNumber : 161, className : "thx.geom.EdgeCubic", methodName : "get_linearSegments"});
 				edge = tosplit.shift();
 				if(edge.isNearFlat()) this.linearSegments.push(edge.toEdgeLinear()); else tosplit = edge.subdivide().concat(tosplit);
 			}
@@ -2220,7 +2219,7 @@ thx_geom_Path.prototype = {
 		while(_g1 < _g) {
 			var i = _g1++;
 			intersections = intersections.concat(this.splines[i].selfIntersections());
-			var _g3 = 1;
+			var _g3 = i;
 			var _g2 = this.splines.length;
 			while(_g3 < _g2) {
 				var j = _g3++;
@@ -2610,7 +2609,7 @@ thx_geom_Spline.fromCoords = function(arr,closed) {
 	return new thx_geom_Spline(nodes,closed);
 };
 thx_geom_Spline.createEdge = function(a,b,nout,nin) {
-	if(null == nout && null == nin) return new thx_geom_EdgeLinear(a,b); else if(null != nout) return new thx_geom_EdgeCubic(a,nout,b,b); else if(null != nin) return new thx_geom_EdgeCubic(a,a,nin,b); else return new thx_geom_EdgeCubic(a,nout,nin,b);
+	if(null == nout && null == nin) return new thx_geom_EdgeLinear(a,b); else if(null == nout) return new thx_geom_EdgeCubic(a,a,nin,b); else if(null == nin) return new thx_geom_EdgeCubic(a,nout,b,b); else return new thx_geom_EdgeCubic(a,nout,nin,b);
 };
 thx_geom_Spline.prototype = {
 	area: null
@@ -2745,9 +2744,6 @@ thx_geom_Spline.prototype = {
 		var edges = thx_core_Arrays.flatten(this.get_edges().map(function(edge) {
 			return edge.get_linearSegments();
 		}));
-		haxe_Log.trace(edges.map(function(edge1) {
-			return edge1.toString();
-		}),{ fileName : "Spline.hx", lineNumber : 217, className : "thx.geom.Spline", methodName : "toLinear"});
 		return thx_geom_Spline.fromEdges(edges,this.isClosed);
 	}
 	,toPath: function() {
@@ -5277,7 +5273,7 @@ if(Array.prototype.map == null) Array.prototype.map = function(f) {
 thx_core_Ints.pattern_parse = new EReg("^[+-]?(\\d+|0x[0-9A-F]+)$","i");
 thx_geom_Const.EPSILON = 1e-5;
 thx_geom_Const.KAPPA = 0.5522847498307936;
-thx_geom_EdgeCubic.NEAR_FLAT = 1.1;
+thx_geom_EdgeCubic.NEAR_FLAT = 1.001;
 thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.identity = [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1];
 thx_geom_Plane.COPLANAR = 0;
 thx_geom_Plane.FRONT = 1;

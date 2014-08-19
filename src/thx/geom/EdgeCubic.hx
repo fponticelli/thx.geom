@@ -50,10 +50,10 @@ class EdgeCubic implements Edge {
 		return intersections(other).length > 0;
 
 	public function intersections(other : Edge) : Array<Point>
-		if(Std.is(other, EdgeLinear))
-			return intersectionsEdgeLinear(cast other);
+		return if(Std.is(other, EdgeLinear))
+			intersectionsEdgeLinear(cast other);
 		else
-			return intersectionsEdgeCubic(cast other);
+			intersectionsEdgeCubic(cast other);
 
 	public function intersectionsEdgeLinear(other : EdgeLinear) : Array<Point>
 		return linearSegments.map(function(edge : EdgeLinear)
@@ -67,7 +67,7 @@ class EdgeCubic implements Edge {
 		return intersectionsLine(line).length > 0;
 
 	public function intersectionsLine(line : Line) : Array<Point>
-		return throw "not implemented";
+		return linearSpline.intersectionsLine(line);
 
 	public function split(v : Float) : Array<Edge> {
 		var node = interpolateNode(v);

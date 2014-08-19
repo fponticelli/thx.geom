@@ -71,11 +71,12 @@ class Path {
 		}).flatten();
 	}
 
+	// TODO, review since it produces too many points
 	public function selfIntersections() {
 		var intersections = [];
 		for(i in 0...splines.length) {
 			intersections = intersections.concat(splines[i].selfIntersections());
-			for(j in 1...splines.length) {
+			for(j in i...splines.length) {
 				intersections = intersections.concat(splines[i].intersectionsSpline(splines[j]));
 			}
 		}
