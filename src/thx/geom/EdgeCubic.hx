@@ -127,7 +127,7 @@ class EdgeCubic implements Edge {
 	}
 
 	function get_area() : Float {
-		if(null == area)
+		if(Math.isNaN(area))
 			area = linearSegments.reduce(function(acc, edge)
 				return acc + edge.area, 0);
 		return area;
@@ -140,13 +140,13 @@ class EdgeCubic implements Edge {
 	}
 
 	function get_length() : Float {
-		if(null == length)
+		if(Math.isNaN(length))
 			length = Math.sqrt(lengthSquared);
 		return length;
 	}
 
 	function get_lengthSquared() : Float {
-		if(null == lengthSquared)
+		if(Math.isNaN(lengthSquared))
 			lengthSquared = linearSegments.reduce(function(acc, edge)
 				return acc + edge.lengthSquared, 0);
 		return lengthSquared;

@@ -96,7 +96,7 @@ class EdgeLinear implements Edge {
 
 	public function interpolateNode(v : Float) : SplineNode {
 		var p = interpolate(v);
-		if(null == v)
+		if(Math.isNaN(v))
 			return null;
 		return new SplineNode(p, null, null);
 	}
@@ -111,7 +111,7 @@ class EdgeLinear implements Edge {
 		return Spline.fromEdges([this], false);
 
 	function get_area() : Float {
-		if(null == area) {
+		if(Math.isNaN(area)) {
 			var p = p1 - p0;
 			area = p.x * p.y / 2;
 		}
@@ -126,13 +126,13 @@ class EdgeLinear implements Edge {
 	}
 
 	function get_length() : Float {
-		if(null == length)
+		if(Math.isNaN(length))
 			length = Math.sqrt(lengthSquared);
 		return length;
 	}
 
 	function get_lengthSquared() {
-		if(null == lengthSquared)
+		if(Math.isNaN(lengthSquared))
 			lengthSquared = (p1-p0).lengthSquared;
 		return lengthSquared;
 	}

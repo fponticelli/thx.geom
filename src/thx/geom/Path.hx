@@ -126,8 +126,10 @@ class Path {
 	public function toString()
 		return 'Path(${splines.map(function(s) return "["+s.toString()+"]").join(", ")},$isClosed)';
 
+	var _isClosed = false;
 	function get_isClosed() : Bool {
-		if(null == isClosed) {
+		if(!_isClosed) {
+			_isClosed = true;
 			isClosed = true;
 			for(spline in splines) {
 				if(!spline.isClosed) {
@@ -139,17 +141,19 @@ class Path {
 		return isClosed;
 	}
 	function get_area() : Float {
-		if(null == area)
+		if(Math.isNaN(area))
 			area = splines.reduce(function(acc, spline) return acc + spline.area, 0);
 		return area;
 	}
 	function get_length() : Float {
-		if(null == length)
+		if(Math.isNaN(length))
 			length = splines.reduce(function(acc, spline) return acc + spline.length, 0);
 		return length;
 	}
+	var _isSelfIntersecting = false;
 	function get_isSelfIntersecting() : Bool {
-		if(null == isSelfIntersecting) {
+		if(!_isSelfIntersecting) {
+			_isSelfIntersecting = true;
 			isSelfIntersecting = false;
 			for(spline in splines) {
 				if(spline.isSelfIntersecting) {

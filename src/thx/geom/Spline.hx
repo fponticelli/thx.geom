@@ -65,7 +65,7 @@ class Spline {
 		return new Spline(nodes, closed);
 	}
 
-	public static function fromCoords(arr : Array<Array<Float>>, ?closed : Bool) {
+	public static function fromCoords(arr : Array<Array<Null<Float>>>, ?closed : Bool) {
 		var nodes = arr.map(function(c) {
 				var p    = new Point(c[0], c[1]),
 					nout = null == c[2] ? Point.zero : new Point(c[2], c[3]),
@@ -227,7 +227,7 @@ class Spline {
 		return 'Spline(${nodes.map(function(n) return "["+n.toStringValues()+"]").join(", ")},$isClosed)';
 
 	function get_area() : Float {
-		if(null == area) {
+		if(Math.isNaN(area)) {
 			area = 0;
 			iterateEdges(function(edge) {
 				area += edge.area;
@@ -236,7 +236,7 @@ class Spline {
 		return area;
 	}
 	function get_length() : Float {
-		if(null == length) {
+		if(Math.isNaN(length)) {
 			length = 0;
 			iterateEdges(function(edge) {
 				length += edge.length;
@@ -245,8 +245,10 @@ class Spline {
 		return length;
 	}
 
+	var _isSelfIntersecting = false;
 	function get_isSelfIntersecting() : Bool {
-		if(null == isSelfIntersecting) {
+		if(!_isSelfIntersecting) {
+			_isSelfIntersecting = true;
 			var edges = edges;
 			isSelfIntersecting = false;
 			edges.eachPair(function(a, b) return !(isSelfIntersecting = a.intersects(b)));
