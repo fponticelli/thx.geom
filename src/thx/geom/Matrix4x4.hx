@@ -233,6 +233,109 @@ abstract Matrix4x4(Array<Float>)
 		return ismirror;
 	}
 
+	public function inverse() {
+		var inv_0 =   at(5)  * at(10) * at(15) -
+					  at(5)  * at(11) * at(14) -
+					  at(9)  * at(6)  * at(15) +
+					  at(9)  * at(7)  * at(14) +
+					  at(13) * at(6)  * at(11) -
+					  at(13) * at(7)  * at(10),
+			inv_4 =  -at(4)  * at(10) * at(15) +
+					  at(4)  * at(11) * at(14) +
+					  at(8)  * at(6)  * at(15) -
+					  at(8)  * at(7)  * at(14) -
+					  at(12) * at(6)  * at(11) +
+					  at(12) * at(7)  * at(10),
+			inv_8 =   at(4)  * at(9)  * at(15) -
+					  at(4)  * at(11) * at(13) -
+					  at(8)  * at(5)  * at(15) +
+					  at(8)  * at(7)  * at(13) +
+					  at(12) * at(5)  * at(11) -
+					  at(12) * at(7)  * at(9),
+			inv_12 = -at(4)  * at(9)  * at(14) +
+					  at(4)  * at(10) * at(13) +
+					  at(8)  * at(5)  * at(14) -
+					  at(8)  * at(6)  * at(13) -
+					  at(12) * at(5)  * at(10) +
+					  at(12) * at(6)  * at(9),
+			inv_1 =  -at(1)  * at(10) * at(15) +
+					  at(1)  * at(11) * at(14) +
+					  at(9)  * at(2)  * at(15) -
+					  at(9)  * at(3)  * at(14) -
+					  at(13) * at(2)  * at(11) +
+					  at(13) * at(3)  * at(10),
+			inv_5 =   at(0)  * at(10) * at(15) -
+					  at(0)  * at(11) * at(14) -
+					  at(8)  * at(2)  * at(15) +
+					  at(8)  * at(3)  * at(14) +
+					  at(12) * at(2)  * at(11) -
+					  at(12) * at(3)  * at(10),
+			inv_9 =  -at(0)  * at(9)  * at(15) +
+					  at(0)  * at(11) * at(13) +
+					  at(8)  * at(1)  * at(15) -
+					  at(8)  * at(3)  * at(13) -
+					  at(12) * at(1)  * at(11) +
+					  at(12) * at(3)  * at(9),
+			inv_13 =  at(0)  * at(9)  * at(14) -
+					  at(0)  * at(10) * at(13) -
+					  at(8)  * at(1)  * at(14) +
+					  at(8)  * at(2)  * at(13) +
+					  at(12) * at(1)  * at(10) -
+					  at(12) * at(2)  * at(9),
+			inv_2 =   at(1)  * at(6)  * at(15) -
+					  at(1)  * at(7)  * at(14) -
+					  at(5)  * at(2)  * at(15) +
+					  at(5)  * at(3)  * at(14) +
+					  at(13) * at(2)  * at(7) -
+					  at(13) * at(3)  * at(6),
+			inv_6 =  -at(0)  * at(6)  * at(15) +
+					  at(0)  * at(7)  * at(14) +
+					  at(4)  * at(2)  * at(15) -
+					  at(4)  * at(3)  * at(14) -
+					  at(12) * at(2)  * at(7) +
+					  at(12) * at(3)  * at(6),
+			inv_10 =  at(0)  * at(5)  * at(15) -
+					  at(0)  * at(7)  * at(13) -
+					  at(4)  * at(1)  * at(15) +
+					  at(4)  * at(3)  * at(13) +
+					  at(12) * at(1)  * at(7) -
+					  at(12) * at(3)  * at(5),
+			inv_14 = -at(0)  * at(5)  * at(14) +
+					  at(0)  * at(6)  * at(13) +
+					  at(4)  * at(1)  * at(14) -
+					  at(4)  * at(2)  * at(13) -
+					  at(12) * at(1)  * at(6) +
+					  at(12) * at(2)  * at(5),
+			inv_3 =  -at(1)  * at(6)  * at(11) +
+					  at(1)  * at(7)  * at(10) +
+					  at(5)  * at(2)  * at(11) -
+					  at(5)  * at(3)  * at(10) -
+					  at(9)  * at(2)  * at(7) +
+					  at(9)  * at(3)  * at(6),
+			inv_7 =   at(0)  * at(6)  * at(11) -
+					  at(0)  * at(7)  * at(10) -
+					  at(4)  * at(2)  * at(11) +
+					  at(4)  * at(3)  * at(10) +
+					  at(8)  * at(2)  * at(7) -
+					  at(8)  * at(3)  * at(6),
+			inv_11 = -at(0)  * at(5)  * at(11) +
+					  at(0)  * at(7)  * at(9) +
+					  at(4)  * at(1)  * at(11) -
+					  at(4)  * at(3)  * at(9) -
+					  at(8)  * at(1)  * at(7) +
+					  at(8)  * at(3)  * at(5),
+			inv_15 =  at(0)  * at(5)  * at(10) -
+					  at(0)  * at(6)  * at(9) -
+					  at(4)  * at(1)  * at(10) +
+					  at(4)  * at(2)  * at(9) +
+					  at(8)  * at(1)  * at(6) -
+					  at(8)  * at(2)  * at(5),
+			det = at(0) * inv_0 + at(1) * inv_4 + at(2) * inv_8 + at(3) * inv_12;
+		if(det == 0)
+			return null;
+		return new Matrix4x4(inv_0, inv_1, inv_2, inv_3, inv_4, inv_5, inv_6, inv_7, inv_8, inv_9, inv_10, inv_11, inv_12, inv_13, inv_14, inv_15);
+	}
+
 	public inline function at(index : Int)
 		return this[index];
 

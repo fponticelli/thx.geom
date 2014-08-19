@@ -1,5 +1,6 @@
 package thx.geom.shape;
 
+import thx.geom.Matrix4x4;
 import thx.geom.Point;
 
 abstract Box(Array<Point>) {
@@ -23,6 +24,9 @@ abstract Box(Array<Point>) {
 	public var bottom(get, never) : Float;
 	public var width(get, never) : Float;
 	public var height(get, never) : Float;
+
+	public function transform(matrix : Matrix4x4)
+		return Box.fromPoints(bottomLeft.transform(matrix), topRight.transform(matrix));
 
 	inline function get_topLeft() return new Point(left, top);
 	inline function get_topRight() return this[1];

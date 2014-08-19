@@ -13,6 +13,8 @@ class Line {
 
 	public var normal(default, null) : Point;
 	public var w(default, null) : Float;
+	public var isHorizontal(get, null) : Bool;
+	public var isVertical(get, null) : Bool;
 
 	public function new(normal : Point, w : Float) {
 		var l = normal.length;
@@ -54,6 +56,12 @@ class Line {
 			neww = newnormal.dot(newpointOnPlane);
 		return new Line(newnormal, neww);
 	}
+
+	function get_isHorizontal()
+		return normal.x == 0;
+
+	function get_isVertical()
+		return normal.y == 0;
 
 	public function toString()
 		return 'Line(${normal.x},${normal.y},w:$w)';

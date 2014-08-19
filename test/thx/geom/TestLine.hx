@@ -38,4 +38,19 @@ class TestLine {
 		var off = line.offset(10);
 		Assert.isNull(line.intersectionLine(off));
 	}
+
+	function horiz() return Line.fromPoints(new Point(100, 10), new Point(200, 10));
+	function vert() return Line.fromPoints(new Point(10, 100), new Point(10, 200));
+
+	public function testIsHorizontal() {
+		Assert.isTrue(horiz().isHorizontal);
+		Assert.isFalse(vert().isHorizontal);
+		Assert.isFalse(line.isHorizontal);
+	}
+
+	public function testIsVertical() {
+		Assert.isTrue(vert().isVertical);
+		Assert.isFalse(horiz().isVertical);
+		Assert.isFalse(line.isVertical);
+	}
 }

@@ -6,7 +6,7 @@ class TestAll {
 	public static function main() {
 		var runner = new Runner();
 		runner.addCase(new TestAll());
-		runner.addCase(new thx.geom.TestEdgeLinear());
+		//runner.addCase(new thx.geom.TestEdgeLinear());
 		//runner.addCase(new thx.geom.TestEdgeCubic());
 		runner.addCase(new thx.geom.TestLine());
 		runner.addCase(new thx.geom.TestPoint());
