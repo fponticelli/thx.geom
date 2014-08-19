@@ -874,6 +874,8 @@ thx_geom_Edge.prototype = {
 	,last: null
 	,normalIn: null
 	,normalOut: null
+	,linearSegments: null
+	,linearSpline: null
 	,equals: null
 	,matches: null
 	,transform: null
@@ -968,7 +970,8 @@ thx_geom_EdgeCubic.prototype = {
 		return n.position;
 	}
 	,interpolateNode: function(v) {
-		throw "not implemented";
+		var edges = this.subdivide(v);
+		return new thx_geom_SplineNode(edges[0].last,edges[1].normalOut,edges[0].normalIn);
 	}
 	,toEdgeLinear: function() {
 		return new thx_geom_EdgeLinear(this.first,this.last);
@@ -1007,37 +1010,65 @@ thx_geom_EdgeCubic.prototype = {
 		var len = thx_geom__$Point_Point_$Impl_$.distanceTo(this.p0,this.p3);
 		return sum / len <= thx_geom_EdgeCubic.NEAR_FLAT;
 	}
-	,subdivide: function() {
+	,subdivide: function(v) {
+		if(v == null) v = 0.5;
 		var l1;
-		var this1;
-		var this11 = this.p0;
-		var p = this.p1;
-		this1 = [this11[0] + p[0],this11[1] + p[1]];
-		l1 = [this1[0] / 2,this1[1] / 2];
+		var this1 = this.p0;
+		var p;
+		var this11;
+		var this12 = this.p1;
+		var p1 = this.p0;
+		var p_0 = -p1[0];
+		var p_1 = -p1[1];
+		this11 = [this12[0] + p_0,this12[1] + p_1];
+		p = [this11[0] * v,this11[1] * v];
+		l1 = [this1[0] + p[0],this1[1] + p[1]];
 		var m;
-		var this12;
 		var this13 = this.p1;
-		var p1 = this.p2;
-		this12 = [this13[0] + p1[0],this13[1] + p1[1]];
-		m = [this12[0] / 2,this12[1] / 2];
-		var r2;
+		var p2;
 		var this14;
 		var this15 = this.p2;
-		var p2 = this.p3;
-		this14 = [this15[0] + p2[0],this15[1] + p2[1]];
-		r2 = [this14[0] / 2,this14[1] / 2];
+		var p3 = this.p1;
+		var p_01 = -p3[0];
+		var p_11 = -p3[1];
+		this14 = [this15[0] + p_01,this15[1] + p_11];
+		p2 = [this14[0] * v,this14[1] * v];
+		m = [this13[0] + p2[0],this13[1] + p2[1]];
+		var r2;
+		var this16 = this.p2;
+		var p4;
+		var this17;
+		var this18 = this.p3;
+		var p5 = this.p2;
+		var p_02 = -p5[0];
+		var p_12 = -p5[1];
+		this17 = [this18[0] + p_02,this18[1] + p_12];
+		p4 = [this17[0] * v,this17[1] * v];
+		r2 = [this16[0] + p4[0],this16[1] + p4[1]];
 		var l2;
-		var this1_0 = l1[0] + m[0];
-		var this1_1 = l1[1] + m[1];
-		l2 = [this1_0 / 2,this1_1 / 2];
+		var p6;
+		var this19;
+		var p_03 = -l1[0];
+		var p_13 = -l1[1];
+		this19 = [m[0] + p_03,m[1] + p_13];
+		p6 = [this19[0] * v,this19[1] * v];
+		l2 = [l1[0] + p6[0],l1[1] + p6[1]];
 		var r1;
-		var this1_01 = m[0] + r2[0];
-		var this1_11 = m[1] + r2[1];
-		r1 = [this1_01 / 2,this1_11 / 2];
+		var p7;
+		var this110;
+		var p_04 = -m[0];
+		var p_14 = -m[1];
+		this110 = [r2[0] + p_04,r2[1] + p_14];
+		p7 = [this110[0] * v,this110[1] * v];
+		r1 = [m[0] + p7[0],m[1] + p7[1]];
 		var l3;
-		var this1_02 = l2[0] + r1[0];
-		var this1_12 = l2[1] + r1[1];
-		l3 = [this1_02 / 2,this1_12 / 2];
+		var p8;
+		var this111;
+		var p_05 = -l2[0];
+		var p_15 = -l2[1];
+		this111 = [r1[0] + p_05,r1[1] + p_15];
+		p8 = [this111[0] * v,this111[1] * v];
+		l3 = [l2[0] + p8[0],l2[1] + p8[1]];
 		return [new thx_geom_EdgeCubic(this.p0,l1,l2,l3),new thx_geom_EdgeCubic(l3,r1,r2,this.p3)];
 	}
 	,get_area: function() {
@@ -1066,6 +1097,7 @@ thx_geom_EdgeCubic.prototype = {
 			var edge;
 			this.linearSegments = [];
 			while(tosplit.length > 0) {
+				haxe_Log.trace(tosplit,{ fileName : "EdgeCubic.hx", lineNumber : 161, className : "thx.geom.EdgeCubic", methodName : "get_linearSegments"});
 				edge = tosplit.shift();
 				if(edge.isNearFlat()) this.linearSegments.push(edge.toEdgeLinear()); else tosplit = edge.subdivide().concat(tosplit);
 			}
@@ -1092,6 +1124,8 @@ thx_geom_EdgeLinear.prototype = {
 	,length: null
 	,lengthSquared: null
 	,line: null
+	,linearSegments: null
+	,linearSpline: null
 	,isLinear: null
 	,p0: null
 	,p1: null
@@ -1261,6 +1295,12 @@ thx_geom_EdgeLinear.prototype = {
 	,get_line: function() {
 		if(null == this.line) this.line = thx_geom_Line.fromPoints(this.p0,this.p1);
 		return this.line;
+	}
+	,get_linearSegments: function() {
+		return [this];
+	}
+	,get_linearSpline: function() {
+		return this.linearSpline = thx_geom_Spline.fromEdges([this],false);
 	}
 	,__class__: thx_geom_EdgeLinear
 };
@@ -2703,8 +2743,11 @@ thx_geom_Spline.prototype = {
 	}
 	,toLinear: function() {
 		var edges = thx_core_Arrays.flatten(this.get_edges().map(function(edge) {
-			if(js_Boot.__instanceof(edge,thx_geom_EdgeLinear)) return [edge]; else return edge.get_linearSegments();
+			return edge.get_linearSegments();
 		}));
+		haxe_Log.trace(edges.map(function(edge1) {
+			return edge1.toString();
+		}),{ fileName : "Spline.hx", lineNumber : 217, className : "thx.geom.Spline", methodName : "toLinear"});
 		return thx_geom_Spline.fromEdges(edges,this.isClosed);
 	}
 	,toPath: function() {
@@ -5234,7 +5277,7 @@ if(Array.prototype.map == null) Array.prototype.map = function(f) {
 thx_core_Ints.pattern_parse = new EReg("^[+-]?(\\d+|0x[0-9A-F]+)$","i");
 thx_geom_Const.EPSILON = 1e-5;
 thx_geom_Const.KAPPA = 0.5522847498307936;
-thx_geom_EdgeCubic.NEAR_FLAT = 1.001;
+thx_geom_EdgeCubic.NEAR_FLAT = 1.1;
 thx_geom__$Matrix4x4_Matrix4x4_$Impl_$.identity = [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1];
 thx_geom_Plane.COPLANAR = 0;
 thx_geom_Plane.FRONT = 1;

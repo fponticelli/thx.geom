@@ -104,10 +104,10 @@ class Spline {
 	static function createEdge(a, b, nout, nin) : Edge {
 		if(null == nout && null == nin)
 			return new EdgeLinear(a, b);
-		else if(null != nout)
-			return new EdgeCubic(a, nout, b, b);
-		else if(null != nin)
+		else if(null == nout)
 			return new EdgeCubic(a, a, nin, b);
+		else if(null == nin)
+			return new EdgeCubic(a, nout, b, b);
 		else
 			return new EdgeCubic(a, nout, nin, b);
 	}
