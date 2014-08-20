@@ -53,11 +53,13 @@ abstract Box(Array<Point>) {
 		return new Box(min, max);
 	}
 
-	public function intersects(other : Box) {
+	public function intersects(other : Box)
 		return
 			right >= other.left && left <= other.right ||
 			bottom >= other.top && top <= other.bottom;
-	}
+
+	public function contains(point : Point)
+		return left <= point.x && right >= point.x && top >= point.y && bottom <= point.y;
 
 	@:commutative
 	@:op('A==B') public function equals(other : Box)

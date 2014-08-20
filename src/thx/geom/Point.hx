@@ -1,5 +1,7 @@
 package thx.geom;
 
+import thx.math.Number;
+
 abstract Point(Array<Float>) {
 	public static var zero(default, null) : Point = new Point(0, 0);
 
@@ -113,6 +115,12 @@ abstract Point(Array<Float>) {
 
 	public function pointAt(angle : Angle, distance : Float)
 		return inst + Point.fromAngle(angle).multiply(distance);
+
+	public function isOnLine(line : Line) : Bool {
+		if(line.isHorizontal)
+			return Number.nearEquals(y, line.w);
+		return Number.nearEquals(line.xAtY(y), x);
+	}
 
 	@:to inline public function toAngle() : Angle
 		return Math.atan2(y, x);

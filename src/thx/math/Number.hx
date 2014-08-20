@@ -8,6 +8,9 @@ class Number
 	inline public static function isNearZero(n : Float)
 		return Math.abs(n) <= EPSILON;
 
+	public static function nearEquals(a : Float, b : Float)
+		return Math.abs(a - b) <= EPSILON;
+
 	public static function integrate(f : Float -> Float, a : Float, b : Float, n : Int) {
 		var x = abscissas[n - 2],
 			w = weights[n - 2],

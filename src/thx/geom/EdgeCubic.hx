@@ -11,7 +11,7 @@ class EdgeCubic implements Edge {
 	@:isVar public var lengthSquared(get, null) : Float;
 	@:isVar public var linearSegments(get, null) : Array<EdgeLinear>;
 	@:isVar public var linearSpline(get, null) : Spline;
-	public var isLinear(default, null) : Bool;
+	@:isVar public var isLinear(get, null) : Bool;
 	public var p0(default, null) : Point;
 	public var p1(default, null) : Point;
 	public var p2(default, null) : Point;
@@ -22,7 +22,6 @@ class EdgeCubic implements Edge {
 	public var normalOut(default, null) : Point;
 
 	public function new(p0 : Point, p1 : Point, p2 : Point, p3 : Point) {
-		isLinear = false;
 		first = this.p0 = p0;
 		normalOut = this.p1 = p1;
 		normalIn = this.p2 = p2;
@@ -95,7 +94,7 @@ class EdgeCubic implements Edge {
 		);
 	}
 
-	public function toEdgeLinear()
+	public function toLinear()
 		return new EdgeLinear(first, last);
 
 	public function toArray()
@@ -143,6 +142,21 @@ class EdgeCubic implements Edge {
 		return box;
 	}
 
+	var _isLinear = false;
+	function get_isLinear() {
+		if(!_isLinear) {
+			_isLinear = true;
+			var line = Line.fromPoints(p0, p3);
+			if(!p1.isOnLine(line) || !p0.isOnLine(line))
+				isLinear = false;
+			else {
+				var box = Box.fromPoints(p0, p3);
+				isLinear = box.contains(p1) && box.contains(p2);
+			}
+		}
+		return isLinear;
+	}
+
 	var _length = false;
 	function get_length() : Float {
 		if(!_length) {
@@ -171,7 +185,7 @@ class EdgeCubic implements Edge {
 			while(tosplit.length > 0) {
 				edge = tosplit.shift();
 				if(edge.isNearFlat()) {
-					linearSegments.push(edge.toEdgeLinear());
+					linearSegments.push(edge.toLinear());
 				} else {
 					tosplit = edge.subdivide().concat(tosplit);
 				}

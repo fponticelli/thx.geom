@@ -112,6 +112,11 @@ class Path {
 		return null;
 	}
 
+	public function asClockwise(clockwise = true) {
+		var results = splines.map(function(spline) return spline.asClockwise(clockwise));
+		return new Path(results);
+	}
+
 	public function hull(other : Spline) {
 		return throw 'not implemented';
 	}

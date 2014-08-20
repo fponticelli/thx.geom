@@ -10,6 +10,7 @@ class Spline {
 	@:isVar public var isSelfIntersecting(get, null) : Bool;
 	@:isVar public var isPolygon(get, null) : Bool;
 	@:isVar public var isEmpty(get, null) : Bool;
+	@:isVar public var isClockwise(get, null) : Bool;
 	@:isVar public var box(get, null) : Box;
 	@:isVar public var edges(get, null) : Array<Edge>;
 
@@ -47,7 +48,7 @@ class Spline {
 			}
 		}
 		var spline = new Spline(nodes, closed);
-		//spline.edges = arr;
+		spline.edges = arr;
 		return spline;
 	}
 
@@ -209,6 +210,47 @@ class Spline {
 			value -= nor;
 		}
 		return null;
+	}
+
+	public function reduce() {
+		var edges = edges,
+			i = edges.length,
+			result : Array<Edge> = [],
+			edge;
+		while(--i >= 0) {
+			edge = edges[i];
+			// remove zero length
+			if(edge.length == 0)
+				continue;
+			// transform EdgeCubic that are linear to EdgeLinear
+			if(edge.isLinear)
+				edge = edge.toLinear();
+			result.unshift(edge);
+		}
+		return Spline.fromEdges(result, isClosed);
+	}
+
+	var _isClockwise = false;
+	public function get_isClockwise() {
+		if(!_isClockwise) {
+			_isClockwise = true;
+			var sum = 0.0;
+			iterateEdges(function(edge) {
+				sum += (edge.last.x - edge.first.x) * (edge.last.y + edge.first.y);
+			});
+			isClockwise = sum > 0;
+		}
+		return isClockwise;
+	}
+
+	public function asClockwise(clockwise = true) {
+		if(isClockwise == clockwise)
+			return this;
+		else {
+			var counter = flip();
+			counter.isClockwise = !clockwise;
+			return counter;
+		}
 	}
 
 	public function toLinear() {

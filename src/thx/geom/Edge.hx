@@ -7,7 +7,7 @@ interface Edge {
 	public var area(get, null) : Float;
 	public var length(get, null) : Float;
 	public var lengthSquared(get, null) : Float;
-	public var isLinear(default, null) : Bool;
+	public var isLinear(get, null) : Bool;
 	public var first(default, null) : Point;
 	public var last(default, null) : Point;
 	public var normalIn(default, null) : Point;
@@ -28,6 +28,7 @@ interface Edge {
 	public function interpolate(v : Float) : Point;
 	public function interpolateNode(v : Float) : SplineNode;
 	public function toArray() : Array<Point>;
+	public function toLinear() : EdgeLinear;
 	public function toString() : String;
 	public function toSpline() : Spline;
 }

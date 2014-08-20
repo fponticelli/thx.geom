@@ -10,7 +10,7 @@ class EdgeLinear implements Edge {
 	@:isVar public var line(get, null) : Line;
 	public var linearSegments(get, null) : Array<EdgeLinear>;
 	public var linearSpline(get, null) : Spline;
-	public var isLinear(default, null) : Bool;
+	public var isLinear(get, null) : Bool;
 	public var p0(default, null) : Point;
 	public var p1(default, null) : Point;
 	public var first(default, null) : Point;
@@ -19,7 +19,6 @@ class EdgeLinear implements Edge {
 	public var normalOut(default, null) : Point;
 
 	public function new(p0 : Point, p1 : Point) {
-		isLinear = true;
 		first = this.p0 = p0;
 		last = this.p1 = p1;
 		normalIn = normalOut = null;
@@ -101,6 +100,9 @@ class EdgeLinear implements Edge {
 		return new SplineNode(p, null, null);
 	}
 
+	public function toLinear()
+		return this;
+
 	public function toArray()
 		return [p0,p1];
 
@@ -126,6 +128,9 @@ class EdgeLinear implements Edge {
 		}
 		return box;
 	}
+
+	function get_isLinear()
+		return true;
 
 	var _length = false;
 	function get_length() : Float {
