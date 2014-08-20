@@ -140,16 +140,25 @@ class Path {
 		}
 		return isClosed;
 	}
+
+	var _area = false;
 	function get_area() : Float {
-		if(Math.isNaN(area))
+		if(!_area) {
+			_area = true;
 			area = splines.reduce(function(acc, spline) return acc + spline.area, 0);
+		}
 		return area;
 	}
+
+	var _length = false;
 	function get_length() : Float {
-		if(Math.isNaN(length))
+		if(!_length) {
+			_length = true;
 			length = splines.reduce(function(acc, spline) return acc + spline.length, 0);
+		}
 		return length;
 	}
+
 	var _isSelfIntersecting = false;
 	function get_isSelfIntersecting() : Bool {
 		if(!_isSelfIntersecting) {

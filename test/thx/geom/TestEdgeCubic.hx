@@ -19,14 +19,16 @@ class TestEdgeCubic {
 		Assert.isFalse(edge.isLinear);
 	}
 
-	static function areaPoint(p : Point)
-		return p.x * p.y / 2;
+	static function areaPoints(p0 : Point, p1 : Point) {
+		var p = p1 - p0;
+		return p0.y * (p1.x - p0.x) + (p.x * p.y) / 2;
+	}
 
 	public function testArea() {
-		var max = areaPoint(edge.p1 - edge.p0)
-				+ areaPoint(edge.p2 - edge.p1)
-				+ areaPoint(edge.p3 - edge.p2),
-			min = areaPoint(edge.p3 - edge.p0),
+		var max = areaPoints(edge.p0, edge.p1)
+				+ areaPoints(edge.p1, edge.p2)
+				+ areaPoints(edge.p2, edge.p3),
+			min = areaPoints(edge.p0, edge.p3),
 			area = edge.area;
 		Assert.isTrue(area > min);
 		Assert.isTrue(area < max);
@@ -40,29 +42,5 @@ class TestEdgeCubic {
 			length = edge.length;
 		Assert.isTrue(length > min);
 		Assert.isTrue(length < max);
-	}
-
-	public function testSplit() {
-
-	}
-
-	public function testInterpolate() {
-
-	}
-
-	public function testIntersectionsWithEdgeLinear() {
-
-	}
-
-	public function testIntersectionsWithEdgeCubic() {
-
-	}
-
-	public function testIntersectionsWithNonCrossingEdge() {
-
-	}
-
-	public function testIntersectionsWithLine() {
-
 	}
 }

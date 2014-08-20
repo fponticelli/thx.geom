@@ -8,9 +8,11 @@ class TestEdgeLinear {
 	var edge : EdgeLinear;
 	var a : Float;
 	var b : Float;
+	var p0 : Point;
+	var p1 : Point;
 	public function new() {
-		var p0 = new Point(10, 10),
-			p1 = new Point(60, 60);
+		p0 = new Point(10, 10);
+		p1 = new Point(60, 60);
 		edge = new EdgeLinear(p0, p1);
 		a = (p1 - p0).x;
 		b = (p1 - p0).y;
@@ -21,7 +23,8 @@ class TestEdgeLinear {
 	}
 
 	public function testArea() {
-		Assert.equals(a*b/2, edge.area);
+		var p = p1 - p0;
+		Assert.equals(p0.y * (p1.x-p0.x) + (p.x * p.y) / 2, edge.area);
 	}
 
 	public function testLength() {
@@ -59,9 +62,5 @@ class TestEdgeLinear {
 		Assert.isTrue(ps[0].nearEquals(new Point(30, 30)));
 		Assert.isFalse(e2.intersects(e3));
 		Assert.same([], e2.intersections(e3));
-	}
-
-	public function testIntersectionsWithEdgeCubic() {
-
 	}
 }

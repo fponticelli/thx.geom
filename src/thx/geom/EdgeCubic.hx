@@ -126,10 +126,14 @@ class EdgeCubic implements Edge {
 		];
 	}
 
+	var _area = false;
 	function get_area() : Float {
-		if(Math.isNaN(area))
-			area = linearSegments.reduce(function(acc, edge)
-				return acc + edge.area, 0);
+		if(!_area) {
+			_area = true;
+			area = linearSegments.reduce(function(acc, edge) {
+				return acc + edge.area;
+			}, 0);
+		}
 		return area;
 	}
 
@@ -139,16 +143,23 @@ class EdgeCubic implements Edge {
 		return box;
 	}
 
+	var _length = false;
 	function get_length() : Float {
-		if(Math.isNaN(length))
-			length = Math.sqrt(lengthSquared);
+		if(!_length) {
+			_length = true;
+			length = linearSegments.reduce(function(acc, edge)
+				return acc + edge.length, 0);
+		}
 		return length;
 	}
 
+	var _lengthSquared = false;
 	function get_lengthSquared() : Float {
-		if(Math.isNaN(lengthSquared))
+		if(!_lengthSquared) {
+			_lengthSquared = true;
 			lengthSquared = linearSegments.reduce(function(acc, edge)
 				return acc + edge.lengthSquared, 0);
+		}
 		return lengthSquared;
 	}
 

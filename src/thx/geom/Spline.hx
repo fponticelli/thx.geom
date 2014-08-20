@@ -226,8 +226,10 @@ class Spline {
 	public function toString()
 		return 'Spline(${nodes.map(function(n) return "["+n.toStringValues()+"]").join(", ")},$isClosed)';
 
+	var _area = false;
 	function get_area() : Float {
-		if(Math.isNaN(area)) {
+		if(!_area) {
+			_area = true;
 			area = 0;
 			iterateEdges(function(edge) {
 				area += edge.area;
@@ -235,8 +237,11 @@ class Spline {
 		}
 		return area;
 	}
+
+	var _length = false;
 	function get_length() : Float {
-		if(Math.isNaN(length)) {
+		if(!_length) {
+			_length = true;
 			length = 0;
 			iterateEdges(function(edge) {
 				length += edge.length;
