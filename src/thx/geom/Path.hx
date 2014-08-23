@@ -112,10 +112,8 @@ class Path {
 		return null;
 	}
 
-	public function asClockwise(clockwise = true) {
-		var results = splines.map(function(spline) return spline.asClockwise(clockwise));
-		return new Path(results);
-	}
+	public function asClockwise(clockwise = true)
+		return new Path(splines.map(function(spline) return spline.asClockwise(clockwise)));
 
 	public function hull(other : Spline) {
 		return throw 'not implemented';
@@ -124,6 +122,11 @@ class Path {
 	public function minkowsky(other : Spline) {
 		return throw 'not implemented';
 	}
+
+	public function reduce()
+		return new Path(splines
+			.map(function(spline) return spline.reduce())
+			.filter(function(spline) return spline.edges.length > 0));
 
 	public function toPoints()
 		return splines.map(function(spline) return spline.toPoints()).flatten();

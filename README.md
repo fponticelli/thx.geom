@@ -13,3 +13,5 @@ TODO
     * intersections
     * hull
     * minkowsky
+    * simplification
+    * outline/inline
