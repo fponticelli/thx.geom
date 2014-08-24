@@ -1,0 +1,11 @@
+{
+  "name": "thx.geom",
+  "url": "https://github.com/fponticelli/thx.geom",
+  "license": "MIT",
+  "classPath": "src",
+  "tags": ["thx", "math", "geometry", "2d", "3d", "cross"],
+  "description": "Library for geometric shapes and operations",
+  "releasenote": "first release",
+  "version": "0.1.0",
+  "contributors": ["fponticelli"]
+}
