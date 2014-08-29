@@ -2,7 +2,7 @@
 -cp test
 -lib utest
 -lib thx.core
--lib thx-unit
+-lib thx.unit
 -D nodejs
 -D js-flatten
 -D thx-unit
