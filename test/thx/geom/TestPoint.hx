@@ -3,7 +3,9 @@ package thx.geom;
 import utest.Assert;
 import thx.geom.Point;
 
+#if thx_unit
 using thx.unit.angle.Degree;
+#end
 
 class TestPoint {
 	public function new() {}
@@ -46,7 +48,7 @@ class TestPoint {
 
 	#if thx_unit
 	public function testFromAngle() {
-		var p = Point.fromAngle(90.toDegrees());
+		var p = Point.fromAngle(90.floatToDegree());
 		Assert.isTrue(new Point(0, 1).nearEquals(p));
 	}
 	#end

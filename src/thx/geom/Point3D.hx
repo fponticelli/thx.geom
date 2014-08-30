@@ -1,5 +1,7 @@
 package thx.geom;
 
+import thx.core.Floats;
+
 abstract Point3D(Array<Float>) {
 	public static var zero(default, null) : Point3D = new Point3D(0, 0, 0);
 
@@ -75,7 +77,7 @@ abstract Point3D(Array<Float>) {
 		return new Point3D(Math.abs(x), Math.abs(y), Math.abs(z));
 
 	public function nearEquals(p : Point3D)
-		return Math.abs(x - p.x) <= Const.EPSILON && Math.abs(y - p.y) <= Const.EPSILON && Math.abs(z - p.z) <= Const.EPSILON;
+		return Math.abs(x - p.x) <= Floats.EPSILON && Math.abs(y - p.y) <= Floats.EPSILON && Math.abs(z - p.z) <= Floats.EPSILON;
 
 	public function interpolate(p : Point3D, f : Float) : Point3D
 		return addPoint3D(p.subtractPoint3D(this).multiply(f));

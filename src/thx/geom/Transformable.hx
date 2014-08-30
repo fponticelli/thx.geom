@@ -35,15 +35,15 @@ class Transformables {
 	public static inline function scale<T>(t : Transformable<T>, f : Point3D) : T
 		return t.transform(Matrix4x4.scaling(f));
 
-	public static inline function rotateX<T>(t : Transformable<T>, angle : Angle) : T
+	public static inline function rotateX<T>(t : Transformable<T>, angle :  Float) : T
 		return t.transform(Matrix4x4.rotationX(angle));
 
-	public static inline function rotateY<T>(t : Transformable<T>, angle : Angle) : T
+	public static inline function rotateY<T>(t : Transformable<T>, angle :  Float) : T
 		return t.transform(Matrix4x4.rotationY(angle));
 
-	public static inline function rotateZ<T>(t : Transformable<T>, angle : Angle) : T
+	public static inline function rotateZ<T>(t : Transformable<T>, angle :  Float) : T
 		return t.transform(Matrix4x4.rotationZ(angle));
 
-	public static inline function rotateOnAxis<T>(t : Transformable<T>, center : Point3D, axis : Point3D, angle : Angle) : T
+	public static inline function rotateOnAxis<T>(t : Transformable<T>, center : Point3D, axis : Point3D, angle :  Float) : T
 		return t.transform(Matrix4x4.rotation(center, axis, angle));
 }

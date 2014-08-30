@@ -1,6 +1,7 @@
 package thx.geom;
 
 import thx.geom.Point;
+using thx.core.Floats;
 using thx.math.Number;
 
 class Vertex {
@@ -31,8 +32,8 @@ class Vertex {
 			other.position.x + other.normal.x, other.position.y + other.normal.y,
 			other.position.x, other.position.y
 		];
-		if(Number.isNearZero(v[0] - v[2]) && Number.isNearZero(v[1] - v[3]) &&
-		   Number.isNearZero(v[6] - v[4]) && Number.isNearZero(v[7] - v[5]))
+		if(Floats.nearZero(v[0] - v[2]) && Floats.nearZero(v[1] - v[3]) &&
+		   Floats.nearZero(v[6] - v[4]) && Floats.nearZero(v[7] - v[5]))
 			return position.distanceToSquared(other.position);
 		// TODO parameters should not be hard coded, particularly precision
 		return getLengthSquaredIntegrand(v).integrate(0, 1, 16);

@@ -1,6 +1,6 @@
 package thx.geom;
 
-import thx.math.Number;
+import thx.core.Floats;
 
 abstract Point(Array<Float>) {
 	public static var zero(default, null) : Point = new Point(0, 0);
@@ -11,7 +11,7 @@ abstract Point(Array<Float>) {
 	@:from static inline function fromArray(arr : Array<Int>)
 		return new Point(arr[0], arr[1]);
 
-	static inline public function fromAngle(angle : Angle)
+	static inline public function fromAngle(angle :  Float)
 		return new Point(Math.cos(angle), Math.sin(angle));
 
 	inline public function new(x : Float, y : Float)
@@ -69,7 +69,7 @@ abstract Point(Array<Float>) {
 		return new Point(Math.abs(x), Math.abs(y));
 
 	public function nearEquals(p : Point)
-		return Math.abs(x - p.x) <= Const.EPSILON && Math.abs(y - p.y) <= Const.EPSILON;
+		return Math.abs(x - p.x) <= Floats.EPSILON && Math.abs(y - p.y) <= Floats.EPSILON;
 
 	public function interpolate(p : Point, f : Float)
 		return addPoint(p.subtractPoint(inst).multiply(f));
@@ -113,16 +113,16 @@ abstract Point(Array<Float>) {
 			Math.max(y, p.y)
 		);
 
-	public function pointAt(angle : Angle, distance : Float)
+	public function pointAt(angle :  Float, distance : Float)
 		return inst + Point.fromAngle(angle).multiply(distance);
 
 	public function isOnLine(line : Line) : Bool {
 		if(line.isHorizontal)
-			return Number.nearEquals(y, line.w);
-		return Number.nearEquals(line.xAtY(y), x);
+			return Floats.nearEqual(y, line.w);
+		return Floats.nearEqual(line.xAtY(y), x);
 	}
 
-	@:to inline public function toAngle() : Angle
+	@:to inline public function toAngle() :  Float
 		return Math.atan2(y, x);
 
 	@:to inline function toArray() : Array<Float>

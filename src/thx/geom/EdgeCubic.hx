@@ -1,10 +1,11 @@
 package thx.geom;
 
 import thx.geom.shape.Box;
+import thx.core.Floats;
 using thx.core.Arrays;
 
 class EdgeCubic implements Edge {
-	public static var NEAR_FLAT : Float = 1.001; //1.0 + Const.EPSILON;
+	public static var NEAR_FLAT : Float = 1.0 + Floats.EPSILON;
 	@:isVar public var box(get, null) : Box;
 	@:isVar public var area(get, null) : Float;
 	@:isVar public var length(get, null) : Float;

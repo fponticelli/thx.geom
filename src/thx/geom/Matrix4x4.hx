@@ -13,28 +13,28 @@ abstract Matrix4x4(Array<Float>)
 	}
 
 	// Create a rotation matrix for rotating around the x axis
-	static public function rotationX(radians : Angle) {
+	static public function rotationX(radians :  Float) {
 		var cos = Math.cos(radians),
 			sin = Math.sin(radians);
 		return new Matrix4x4(1, 0, 0, 0, 0, cos, sin, 0, 0, -sin, cos, 0, 0, 0, 0, 1);
 	}
 
 	// Create a rotation matrix for rotating around the y axis
-	static public function rotationY(radians : Angle) {
+	static public function rotationY(radians :  Float) {
 		var cos = Math.cos(radians),
 			sin = Math.sin(radians);
 		return new Matrix4x4(cos, 0, -sin, 0, 0, 1, 0, 0, sin, 0, cos, 0, 0, 0, 0, 1);
 	}
 
 	// Create a rotation matrix for rotating around the z axis
-	static public function rotationZ(radians : Angle) {
+	static public function rotationZ(radians :  Float) {
 		var cos = Math.cos(radians),
 			sin = Math.sin(radians);
 		return new Matrix4x4(cos, sin, 0, 0, -sin, cos, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 	}
 
 	// Matrix for rotation about arbitrary point and axis
-	static public function rotation(rotationCenter : Point3D, rotationAxis : Point3D, radians : Angle) {
+	static public function rotation(rotationCenter : Point3D, rotationAxis : Point3D, radians :  Float) {
 		var rotationPlane = Plane.fromNormalAndPoint(rotationAxis, rotationCenter),
 			orthobasis = OrthoNormalBasis.fromPlane(rotationPlane),
 			transformation = Matrix4x4.translation(rotationCenter.negate());
