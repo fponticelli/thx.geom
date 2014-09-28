@@ -118,8 +118,8 @@ abstract Point(Array<Float>) {
 
 	public function isOnLine(line : Line) : Bool {
 		if(line.isHorizontal)
-			return Floats.nearEqual(y, line.w);
-		return Floats.nearEqual(line.xAtY(y), x);
+			return Floats.nearEquals(y, line.w);
+		return Floats.nearEquals(line.xAtY(y), x);
 	}
 
 	@:to inline public function toAngle() :  Float
