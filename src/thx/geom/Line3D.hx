@@ -22,15 +22,15 @@ class Line3D {
       // direction vector is mostly pointing towards x
       // find a point p for which x is zero:
       var r = Point.solve2Linear(p1.normal.y, p1.normal.z, p2.normal.y, p2.normal.z, p1.w, p2.w);
-      origin = new Point3D(0, r[0], r[1]);
+      origin = new Point3D(0, r.x, r.y);
     } else if((mabsy >= mabsx) && (mabsy >= mabsz)) {
       // find a point p for which y is zero:
       var r = Point.solve2Linear(p1.normal.x, p1.normal.z, p2.normal.x, p2.normal.z, p1.w, p2.w);
-      origin = new Point3D(r[0], 0, r[1]);
+      origin = new Point3D(r.x, 0, r.y);
     } else {
       // find a point p for which z is zero:
       var r = Point.solve2Linear(p1.normal.x, p1.normal.y, p2.normal.x, p2.normal.y, p1.w, p2.w);
-      origin = new Point3D(r[0], r[1], 0);
+      origin = new Point3D(r.x, r.y, 0);
     }
     return new Line3D(origin, direction);
   }
