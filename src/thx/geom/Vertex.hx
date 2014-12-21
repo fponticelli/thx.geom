@@ -2,7 +2,7 @@ package thx.geom;
 
 import thx.geom.Point;
 using thx.core.Floats;
-using thx.math.Number;
+using thx.math.Integrate;
 
 class Vertex {
   inline public function new(position : Point, normal : Point) {
