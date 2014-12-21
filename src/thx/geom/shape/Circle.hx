@@ -2,7 +2,7 @@ package thx.geom.shape;
 
 import thx.geom.Matrix4x4;
 import thx.geom.Point;
-import thx.geom.Const;
+import thx.math.Const;
 using thx.geom.Transformable.Transformables;
 
 abstract Circle({ center : Point, radius : Float }) {
