@@ -225,7 +225,7 @@ class PolygonVertex {
 
   public function isInside(polygon : Polygon) {
     var windings = 0,
-        boundary = new PolygonVertex(new Point(Math.POSITIVE_INFINITY, p.y)),
+        boundary = new PolygonVertex(new Point(Math.POSITIVE_INFINITY, point.y)),
         q = polygon.first;
     do {
       if(!q.intersect && new Intersection(this, boundary, q, polygon.getNext(q.next)).test())
