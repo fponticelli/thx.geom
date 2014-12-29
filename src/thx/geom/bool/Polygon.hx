@@ -19,11 +19,11 @@ class Polygon {
 
   public function new(?points : Iterable<Point>) {
     if(null != points)
-      points.pluck(new PolygonVertex(_));
+      points.pluck(add(new PolygonVertex(_)));
   }
 
   function add(vertex : PolygonVertex) {
-    if(null == vertex) {
+    if(null == first) {
       first = vertex;
       first.next = vertex;
       first.prev = vertex;
@@ -103,7 +103,7 @@ class Polygon {
     do {
       if(!subject.intersect) {
         do {
-          if(clipper.intersect) {
+          if(!clipper.intersect) {
             intersection = new Intersection(
               subject,
               getNext(subject.next),
@@ -215,7 +215,7 @@ class PolygonVertex {
     prev = null;
     nextPolygon = null;
     alpha = 0.0;
-    entry = false;
+    entry = true;
     intersect = false;
     checked = false;
   }
