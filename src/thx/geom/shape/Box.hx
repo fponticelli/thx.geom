@@ -78,5 +78,5 @@ abstract Box(Array<Point>) {
   }
 
   @:to public function toPath()
-    return new Path([toSpline()]);
+    return toSpline().toPath();
 }
