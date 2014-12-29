@@ -130,7 +130,7 @@ class Spline {
 
   public function transform(matrix : Matrix4x4) {
     var ismirror = matrix.isMirroring(),
-      result = new Spline(iterator().map(function(node) return node.transform(matrix)), isClosed);
+        result = new Spline(iterator().map(function(node) return node.transform(matrix)), isClosed);
     //result = Spline.fromEdges(edges.map(function(edge) return edge.transform(matrix)), isClosed);
     if(ismirror)
       result = result.flip();
@@ -262,22 +262,28 @@ class Spline {
 
   public function union(other : Spline) : Array<Spline>
     return BoolPolygon
+// TODO remove toLinear when ready
       .fromSpline(this.toLinear())
         .union(BoolPolygon
+// TODO remove toLinear when ready
           .fromSpline(other.toLinear()))
         .pluck(_.toSpline());
 
   public function difference(other : Spline) : Array<Spline>
     return BoolPolygon
+// TODO remove toLinear when ready
       .fromSpline(this.toLinear())
         .difference(BoolPolygon
+// TODO remove toLinear when ready
           .fromSpline(other.toLinear()))
         .pluck(_.toSpline());
 
   public function intersection(other : Spline) : Array<Spline>
     return BoolPolygon
+// TODO remove toLinear when ready
       .fromSpline(this.toLinear())
         .intersection(BoolPolygon
+// TODO remove toLinear when ready
           .fromSpline(other.toLinear()))
         .pluck(_.toSpline());
 
