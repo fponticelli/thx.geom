@@ -2,6 +2,7 @@ package thx.geom;
 
 using thx.core.Arrays;
 using thx.core.Iterators;
+import thx.geom.bool.Polygon in BoolPolygon;
 import thx.geom.shape.Box;
 
 class Spline {
@@ -257,6 +258,31 @@ class Spline {
     var edges = edges.map(function(edge)
       return edge.linearSegments).flatten();
     return Spline.fromEdges(cast edges, isClosed);
+  }
+
+  public function union(other : Spline) : Array<Spline>
+    return BoolPolygon
+      .fromSpline(this)
+        .union(BoolPolygon
+          .fromSpline(other))
+        .pluck(_.toSpline());
+
+  public function difference(other : Spline) : Array<Spline>
+    return BoolPolygon
+      .fromSpline(this)
+        .difference(BoolPolygon
+          .fromSpline(other))
+        .pluck(_.toSpline());
+
+  public function intersection(other : Spline) : Array<Spline>
+    return BoolPolygon
+      .fromSpline(this)
+        .intersection(BoolPolygon
+          .fromSpline(other))
+        .pluck(_.toSpline());
+
+  public function intersections(other : Path) : Array<Point> {
+    return throw 'not implemented';
   }
 
   public function toPath()

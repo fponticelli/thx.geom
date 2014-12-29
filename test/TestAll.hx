@@ -2,6 +2,8 @@ import utest.Runner;
 import utest.ui.Report;
 import utest.Assert;
 
+import thx.geom.bool.Polygon;
+
 class TestAll {
 	public static function main() {
 		var runner = new Runner();

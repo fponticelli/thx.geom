@@ -5,7 +5,7 @@ class SplineNode {
   public var normalIn(default, null) : Null<Point>;
   public var normalOut(default, null) : Null<Point>;
 
-  public function new(position : Point, normalout : Point, normalin : Point) {
+  public function new(position : Point, ?normalout : Point, ?normalin : Point) {
     this.position = position;
     this.normalOut = null == normalout || normalout.nearEquals(position) ? null : normalout;
     this.normalIn = null == normalin || normalin.nearEquals(position) ? null : normalin;
