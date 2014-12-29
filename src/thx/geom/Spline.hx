@@ -262,23 +262,23 @@ class Spline {
 
   public function union(other : Spline) : Array<Spline>
     return BoolPolygon
-      .fromSpline(this)
+      .fromSpline(this.toLinear())
         .union(BoolPolygon
-          .fromSpline(other))
+          .fromSpline(other.toLinear()))
         .pluck(_.toSpline());
 
   public function difference(other : Spline) : Array<Spline>
     return BoolPolygon
-      .fromSpline(this)
+      .fromSpline(this.toLinear())
         .difference(BoolPolygon
-          .fromSpline(other))
+          .fromSpline(other.toLinear()))
         .pluck(_.toSpline());
 
   public function intersection(other : Spline) : Array<Spline>
     return BoolPolygon
-      .fromSpline(this)
+      .fromSpline(this.toLinear())
         .intersection(BoolPolygon
-          .fromSpline(other))
+          .fromSpline(other.toLinear()))
         .pluck(_.toSpline());
 
   public function intersections(other : Path) : Array<Point> {
