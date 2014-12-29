@@ -22,15 +22,39 @@ class Path {
   }
 
   public function union(other : Path) : Null<Path> {
-    return throw 'not implemented';
+    var result = [];
+    for(spline in splines) {
+      for(ospline in other.splines) {
+        result = result.concat(spline.union(ospline));
+      }
+    }
+    if(result.length == 0)
+      result = splines;
+    return new Path(result);
   }
 
   public function difference(other : Path) : Null<Path> {
-    return throw 'not implemented';
+    var result = [];
+    for(spline in splines) {
+      for(ospline in other.splines) {
+        result = result.concat(spline.difference(ospline));
+      }
+    }
+    if(result.length == 0)
+      result = splines;
+    return new Path(result);
   }
 
   public function intersection(other : Path) : Null<Path> {
-    return throw 'not implemented';
+    var result = [];
+    for(spline in splines) {
+      for(ospline in other.splines) {
+        result = result.concat(spline.intersection(ospline));
+      }
+    }
+    if(result.length == 0)
+      result = splines;
+    return new Path(result);
   }
 
   public function intersections(other : Path) : Array<Point> {
@@ -70,6 +94,9 @@ class Path {
       return spline.intersectionsLine(line);
     }).flatten();
   }
+
+  public function iterator()
+    return splines.iterator();
 
   // TODO, review since it produces too many points
   public function selfIntersections() {
