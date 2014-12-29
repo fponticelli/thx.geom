@@ -111,8 +111,8 @@ class Polygon {
               clip.getNext(clipper.next)
             );
             if(intersection.test()) {
-              var intersectionSubject = PolygonVertex.createIntersection(intersection.p, intersection.uSubject),
-                  intersectionClipper = PolygonVertex.createIntersection(intersection.p, intersection.uClipper);
+              var intersectionSubject = PolygonVertex.createIntersection(intersection.point, intersection.uSubject),
+                  intersectionClipper = PolygonVertex.createIntersection(intersection.point, intersection.uClipper);
 
               intersectionSubject.nextPolygon = intersectionClipper;
               intersectionClipper.nextPolygon = intersectionSubject;
@@ -154,18 +154,18 @@ class Polygon {
     while(hasUnprocessed()) {
       var current = getFirstIntersect(),
           clipped = new Polygon();
-      clipped.add(new PolygonVertex(current.p));
+      clipped.add(new PolygonVertex(current.point));
       do {
         current.setChecked();
         if(current.entry) {
           do {
             current = current.next;
-            clipped.add(new PolygonVertex(current.p));
+            clipped.add(new PolygonVertex(current.point));
           } while(!current.intersect);
         } else {
           do {
             current = current.prev;
-            clipped.add(new PolygonVertex(current.p));
+            clipped.add(new PolygonVertex(current.point));
           } while(!current.intersect);
         }
         current = current.nextPolygon;
@@ -184,7 +184,7 @@ class Polygon {
     var nodes = [],
         vertex = first;
     do {
-      nodes.push(new SplineNode(vertex.p));
+      nodes.push(new SplineNode(vertex.point));
       vertex = vertex.next;
     } while(vertex != first);
     return new Spline(nodes, true);
@@ -192,7 +192,7 @@ class Polygon {
 }
 
 class PolygonVertex {
-  public var p(default, null) : Point;
+  public var point(default, null) : Point;
   public var next(default, null) : PolygonVertex;
   public var prev(default, null) : PolygonVertex;
   public var nextPolygon(default, null) : PolygonVertex;
@@ -210,7 +210,7 @@ class PolygonVertex {
   }
 
   public function new(point : Point) {
-    p = point;
+    this.point = point;
     next = null;
     prev = null;
     nextPolygon = null;
@@ -240,23 +240,23 @@ class PolygonVertex {
 }
 
 class Intersection {
-  public var p(default, null)  : Point;
+  public var point(default, null)  : Point;
   public var uSubject(default, null) : Float;
   public var uClipper(default, null) : Float;
 
   public function new(s1 : PolygonVertex, s2 : PolygonVertex, c1 : PolygonVertex, c2 : PolygonVertex) {
-    var den = (c2.p.y - c1.p.y) * (s2.p.x - s1.p.x) - (c2.p.x - c1.p.x) * (s2.p.y - s1.p.y);
+    var den = (c2.point.y - c1.point.y) * (s2.point.x - s1.point.x) - (c2.point.x - c1.point.x) * (s2.point.y - s1.point.y);
 
     if (den == 0.0)
       return;
 
-    uSubject = ((c2.p.x - c1.p.x) * (s1.p.y - c1.p.y) - (c2.p.y - c1.p.y) * (s1.p.x - c1.p.x)) / den;
-    uClipper = ((s2.p.x - s1.p.x) * (s1.p.y - c1.p.y) - (s2.p.y - s1.p.y) * (s1.p.x - c1.p.x)) / den;
+    uSubject = ((c2.point.x - c1.point.x) * (s1.point.y - c1.point.y) - (c2.point.y - c1.point.y) * (s1.point.x - c1.point.x)) / den;
+    uClipper = ((s2.point.x - s1.point.x) * (s1.point.y - c1.point.y) - (s2.point.y - s1.point.y) * (s1.point.x - c1.point.x)) / den;
 
     if (test())
-      p = new Point(
-        s1.p.x + uSubject * (s2.p.x - s1.p.x),
-        s1.p.y + uSubject * (s2.p.y - s1.p.y)
+      point = new Point(
+        s1.point.x + uSubject * (s2.point.x - s1.point.x),
+        s1.point.y + uSubject * (s2.point.y - s1.point.y)
       );
   }
 
