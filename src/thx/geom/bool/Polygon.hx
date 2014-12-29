@@ -174,9 +174,6 @@ class Polygon {
       polygons.push(clipped);
     }
 
-    if(polygons.length == 0)
-      polygons.push(this);
-
     return polygons;
   }
 
