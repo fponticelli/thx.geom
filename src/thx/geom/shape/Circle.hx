@@ -24,9 +24,13 @@ abstract Circle({ center : Point, radius : Float }) {
     new SplineNode(new Point(-1,  0), new Point(-1,Const.KAPPA), new Point(-1,-Const.KAPPA)),
     new SplineNode(new Point( 0,  1), new Point(Const.KAPPA,1), new Point(-Const.KAPPA,1))
   ], true);
+
   @:to public function toSpline() {
     return unitaryCircle
       .scale(new Point3D(radius, radius, 1))
       .translate(new Point3D(center.x, center.y, 0));
   }
+
+  @:to public function toPath()
+    return toSpline().toPath();
 }
