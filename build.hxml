@@ -3,8 +3,8 @@
 -lib utest
 -lib thx.core
 -lib thx.math
--D nodejs
--D js-flatten
+#-D nodejs
+#-D js-flatten
 -main TestAll
 -js bin/test.js
 -cmd node bin/test.js
