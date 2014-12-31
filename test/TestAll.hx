@@ -15,6 +15,8 @@ class TestAll {
 		runner.addCase(new thx.geom.TestPoint());
 		runner.addCase(new thx.geom.TestPoint3D());
 		runner.addCase(new thx.geom.TestSpline());
+
+		runner.addCase(new thx.geom.mut.TestPoint());
 		Report.create(runner);
 		runner.run();
 	}
