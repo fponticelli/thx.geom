@@ -1,0 +1,7 @@
+-cp ../src
+-lib thx.core
+-lib thx.benchmark
+-neko ../bin/pointspeed.n
+-main PointSpeed
+
+-cmd neko ../bin/pointspeed.n

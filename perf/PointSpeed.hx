@@ -22,7 +22,9 @@ class PointSpeed {
         p4 = new PointObjectInline(x, y),
         p5 = new PointDirect(x, y),
         p6 = new PointAccessor(x, y),
-        p7 = new PointInlineAccessor(x, y);
+        p7 = new PointInlineAccessor(x, y),
+        p8 = new PointAbstractAccessor(x, y),
+        p9 = new PointInlineAbstractAccessor(x, y);
 
     test.add("array abstract", function() {
       p1.x = p1.y * x;
@@ -40,17 +42,25 @@ class PointSpeed {
       p4.x = p4.y * x;
       p4.y = p4.x / y;
     });
-    test.add("object direct", function() {
+    test.add("instance direct", function() {
       p5.x = p5.y * x;
       p5.y = p5.x / y;
     });
-    test.add("object accessor", function() {
+    test.add("instance accessor", function() {
       p6.x = p6.y * x;
       p6.y = p6.x / y;
     });
-    test.add("object accessor inline", function() {
+    test.add("instance accessor inline", function() {
       p7.x = p7.y * x;
       p7.y = p7.x / y;
+    });
+    test.add("instance abstract accessor", function() {
+      p8.x = p8.y * x;
+      p8.y = p8.x / y;
+    });
+    test.add("instance abstract accessor inline", function() {
+      p9.x = p9.y * x;
+      p9.y = p9.x / y;
     });
 
     return test;
@@ -66,7 +76,9 @@ class PointSpeed {
         p4 = new PointObjectInline(x, y),
         p5 = new PointDirect(x, y),
         p6 = new PointAccessor(x, y),
-        p7 = new PointInlineAccessor(x, y);
+        p7 = new PointInlineAccessor(x, y),
+        p8 = new PointAbstractAccessor(x, y),
+        p9 = new PointInlineAbstractAccessor(x, y);
 
     x = 20.0;
     y = 10.0;
@@ -87,17 +99,25 @@ class PointSpeed {
       p4.x = x;
       p4.y = y;
     });
-    test.add("object direct", function() {
+    test.add("instance direct", function() {
       p5.x = x;
       p5.y = y;
     });
-    test.add("object accessor", function() {
+    test.add("instance accessor", function() {
       p6.x = x;
       p6.y = y;
     });
-    test.add("object accessor inline", function() {
+    test.add("instance accessor inline", function() {
       p7.x = x;
       p7.y = y;
+    });
+    test.add("instance abstract accessor", function() {
+      p8.x = x;
+      p8.y = y;
+    });
+    test.add("instance abstract accessor inline", function() {
+      p9.x = x;
+      p9.y = y;
     });
 
     return test;
@@ -113,7 +133,9 @@ class PointSpeed {
         p4 = new PointObjectInline(x, y),
         p5 = new PointDirect(x, y),
         p6 = new PointAccessor(x, y),
-        p7 = new PointInlineAccessor(x, y);
+        p7 = new PointInlineAccessor(x, y),
+        p8 = new PointAbstractAccessor(x, y),
+        p9 = new PointInlineAbstractAccessor(x, y);
 
     test.add("array abstract", function() {
       x = p1.x;
@@ -131,17 +153,25 @@ class PointSpeed {
       x = p4.x;
       y = p4.y;
     });
-    test.add("object direct", function() {
+    test.add("instance direct", function() {
       x = p5.x;
       y = p5.y;
     });
-    test.add("object accessor", function() {
+    test.add("instance accessor", function() {
       x = p6.x;
       y = p6.y;
     });
-    test.add("object accessor inline", function() {
+    test.add("instance accessor inline", function() {
       x = p7.x;
       y = p7.y;
+    });
+    test.add("instance abstract accessor", function() {
+      x = p8.x;
+      y = p8.y;
+    });
+    test.add("instance abstract accessor inline", function() {
+      x = p9.x;
+      y = p9.y;
     });
 
     return test;
@@ -151,7 +181,7 @@ class PointSpeed {
     var test = new SpeedTest(),
         x = 10.0,
         y = 1.0,
-        p1, p2, p3, p4, p5, p6, p7;
+        p1, p2, p3, p4, p5, p6, p7, p8, p9;
 
     test.add("array abstract", function() {
       p1 = new PointArray(x, y);
@@ -165,14 +195,20 @@ class PointSpeed {
     test.add("object abstract inline", function() {
       p4 = new PointObjectInline(x, y);
     });
-    test.add("object direct", function() {
+    test.add("instance direct", function() {
       p5 = new PointDirect(x, y);
     });
-    test.add("object accessor", function() {
+    test.add("instance accessor", function() {
       p6 = new PointAccessor(x, y);
     });
-    test.add("object accessor inline", function() {
+    test.add("instance accessor inline", function() {
       p7 = new PointInlineAccessor(x, y);
+    });
+    test.add("instance abstract accessor", function() {
+      p8 = new PointAbstractAccessor(x, y);
+    });
+    test.add("instance abstract accessor inline", function() {
+      p9 = new PointInlineAbstractAccessor(x, y);
     });
 
     return test;
@@ -182,7 +218,7 @@ class PointSpeed {
     var test = new SpeedTest(),
         x = 10.0,
         y = 1.0,
-        p1, p2, p3, p4, p5, p6, p7;
+        p1, p2, p3, p4, p5, p6, p7, p8, p9;
 
     test.add("array abstract", function() {
       p1 = new PointArray(x, y);
@@ -200,17 +236,25 @@ class PointSpeed {
       p4 = new PointObjectInline(x, y);
       p4.x = p4.y = p4.x * p4.y;
     });
-    test.add("object direct", function() {
+    test.add("instance direct", function() {
       p5 = new PointDirect(x, y);
       p5.x = p5.y = p5.x * p5.y;
     });
-    test.add("object accessor", function() {
+    test.add("instance accessor", function() {
       p6 = new PointAccessor(x, y);
       p6.x = p6.y = p6.x * p6.y;
     });
-    test.add("object accessor inline", function() {
+    test.add("instance accessor inline", function() {
       p7 = new PointInlineAccessor(x, y);
       p7.x = p7.y = p7.x * p7.y;
+    });
+    test.add("instance abstract accessor", function() {
+      p8 = new PointAbstractAccessor(x, y);
+      p8.x = p8.y = p8.x * p8.y;
+    });
+    test.add("instance abstract accessor inline", function() {
+      p9 = new PointInlineAbstractAccessor(x, y);
+      p9.x = p9.y = p9.x * p9.y;
     });
 
     return test;
@@ -226,7 +270,7 @@ class PointDirect {
   }
 }
 
-class PointAccessor {
+class PointAccessor implements IPoint {
   public var x(get, set) : Float;
   public var y(get, set) : Float;
   var _x : Float;
@@ -242,7 +286,24 @@ class PointAccessor {
   function set_y(v) return _y = v;
 }
 
-class PointInlineAccessor {
+interface IPoint {
+  public var x(get, set) : Float;
+  public var y(get, set) : Float;
+}
+
+abstract PointAbstractAccessor(IPoint) {
+  public var x(get, set) : Float;
+  public var y(get, set) : Float;
+  inline public function new(x : Float, y : Float)
+    this = new PointAccessor(x, y);
+
+  inline function get_x() return this.x;
+  inline function get_y() return this.y;
+  inline function set_x(v) return this.x = v;
+  inline function set_y(v) return this.y = v;
+}
+
+class PointInlineAccessor implements IPoint {
   public var x(get, set) : Float;
   public var y(get, set) : Float;
   var _x : Float;
@@ -256,6 +317,18 @@ class PointInlineAccessor {
   inline function get_y() return _y;
   inline function set_x(v) return _x = v;
   inline function set_y(v) return _y = v;
+}
+
+abstract PointInlineAbstractAccessor(IPoint) {
+  public var x(get, set) : Float;
+  public var y(get, set) : Float;
+  inline public function new(x : Float, y : Float)
+    this = new PointInlineAccessor(x, y);
+
+  inline function get_x() return this.x;
+  inline function get_y() return this.y;
+  inline function set_x(v) return this.x = v;
+  inline function set_y(v) return this.y = v;
 }
 
 abstract PointArray(Array<Float>) {
