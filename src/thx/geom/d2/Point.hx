@@ -1,5 +1,6 @@
 package thx.geom.d2;
 
+import thx.geom.d2.xy.*;
 using thx.core.Arrays;
 using thx.core.Floats;
 
