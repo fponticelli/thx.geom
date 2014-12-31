@@ -1,0 +1,7 @@
+-cp ../src
+-lib thx.core
+-lib thx.benchmark
+-js ../bin/pointspeed.js
+-main PointSpeed
+
+-cmd node ../bin/pointspeed.js
