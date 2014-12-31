@@ -3,5 +3,6 @@
 -lib thx.benchmark
 -js ../bin/pointspeed.js
 -main PointSpeed
+#-D analyzer
 
 -cmd node ../bin/pointspeed.js

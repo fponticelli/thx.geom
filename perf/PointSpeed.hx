@@ -211,6 +211,21 @@ class PointSpeed {
       p9 = new PointInlineAbstractAccessor(x, y);
     });
 
+    function fake(v : Float) {}
+
+    // prevents removal and error with -D analyzer
+    try {
+      fake(p1.x);
+      fake(p2.x);
+      fake(p3.x);
+      fake(p4.x);
+      fake(p5.x);
+      fake(p6.x);
+      fake(p7.x);
+      fake(p8.x);
+      fake(p9.x);
+    } catch(e : Dynamic) {}
+
     return test;
   }
 
