@@ -4,4 +4,4 @@
 -cpp ../bin/pointspeed_cpp
 -main PointSpeed
 
-#-cmd neko ../bin/pointspeed.cpp
+-cmd ./../bin/pointspeed_cpp/PointSpeed
