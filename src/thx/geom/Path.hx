@@ -6,11 +6,11 @@ import thx.geom.shape.Box;
 using thx.core.Arrays;
 
 class Path {
-  @:isVar public var area(get, null) : Float;
-  @:isVar public var length(get, null) : Float;
-  @:isVar public var isSelfIntersecting(get, null) : Bool;
-  @:isVar public var isClosed(get, null) : Bool;
-  @:isVar public var box(get, null) : Box;
+  public var area(get, null) : Float;
+  public var length(get, null) : Float;
+  public var isSelfIntersecting(get, null) : Bool;
+  public var isClosed(get, null) : Bool;
+  public var box(get, null) : Box;
 
   var splines : Array<Spline>;
   public function new(splines : Array<Spline>)
@@ -163,62 +163,38 @@ class Path {
   public function toString()
     return 'Path(${splines.map(function(s) return "["+s.toString()+"]").join(", ")},$isClosed)';
 
-  var _isClosed = false;
   function get_isClosed() : Bool {
-    if(!_isClosed) {
-      _isClosed = true;
-      isClosed = true;
-      for(spline in splines) {
-        if(!spline.isClosed) {
-          isClosed = false;
-          break;
-        }
+    for(spline in splines) {
+      if(!spline.isClosed) {
+        return false;
       }
     }
-    return isClosed;
+    return true;
   }
 
-  var _area = false;
   function get_area() : Float {
-    if(!_area) {
-      _area = true;
-      area = splines.reduce(function(acc, spline) return acc + spline.area, 0);
-    }
-    return area;
+    return splines.reduce(function(acc, spline) return acc + spline.area, 0);
   }
 
-  var _length = false;
   function get_length() : Float {
-    if(!_length) {
-      _length = true;
-      length = splines.reduce(function(acc, spline) return acc + spline.length, 0);
-    }
-    return length;
+    return splines.reduce(function(acc, spline) return acc + spline.length, 0);
   }
 
-  var _isSelfIntersecting = false;
   function get_isSelfIntersecting() : Bool {
-    if(!_isSelfIntersecting) {
-      _isSelfIntersecting = true;
-      isSelfIntersecting = false;
-      for(spline in splines) {
-        if(spline.isSelfIntersecting) {
-          isSelfIntersecting = true;
-          break;
-        }
+    for(spline in splines) {
+      if(spline.isSelfIntersecting) {
+        return true;
       }
     }
-    return isSelfIntersecting;
+    return false;
   }
   function get_box() : Box {
-    if(null == box) {
-      if(splines.length == 0)
-        return null;
-      box = splines[0].box;
-      for(i in 1...splines.length) {
-        var obox = splines[i].box;
-        box = box.expandByPoints([obox.bottomLeft, obox.topRight]);
-      }
+    if(splines.length == 0)
+      return null;
+    var box = splines[0].box;
+    for(i in 1...splines.length) {
+      var obox = splines[i].box;
+      box = box.expandByPoints([obox.bottomLeft, obox.topRight]);
     }
     return box;
   }

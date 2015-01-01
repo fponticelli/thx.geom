@@ -4,8 +4,7 @@ import thx.geom.Transformable;
 import thx.geom.d2.Point in Point2D;
 import thx.geom.d3.Point in Point3D;
 
-abstract Matrix4x4(Array<Float>)
-{
+abstract Matrix4x4(Array<Float>) {
   public static var identity(default, null) : Matrix4x4 = new Matrix4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 
   @:from public static function fromArray(e : Array<Float>) {

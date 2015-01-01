@@ -8,14 +8,14 @@ import thx.geom.d2.Point;
 import thx.geom.d2.Line;
 
 class Spline {
-  @:isVar public var area(get, null) : Float;
-  @:isVar public var length(get, null) : Float;
-  @:isVar public var isSelfIntersecting(get, null) : Bool;
-  @:isVar public var isPolygon(get, null) : Bool;
-  @:isVar public var isEmpty(get, null) : Bool;
-  @:isVar public var isClockwise(get, null) : Bool;
-  @:isVar public var box(get, null) : Box;
-  @:isVar public var edges(get, null) : Array<Edge>;
+  public var area(get, null) : Float;
+  public var length(get, null) : Float;
+  public var isSelfIntersecting(get, null) : Bool;
+  public var isPolygon(get, null) : Bool;
+  public var isEmpty(get, null) : Bool;
+  public var isClockwise(get, null) : Bool;
+  public var box(get, null) : Box;
+  public var edges(get, null) : Array<Edge>;
 
   public static function fromEdges(arr : Array<Edge>, ?closed : Bool) {
     var nodes = [], points;
@@ -302,38 +302,26 @@ class Spline {
   public function toString()
     return 'Spline(${nodes.map(function(n) return "["+n.toStringValues()+"]").join(", ")},$isClosed)';
 
-  var _area = false;
   function get_area() : Float {
-    if(!_area) {
-      _area = true;
-      area = 0;
-      iterateEdges(function(edge) {
-        area += edge.area;
-      });
-    }
+    var area = 0.0;
+    iterateEdges(function(edge) {
+      area += edge.area;
+    });
     return area;
   }
 
-  var _length = false;
   function get_length() : Float {
-    if(!_length) {
-      _length = true;
-      length = 0;
-      iterateEdges(function(edge) {
-        length += edge.length;
-      });
-    }
+    var length = 0.0;
+    iterateEdges(function(edge) {
+      length += edge.length;
+    });
     return length;
   }
 
-  var _isSelfIntersecting = false;
   function get_isSelfIntersecting() : Bool {
-    if(!_isSelfIntersecting) {
-      _isSelfIntersecting = true;
-      var edges = edges;
-      isSelfIntersecting = false;
-      edges.eachPair(function(a, b) return !(isSelfIntersecting = a.intersects(b)));
-    }
+    var edges = edges,
+        isSelfIntersecting = false;
+    edges.eachPair(function(a, b) return !(isSelfIntersecting = a.intersects(b)));
     return isSelfIntersecting;
   }
   function get_isPolygon() : Bool {
@@ -345,13 +333,12 @@ class Spline {
   function get_isEmpty() : Bool
     return nodes.length > 1; // a spline with zero or one node is not much of a spline
   function get_box() : Box {
-    if(null == box) {
-      if(nodes.length > 0) {
-        box = new Box(nodes[0].position, nodes[0].position);
-        iterate(function(a, b, nout, nin) {
-          box = box.expandByPoints([a, b, nout, nin]);
-        });
-      }
+    var box = null;
+    if(nodes.length > 0) {
+      box = new Box(nodes[0].position, nodes[0].position);
+      iterate(function(a, b, nout, nin) {
+        box = box.expandByPoints([a, b, nout, nin]);
+      });
     }
     return box;
   }

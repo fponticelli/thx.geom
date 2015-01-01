@@ -3,7 +3,7 @@ package thx.geom;
 import thx.geom.Vertex3D;
 
 class Polygon {
-  @:isVar public var plane(get, null) : Plane;
+  public var plane(get, null) : Plane;
 
   var vertices : Array<Vertex3D>;
 
@@ -30,5 +30,5 @@ class Polygon {
     return vertices.copy();
 
   function get_plane()
-    return null == plane ? plane = Plane.fromPoints(vertices[0].position, vertices[1].position, vertices[2].position) : plane;
+    return Plane.fromPoints(vertices[0].position, vertices[1].position, vertices[2].position);
 }
