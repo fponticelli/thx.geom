@@ -8,7 +8,7 @@ class TestPoint3D {
 
 	public function testInterpolate3D() {
 		var a = new Point3D(10, 20, 30),
-			b = new Point3D(20, 40, 60);
+			  b = new Point3D(20, 40, 60);
 
 		Assert.isTrue(a != b);
 		Assert.isTrue(a.interpolate(b, 0) == a);
