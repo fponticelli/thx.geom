@@ -18,11 +18,11 @@ abstract Point(XY) from XY to XY {
   @:from static inline public function fromAngle(angle :  Float)
     return create(Math.cos(angle), Math.sin(angle));
 
-  inline public static function linked(getX : Void -> Float, getY : Void -> Float, setX : Float -> Float, setY : Float -> Float)
-    return new Point(new LinkedXY(getX, getY, setX, setY));
+  inline public static function linked(getX : Void -> Float, getY : Void -> Float, setX : Float -> Float, setY : Float -> Float) : Point
+    return new LinkedXY(getX, getY, setX, setY);
 
-  inline public static function create(x : Float, y : Float)
-    return new Point(new PointXY(x, y));
+  inline public static function create(x : Float, y : Float) : Point
+    return new PointXY(x, y);
 
   public var x(get, set) : Float;
   public var y(get, set) : Float;
@@ -32,8 +32,14 @@ abstract Point(XY) from XY to XY {
   inline public function new(xy : XY)
     this = xy;
 
+  @:op(A+=B) inline public function addPointAssign(p : Point) : Point
+    return set(x + p.x, y + p.y);
+
   @:op(A+B) inline public function addPoint(p : Point)
     return Point.create(x + p.x, y + p.y);
+
+  @:op(A+=B) inline public function addAssign(v : Float) : Point
+    return set(x + v, y + v);
 
   @:op(A+B) inline public function add(v : Float)
     return Point.create(x + v, y + v);
@@ -41,21 +47,39 @@ abstract Point(XY) from XY to XY {
   @:op(-A) inline public function negate()
     return Point.create(-x, -y);
 
+  @:op(A-=B) inline public function subtractPointAssign(p : Point) : Point
+    return set(x - p.x, y - p.y);
+
   @:op(A-B) inline public function subtractPoint(p : Point)
     return addPoint(p.negate());
+
+  @:op(A-=B) inline public function subtractAssign(v : Float) : Point
+    return set(x - v, y - v);
 
   @:op(A-B) inline public function subtract(v : Float)
     return add(-v);
 
+  @:op(A*=B) inline public function multiplyPointAssign(p : Point) : Point
+    return set(x * p.x, y * p.y);
+
   @:op(A*B) inline public function multiplyPoint(p : Point)
     return Point.create(x * p.x, y * p.y);
+
+  @:op(A*=B) inline public function multiplyAssign(v : Float) : Point
+    return set(x * v, y * v);
 
   @:commutative
   @:op(A*B) inline public function multiply(v : Float)
     return Point.create(x * v, y * v);
 
+  @:op(A/=B) inline public function dividePointAssign(p : Point) : Point
+    return set(x / p.x, y / p.y);
+
   @:op(A/B) inline public function dividePoint(p : Point)
     return Point.create(x / p.x, y / p.y);
+
+  @:op(A/=B) inline public function divideAssign(v : Float) : Point
+    return set(x / v, y / v);
 
   @:op(A/B) inline public function divide(v : Float)
     return Point.create(x / v, y / v);
@@ -150,6 +174,12 @@ abstract Point(XY) from XY to XY {
     if(line.isHorizontal)
       return Floats.nearEquals(y, line.w);
     return Floats.nearEquals(line.xAtY(y), x);
+  }
+
+  public function set(nx : Float, ny : Float) : Point {
+    x = nx;
+    y = ny;
+    return this;
   }
 
   @:to inline public function toAngle() : Float

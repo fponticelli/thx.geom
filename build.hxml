@@ -5,6 +5,7 @@
 -lib thx.math
 #-D nodejs
 #-D js-flatten
+-D analyzer
 -main TestAll
 -js bin/test.js
 -cmd node bin/test.js
