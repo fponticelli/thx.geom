@@ -5,11 +5,11 @@ import thx.geom.d2.Point;
 import thx.geom.shape.Box;
 
 class EdgeLinear implements Edge {
-  @:isVar public var area(get, null) : Float;
-  @:isVar public var box(get, null) : Box;
-  @:isVar public var length(get, null) : Float;
-  @:isVar public var lengthSquared(get, null) : Float;
-  @:isVar public var line(get, null) : Line;
+  public var area(get, null) : Float;
+  public var box(get, null) : Box;
+  public var length(get, null) : Float;
+  public var lengthSquared(get, null) : Float;
+  public var line(get, null) : Line;
   public var linearSegments(get, null) : Array<EdgeLinear>;
   public var linearSpline(get, null) : Spline;
   public var isLinear(get, null) : Bool;
@@ -114,53 +114,29 @@ class EdgeLinear implements Edge {
   public function toSpline()
     return Spline.fromEdges([this], false);
 
-  var _area = false;
   function get_area() : Float {
-    if(!_area) {
-      _area = true;
-      var p = p1 - p0;
-      area = p0.y * (p1.x - p0.x) + (p.x * p.y) / 2;
-    }
-    return area;
+    var p = p1 - p0;
+    return p0.y * (p1.x - p0.x) + (p.x * p.y) / 2;
   }
 
-  function get_box() : Box {
-    if(null == box) {
-      box = Box.fromPoints(p0, p1);
-    }
-    return box;
-  }
+  function get_box() : Box
+    return Box.fromPoints(p0, p1);
 
   function get_isLinear()
     return true;
 
-  var _length = false;
   function get_length() : Float {
-    if(!_length) {
-      _length = true;
-      length = Math.sqrt(lengthSquared);
-    }
-    return length;
-  }
+    return Math.sqrt(lengthSquared);
 
-  var _lengthSquared = false;
   function get_lengthSquared() {
-    if(!_lengthSquared) {
-      _lengthSquared = true;
-      lengthSquared = (p1-p0).lengthSquared;
-    }
-    return lengthSquared;
-  }
+    return (p1-p0).lengthSquared;
 
-  function get_line() : Line {
-    if(null == line)
-      line = Line.fromPoints(p0, p1);
-    return line;
-  }
+  function get_line() : Line
+    return Line.fromPoints(p0, p1);
 
   function get_linearSegments()
     return [this];
 
   function get_linearSpline()
-    return linearSpline = Spline.fromEdges([this], false);
+    return Spline.fromEdges([this], false);
 }

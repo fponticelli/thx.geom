@@ -8,13 +8,13 @@ using thx.core.Arrays;
 
 class EdgeCubic implements Edge {
   public static var NEAR_FLAT : Float = 1.0 + Floats.EPSILON;
-  @:isVar public var box(get, null) : Box;
-  @:isVar public var area(get, null) : Float;
-  @:isVar public var length(get, null) : Float;
-  @:isVar public var lengthSquared(get, null) : Float;
-  @:isVar public var linearSegments(get, null) : Array<EdgeLinear>;
-  @:isVar public var linearSpline(get, null) : Spline;
-  @:isVar public var isLinear(get, null) : Bool;
+  public var box(get, null) : Box;
+  public var area(get, null) : Float;
+  public var length(get, null) : Float;
+  public var lengthSquared(get, null) : Float;
+  public var linearSegments(get, null) : Array<EdgeLinear>;
+  public var linearSpline(get, null) : Spline;
+  public var isLinear(get, null) : Bool;
   public var p0(default, null) : Point;
   public var p1(default, null) : Point;
   public var p2(default, null) : Point;
@@ -128,78 +128,47 @@ class EdgeCubic implements Edge {
     ];
   }
 
-  var _area = false;
-  function get_area() : Float {
-    if(!_area) {
-      _area = true;
-      area = linearSegments.reduce(function(acc, edge) {
-        return acc + edge.area;
-      }, 0);
-    }
-    return area;
-  }
+  function get_area() : Float
+    return linearSegments.reduce(function(acc, edge) {
+      return acc + edge.area;
+    }, 0);
 
-  function get_box() : Box {
-    if(null == box)
-      box = Box.fromPoints(p0, p1).expandByPoints([p2, p3]);
-    return box;
-  }
+  function get_box() : Box
+    return Box.fromPoints(p0, p1).expandByPoints([p2, p3]);
 
-  var _isLinear = false;
   function get_isLinear() {
-    if(!_isLinear) {
-      _isLinear = true;
-      var line = Line.fromPoints(p0, p3);
-      if(!p1.isOnLine(line) || !p0.isOnLine(line))
-        isLinear = false;
-      else {
-        var box = Box.fromPoints(p0, p3);
-        isLinear = box.contains(p1) && box.contains(p2);
-      }
+    var line = Line.fromPoints(p0, p3);
+    if(!p1.isOnLine(line) || !p0.isOnLine(line))
+      return false;
+    else {
+      var box = Box.fromPoints(p0, p3);
+      return box.contains(p1) && box.contains(p2);
     }
-    return isLinear;
   }
 
-  var _length = false;
-  function get_length() : Float {
-    if(!_length) {
-      _length = true;
-      length = linearSegments.reduce(function(acc, edge)
-        return acc + edge.length, 0);
-    }
-    return length;
-  }
+  function get_length() : Float
+    return linearSegments.reduce(function(acc, edge)
+      return acc + edge.length, 0);
 
-  var _lengthSquared = false;
-  function get_lengthSquared() : Float {
-    if(!_lengthSquared) {
-      _lengthSquared = true;
-      lengthSquared = linearSegments.reduce(function(acc, edge)
-        return acc + edge.lengthSquared, 0);
-    }
-    return lengthSquared;
-  }
+  function get_lengthSquared() : Float
+    return linearSegments.reduce(function(acc, edge)
+      return acc + edge.lengthSquared, 0);
 
   function get_linearSegments() {
-    if(null == linearSegments) {
-      var tosplit = [this],
+    var tosplit = [this],
+        linearSegments = [],
         edge;
-      linearSegments = [];
-      while(tosplit.length > 0) {
-        edge = tosplit.shift();
-        if(edge.isNearFlat()) {
-          linearSegments.push(edge.toLinear());
-        } else {
-          tosplit = edge.subdivide().concat(tosplit);
-        }
+    while(tosplit.length > 0) {
+      edge = tosplit.shift();
+      if(edge.isNearFlat()) {
+        linearSegments.push(edge.toLinear());
+      } else {
+        tosplit = edge.subdivide().concat(tosplit);
       }
     }
     return linearSegments;
   }
 
-  function get_linearSpline() {
-    if(null == linearSpline)
-      linearSpline = Spline.fromEdges(cast linearSegments, false);
-    return linearSpline;
-  }
+  function get_linearSpline()
+    return Spline.fromEdges(cast linearSegments, false);
 }
