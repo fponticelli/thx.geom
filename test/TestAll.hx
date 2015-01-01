@@ -10,6 +10,7 @@ class TestAll {
 		runner.addCase(new TestAll());
 
 		runner.addCase(new thx.geom.d2.TestPoint());
+		runner.addCase(new thx.geom.d3.TestPoint());
 
 		runner.addCase(new thx.geom.TestEdgeLinear());
 		runner.addCase(new thx.geom.TestEdgeCubic());
