@@ -23,7 +23,7 @@ class LinkedXYZ implements XYZ {
 
   function get_x() return getX();
   function get_y() return getY();
-  function get_y() return getY();
+  function get_z() return getZ();
   function set_x(v : Float) return setX(v);
   function set_y(v : Float) return setY(v);
   function set_z(v : Float) return setZ(v);
