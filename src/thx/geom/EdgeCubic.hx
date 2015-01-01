@@ -25,10 +25,10 @@ class EdgeCubic implements Edge {
   public var normalOut(default, null) : Point;
 
   public function new(p0 : Point, p1 : Point, p2 : Point, p3 : Point) {
-    first = this.p0 = p0;
+    first     = this.p0 = p0;
     normalOut = this.p1 = p1;
-    normalIn = this.p2 = p2;
-    last = this.p3 = p3;
+    normalIn  = this.p2 = p2;
+    last      = this.p3 = p3;
   }
   public function equals(other : Edge) : Bool {
     if(!Std.is(other, EdgeCubic)) return false;
@@ -111,7 +111,7 @@ class EdgeCubic implements Edge {
 
   public function isNearFlat() : Bool {
     var sum = p0.distanceTo(p1) + p1.distanceTo(p2) + p2.distanceTo(p3),
-      len = p0.distanceTo(p3);
+        len = p0.distanceTo(p3);
     return (sum / len) <= NEAR_FLAT;
   }
 
