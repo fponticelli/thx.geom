@@ -31,7 +31,7 @@ class EdgeCubic implements Edge {
     last      = this.p3 = p3;
   }
   public function equals(other : Edge) : Bool {
-    if(!Std.is(other, EdgeCubic)) return false;
+    if(isLinear && other.isLinear) return matches(other);
     var t : EdgeCubic = cast other;
     return p0.nearEquals(t.p0) && p1.nearEquals(t.p1) && p2.nearEquals(t.p2) && p3.nearEquals(t.p3);
   }
