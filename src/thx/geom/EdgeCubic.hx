@@ -109,7 +109,7 @@ class EdgeCubic implements Edge {
   public function toSpline()
     return Spline.fromEdges([this], false);
 
-  public function isNearFlat() : Bool {
+  public function isNearLinear() : Bool {
     var sum = p0.distanceTo(p1) + p1.distanceTo(p2) + p2.distanceTo(p3),
         len = p0.distanceTo(p3);
     return (sum / len) <= NEAR_FLAT;
@@ -160,7 +160,7 @@ class EdgeCubic implements Edge {
         edge;
     while(tosplit.length > 0) {
       edge = tosplit.shift();
-      if(edge.isNearFlat()) {
+      if(edge.isNearLinear()) {
         linearSegments.push(edge.toLinear());
       } else {
         tosplit = edge.subdivide().concat(tosplit);
