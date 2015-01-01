@@ -123,7 +123,7 @@ abstract Matrix4x4(Array<Float>)
   @:op(A * B)
   public function multiply(other : Matrix4x4) : Matrix4x4 {
     var t0 = at(0), t1 = at(1), t2 = at(2), t3 = at(3), t4 = at(4), t5 = at(5), t6 = at(6), t7 = at(7), t8 = at(8), t9 = at(9), t10 = at(10), t11 = at(11), t12 = at(12), t13 = at(13), t14 = at(14), t15 = at(15),
-      m0 = other.at(0), m1 = other.at(1), m2 = other.at(2), m3 = other.at(3), m4 = other.at(4), m5 = other.at(5), m6 = other.at(6), m7 = other.at(7), m8 = other.at(8), m9 = other.at(9), m10 = other.at(10), m11 = other.at(11), m12 = other.at(12), m13 = other.at(13), m14 = other.at(14), m15 = other.at(15);
+        m0 = other.at(0), m1 = other.at(1), m2 = other.at(2), m3 = other.at(3), m4 = other.at(4), m5 = other.at(5), m6 = other.at(6), m7 = other.at(7), m8 = other.at(8), m9 = other.at(9), m10 = other.at(10), m11 = other.at(11), m12 = other.at(12), m13 = other.at(13), m14 = other.at(14), m15 = other.at(15);
     return new Matrix4x4(
       t0 * m0 + t1 * m4 + t2 * m8 + t3 * m12,
       t0 * m1 + t1 * m5 + t2 * m9 + t3 * m13,
@@ -235,102 +235,102 @@ abstract Matrix4x4(Array<Float>)
 
   public function inverse() {
     var inv_0 =   at(5)  * at(10) * at(15) -
-            at(5)  * at(11) * at(14) -
-            at(9)  * at(6)  * at(15) +
-            at(9)  * at(7)  * at(14) +
-            at(13) * at(6)  * at(11) -
-            at(13) * at(7)  * at(10),
-      inv_4 =  -at(4)  * at(10) * at(15) +
-            at(4)  * at(11) * at(14) +
-            at(8)  * at(6)  * at(15) -
-            at(8)  * at(7)  * at(14) -
-            at(12) * at(6)  * at(11) +
-            at(12) * at(7)  * at(10),
-      inv_8 =   at(4)  * at(9)  * at(15) -
-            at(4)  * at(11) * at(13) -
-            at(8)  * at(5)  * at(15) +
-            at(8)  * at(7)  * at(13) +
-            at(12) * at(5)  * at(11) -
-            at(12) * at(7)  * at(9),
-      inv_12 = -at(4)  * at(9)  * at(14) +
-            at(4)  * at(10) * at(13) +
-            at(8)  * at(5)  * at(14) -
-            at(8)  * at(6)  * at(13) -
-            at(12) * at(5)  * at(10) +
-            at(12) * at(6)  * at(9),
-      inv_1 =  -at(1)  * at(10) * at(15) +
-            at(1)  * at(11) * at(14) +
-            at(9)  * at(2)  * at(15) -
-            at(9)  * at(3)  * at(14) -
-            at(13) * at(2)  * at(11) +
-            at(13) * at(3)  * at(10),
-      inv_5 =   at(0)  * at(10) * at(15) -
-            at(0)  * at(11) * at(14) -
-            at(8)  * at(2)  * at(15) +
-            at(8)  * at(3)  * at(14) +
-            at(12) * at(2)  * at(11) -
-            at(12) * at(3)  * at(10),
-      inv_9 =  -at(0)  * at(9)  * at(15) +
-            at(0)  * at(11) * at(13) +
-            at(8)  * at(1)  * at(15) -
-            at(8)  * at(3)  * at(13) -
-            at(12) * at(1)  * at(11) +
-            at(12) * at(3)  * at(9),
-      inv_13 =  at(0)  * at(9)  * at(14) -
-            at(0)  * at(10) * at(13) -
-            at(8)  * at(1)  * at(14) +
-            at(8)  * at(2)  * at(13) +
-            at(12) * at(1)  * at(10) -
-            at(12) * at(2)  * at(9),
-      inv_2 =   at(1)  * at(6)  * at(15) -
-            at(1)  * at(7)  * at(14) -
-            at(5)  * at(2)  * at(15) +
-            at(5)  * at(3)  * at(14) +
-            at(13) * at(2)  * at(7) -
-            at(13) * at(3)  * at(6),
-      inv_6 =  -at(0)  * at(6)  * at(15) +
-            at(0)  * at(7)  * at(14) +
-            at(4)  * at(2)  * at(15) -
-            at(4)  * at(3)  * at(14) -
-            at(12) * at(2)  * at(7) +
-            at(12) * at(3)  * at(6),
-      inv_10 =  at(0)  * at(5)  * at(15) -
-            at(0)  * at(7)  * at(13) -
-            at(4)  * at(1)  * at(15) +
-            at(4)  * at(3)  * at(13) +
-            at(12) * at(1)  * at(7) -
-            at(12) * at(3)  * at(5),
-      inv_14 = -at(0)  * at(5)  * at(14) +
-            at(0)  * at(6)  * at(13) +
-            at(4)  * at(1)  * at(14) -
-            at(4)  * at(2)  * at(13) -
-            at(12) * at(1)  * at(6) +
-            at(12) * at(2)  * at(5),
-      inv_3 =  -at(1)  * at(6)  * at(11) +
-            at(1)  * at(7)  * at(10) +
-            at(5)  * at(2)  * at(11) -
-            at(5)  * at(3)  * at(10) -
-            at(9)  * at(2)  * at(7) +
-            at(9)  * at(3)  * at(6),
-      inv_7 =   at(0)  * at(6)  * at(11) -
-            at(0)  * at(7)  * at(10) -
-            at(4)  * at(2)  * at(11) +
-            at(4)  * at(3)  * at(10) +
-            at(8)  * at(2)  * at(7) -
-            at(8)  * at(3)  * at(6),
-      inv_11 = -at(0)  * at(5)  * at(11) +
-            at(0)  * at(7)  * at(9) +
-            at(4)  * at(1)  * at(11) -
-            at(4)  * at(3)  * at(9) -
-            at(8)  * at(1)  * at(7) +
-            at(8)  * at(3)  * at(5),
-      inv_15 =  at(0)  * at(5)  * at(10) -
-            at(0)  * at(6)  * at(9) -
-            at(4)  * at(1)  * at(10) +
-            at(4)  * at(2)  * at(9) +
-            at(8)  * at(1)  * at(6) -
-            at(8)  * at(2)  * at(5),
-      det = at(0) * inv_0 + at(1) * inv_4 + at(2) * inv_8 + at(3) * inv_12;
+                  at(5)  * at(11) * at(14) -
+                  at(9)  * at(6)  * at(15) +
+                  at(9)  * at(7)  * at(14) +
+                  at(13) * at(6)  * at(11) -
+                  at(13) * at(7)  * at(10),
+        inv_4 =  -at(4)  * at(10) * at(15) +
+                  at(4)  * at(11) * at(14) +
+                  at(8)  * at(6)  * at(15) -
+                  at(8)  * at(7)  * at(14) -
+                  at(12) * at(6)  * at(11) +
+                  at(12) * at(7)  * at(10),
+        inv_8 =   at(4)  * at(9)  * at(15) -
+                  at(4)  * at(11) * at(13) -
+                  at(8)  * at(5)  * at(15) +
+                  at(8)  * at(7)  * at(13) +
+                  at(12) * at(5)  * at(11) -
+                  at(12) * at(7)  * at(9),
+        inv_12 = -at(4)  * at(9)  * at(14) +
+                  at(4)  * at(10) * at(13) +
+                  at(8)  * at(5)  * at(14) -
+                  at(8)  * at(6)  * at(13) -
+                  at(12) * at(5)  * at(10) +
+                  at(12) * at(6)  * at(9),
+        inv_1 =  -at(1)  * at(10) * at(15) +
+                  at(1)  * at(11) * at(14) +
+                  at(9)  * at(2)  * at(15) -
+                  at(9)  * at(3)  * at(14) -
+                  at(13) * at(2)  * at(11) +
+                  at(13) * at(3)  * at(10),
+        inv_5 =   at(0)  * at(10) * at(15) -
+                  at(0)  * at(11) * at(14) -
+                  at(8)  * at(2)  * at(15) +
+                  at(8)  * at(3)  * at(14) +
+                  at(12) * at(2)  * at(11) -
+                  at(12) * at(3)  * at(10),
+        inv_9 =  -at(0)  * at(9)  * at(15) +
+                  at(0)  * at(11) * at(13) +
+                  at(8)  * at(1)  * at(15) -
+                  at(8)  * at(3)  * at(13) -
+                  at(12) * at(1)  * at(11) +
+                  at(12) * at(3)  * at(9),
+        inv_13 =  at(0)  * at(9)  * at(14) -
+                  at(0)  * at(10) * at(13) -
+                  at(8)  * at(1)  * at(14) +
+                  at(8)  * at(2)  * at(13) +
+                  at(12) * at(1)  * at(10) -
+                  at(12) * at(2)  * at(9),
+        inv_2 =   at(1)  * at(6)  * at(15) -
+                  at(1)  * at(7)  * at(14) -
+                  at(5)  * at(2)  * at(15) +
+                  at(5)  * at(3)  * at(14) +
+                  at(13) * at(2)  * at(7)  -
+                  at(13) * at(3)  * at(6),
+        inv_6 =  -at(0)  * at(6)  * at(15) +
+                  at(0)  * at(7)  * at(14) +
+                  at(4)  * at(2)  * at(15) -
+                  at(4)  * at(3)  * at(14) -
+                  at(12) * at(2)  * at(7)  +
+                  at(12) * at(3)  * at(6),
+        inv_10 =  at(0)  * at(5)  * at(15) -
+                  at(0)  * at(7)  * at(13) -
+                  at(4)  * at(1)  * at(15) +
+                  at(4)  * at(3)  * at(13) +
+                  at(12) * at(1)  * at(7)  -
+                  at(12) * at(3)  * at(5),
+        inv_14 = -at(0)  * at(5)  * at(14) +
+                  at(0)  * at(6)  * at(13) +
+                  at(4)  * at(1)  * at(14) -
+                  at(4)  * at(2)  * at(13) -
+                  at(12) * at(1)  * at(6)  +
+                  at(12) * at(2)  * at(5),
+        inv_3 =  -at(1)  * at(6)  * at(11) +
+                  at(1)  * at(7)  * at(10) +
+                  at(5)  * at(2)  * at(11) -
+                  at(5)  * at(3)  * at(10) -
+                  at(9)  * at(2)  * at(7)  +
+                  at(9)  * at(3)  * at(6),
+        inv_7 =   at(0)  * at(6)  * at(11) -
+                  at(0)  * at(7)  * at(10) -
+                  at(4)  * at(2)  * at(11) +
+                  at(4)  * at(3)  * at(10) +
+                  at(8)  * at(2)  * at(7)  -
+                  at(8)  * at(3)  * at(6),
+        inv_11 = -at(0)  * at(5)  * at(11) +
+                  at(0)  * at(7)  * at(9)  +
+                  at(4)  * at(1)  * at(11) -
+                  at(4)  * at(3)  * at(9)  -
+                  at(8)  * at(1)  * at(7)  +
+                  at(8)  * at(3)  * at(5),
+        inv_15 =  at(0)  * at(5)  * at(10) -
+                  at(0)  * at(6)  * at(9)  -
+                  at(4)  * at(1)  * at(10) +
+                  at(4)  * at(2)  * at(9)  +
+                  at(8)  * at(1)  * at(6)  -
+                  at(8)  * at(2)  * at(5),
+        det = at(0) * inv_0 + at(1) * inv_4 + at(2) * inv_8 + at(3) * inv_12;
     if(det == 0)
       return null;
     return new Matrix4x4(inv_0, inv_1, inv_2, inv_3, inv_4, inv_5, inv_6, inv_7, inv_8, inv_9, inv_10, inv_11, inv_12, inv_13, inv_14, inv_15);
