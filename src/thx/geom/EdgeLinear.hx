@@ -22,7 +22,7 @@ class EdgeLinear implements Edge {
 
   public function new(p0 : Point, p1 : Point) {
     first = this.p0 = p0;
-    last = this.p1 = p1;
+    last  = this.p1 = p1;
     normalIn = normalOut = null;
   }
   public function equals(other : Edge) : Bool {
