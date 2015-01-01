@@ -18,11 +18,14 @@ abstract Point(XY) from XY to XY {
   @:from static inline public function fromAngle(angle :  Float)
     return create(Math.cos(angle), Math.sin(angle));
 
+  inline public static function create(x : Float, y : Float) : Point
+    return new PointXY(x, y);
+
   inline public static function linked(getX : Void -> Float, getY : Void -> Float, setX : Float -> Float, setY : Float -> Float) : Point
     return new LinkedXY(getX, getY, setX, setY);
 
-  inline public static function create(x : Float, y : Float) : Point
-    return new PointXY(x, y);
+  inline public static function immutable(x : Float, y : Float) : Point
+    return new ImmutableXY(x, y);
 
   public var x(get, set) : Float;
   public var y(get, set) : Float;
