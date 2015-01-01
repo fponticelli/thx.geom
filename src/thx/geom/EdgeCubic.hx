@@ -138,7 +138,7 @@ class EdgeCubic implements Edge {
 
   function get_isLinear() {
     var line = Line.fromPoints(p0, p3);
-    if(!p1.isOnLine(line) || !p0.isOnLine(line))
+    if(!p1.isOnLine(line) || !p2.isOnLine(line))
       return false;
     else {
       var box = Box.fromPoints(p0, p3);
