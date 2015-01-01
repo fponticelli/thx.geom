@@ -1,11 +1,11 @@
-package thx.geom;
+package thx.geom.d3;
 
 import thx.geom.d3.Line in Line3D;
 import thx.geom.d3.Point;
 import thx.geom.Matrix4x4;
 import thx.core.Floats;
 
-@:access(thx.geom.Polygon)
+@:access(thx.geom.d3.Polygon)
 class Plane {
   public static function fromPoints(a : Point, b : Point, c : Point) {
     var n = b.subtractPoint(a).cross(c.subtractPoint(a)).normalize();

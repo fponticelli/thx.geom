@@ -1,4 +1,4 @@
-package thx.geom;
+package thx.geom.d2;
 
 import thx.geom.d2.Line;
 import thx.geom.d2.Point;
@@ -27,7 +27,7 @@ class EdgeLinear implements Edge {
   }
 
   public function equals(other : Edge) : Bool
-    return other.isLinear() && mathces(other);
+    return other.isLinear && matches(other);
 
   public function matches(other : Edge) : Bool
     return first.nearEquals(other.first) && last.nearEquals(other.last);

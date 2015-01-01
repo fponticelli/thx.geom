@@ -1,4 +1,4 @@
-package thx.geom;
+package thx.geom.d2;
 
 import thx.geom.d2.Point;
 

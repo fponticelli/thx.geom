@@ -2,6 +2,8 @@ package thx.geom.shape;
 
 import thx.geom.Matrix4x4;
 import thx.geom.d2.Point in Point2D;
+import thx.geom.d2.Spline;
+import thx.geom.d2.SplineNode;
 import thx.geom.d3.Point in Point3D;
 import thx.math.Const;
 using thx.geom.Transformable.Transformables;

@@ -1,8 +1,8 @@
-package thx.geom;
+package thx.geom.d2;
 
 import thx.geom.d2.Point;
-import thx.geom.EdgeCubic;
-import thx.geom.Vertex;
+import thx.geom.d2.EdgeCubic;
+import thx.geom.d2.Vertex;
 import utest.Assert;
 
 class TestEdgeCubic {

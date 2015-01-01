@@ -5,21 +5,22 @@ import utest.Assert;
 import thx.geom.bool.Polygon;
 
 class TestAll {
-	public static function main() {
-		var runner = new Runner();
-		runner.addCase(new TestAll());
+  public static function main() {
+    var runner = new Runner();
+    runner.addCase(new TestAll());
 
-		runner.addCase(new thx.geom.d2.TestLine());
-		runner.addCase(new thx.geom.d2.TestPoint());
-		runner.addCase(new thx.geom.d3.TestPoint());
+    runner.addCase(new thx.geom.d2.TestLine());
+    runner.addCase(new thx.geom.d2.TestPoint());
+    runner.addCase(new thx.geom.d2.TestEdgeLinear());
+    runner.addCase(new thx.geom.d2.TestEdgeCubic());
+    runner.addCase(new thx.geom.d2.TestPath());
+    runner.addCase(new thx.geom.d2.TestSpline());
 
-		runner.addCase(new thx.geom.TestEdgeLinear());
-		runner.addCase(new thx.geom.TestEdgeCubic());
-		runner.addCase(new thx.geom.TestPath());
-		runner.addCase(new thx.geom.TestSpline());
-		Report.create(runner);
-		runner.run();
-	}
+    runner.addCase(new thx.geom.d3.TestPoint());
 
-	public function new() {}
+    Report.create(runner);
+    runner.run();
+  }
+
+  public function new() {}
 }

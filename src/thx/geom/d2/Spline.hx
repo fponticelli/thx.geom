@@ -1,4 +1,4 @@
-package thx.geom;
+package thx.geom.d2;
 
 using thx.core.Arrays;
 using thx.core.Iterators;

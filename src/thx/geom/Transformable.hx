@@ -2,6 +2,7 @@ package thx.geom;
 
 import thx.geom.d2.Point in Point2D;
 import thx.geom.d3.Point in Point3D;
+import thx.geom.d3.Plane;
 
 typedef Transformable<T> = {
   public function transform(matrix : Matrix4x4) : T;

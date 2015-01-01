@@ -1,4 +1,4 @@
-package thx.geom;
+package thx.geom.d3;
 
 import thx.geom.d2.Line in Line2D;
 import thx.geom.d3.Line in Line3D;

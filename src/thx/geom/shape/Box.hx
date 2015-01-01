@@ -2,6 +2,7 @@ package thx.geom.shape;
 
 import thx.geom.Matrix4x4;
 import thx.geom.d2.Point;
+import thx.geom.d2.Spline;
 
 abstract Box(Array<Point>) {
   public static function fromPoints(a : Point, b : Point)

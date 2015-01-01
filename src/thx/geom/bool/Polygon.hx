@@ -1,10 +1,10 @@
 package thx.geom.bool;
 
 using thx.core.Iterables;
-import thx.geom.Path;
+import thx.geom.d2.Path;
 import thx.geom.d2.Point;
-import thx.geom.Spline;
-import thx.geom.SplineNode;
+import thx.geom.d2.Spline;
+import thx.geom.d2.SplineNode;
 using thx.core.Bools;
 
 @:access(thx.geom.bool.PolygonVertex)
