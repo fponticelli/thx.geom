@@ -1,7 +1,8 @@
 package thx.geom;
 
-import thx.geom.Point;
-import thx.geom.Point3D;
+import thx.geom.d2.Line;
+import thx.geom.d2.Point in Point2D;
+import thx.geom.d3.Point in Point3D;
 import thx.geom.Matrix4x4;
 
 class OrthoNormalBasis {
@@ -21,8 +22,8 @@ class OrthoNormalBasis {
 
   public static var z0Plane(default, null) : OrthoNormalBasis =
     new OrthoNormalBasis(
-      new Plane(new Point3D(0, 0, 1), 0),
-      new Point3D(1, 0, 0)
+      new Plane(Point3D.create(0, 0, 1), 0),
+      Point3D.create(1, 0, 0)
     );
 
   public function getProjectionMatrix() {
@@ -44,17 +45,17 @@ class OrthoNormalBasis {
   }
 
   public function to2D(vec3 : Point3D)
-    return new Point(vec3.dot(u), vec3.dot(v));
+    return Point2D.create(vec3.dot(u), vec3.dot(v));
 
-  public function to3D(vec2 : Point)
+  public function to3D(vec2 : Point2D)
     return planeOrigin
-      .addPoint3D(u.multiply(vec2.x))
-      .addPoint3D(v.multiply(vec2.y));
+      .addPoint(u.multiply(vec2.x))
+      .addPoint(v.multiply(vec2.y));
 
   public function line3Dto2D(line : Line3D)
     return Line.fromPoints(
       to2D(line.point),
-      to2D(line.direction.addPoint3D(line.point))
+      to2D(line.direction.addPoint(line.point))
     );
 
   public function line2Dto3D(line : Line) {
@@ -66,10 +67,9 @@ class OrthoNormalBasis {
   public function transform(matrix : Matrix4x4) {
     // todo: may not work properly in case of mirroring
     var newplane = plane.transform(matrix),
-      rightpoint_transformed = u.transform(matrix),
-      origin_transformed = new Point3D(0, 0, 0).transform(matrix),
-      newrighthandvector = rightpoint_transformed.subtractPoint3D(origin_transformed),
-      newbasis = new OrthoNormalBasis(newplane, newrighthandvector);
-    return newbasis;
+        rightpoint_transformed = u.transform(matrix),
+        origin_transformed = Point3D.create(0, 0, 0).transform(matrix),
+        newrighthandvector = rightpoint_transformed.subtractPoint(origin_transformed);
+    return new OrthoNormalBasis(newplane, newrighthandvector);
   }
 }

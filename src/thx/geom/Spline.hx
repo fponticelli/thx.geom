@@ -4,6 +4,8 @@ using thx.core.Arrays;
 using thx.core.Iterators;
 import thx.geom.bool.Polygon in BoolPolygon;
 import thx.geom.shape.Box;
+import thx.geom.d2.Point;
+import thx.geom.d2.Line;
 
 class Spline {
   @:isVar public var area(get, null) : Float;
@@ -69,9 +71,9 @@ class Spline {
 
   public static function fromCoords(arr : Array<Array<Null<Float>>>, ?closed : Bool) {
     var nodes = arr.map(function(c) {
-        var p    = new Point(c[0], c[1]),
-          nout = null == c[2] ? Point.zero : new Point(c[2], c[3]),
-          nin  = null == c[4] ? Point.zero : new Point(c[4], c[5]);
+        var p    = Point.create(c[0], c[1]),
+            nout = null == c[2] ? Point.zero : Point.create(c[2], c[3]),
+            nin  = null == c[4] ? Point.zero : Point.create(c[4], c[5]);
         return new SplineNode(p, nout, nin);
       });
     return new Spline(nodes, closed);

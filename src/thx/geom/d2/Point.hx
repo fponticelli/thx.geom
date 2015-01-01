@@ -4,6 +4,8 @@ import thx.geom.d2.xy.*;
 using thx.core.Arrays;
 using thx.core.Floats;
 
+import thx.geom.d3.Point in Point3D;
+
 abstract Point(XY) from XY to XY {
   public static var zero(default, null) : Point = Point.immutable(0, 0);
 
@@ -128,8 +130,8 @@ abstract Point(XY) from XY to XY {
   public function distanceToSquared(p : Point)
     return subtractPoint(p).lengthSquared;
 
-//  inline public function transform(matrix : Matrix4x4)
-//    return matrix.leftMultiplyPoint((this : Point));
+  inline public function transform(matrix : Matrix4x4)
+    return matrix.leftMultiplyPoint((this : Point));
 
   inline public function cross(p : Point)
     return x * p.y - y * p.x;

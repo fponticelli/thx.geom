@@ -1,7 +1,7 @@
 package thx.geom.shape;
 
 import thx.geom.Matrix4x4;
-import thx.geom.Point;
+import thx.geom.d2.Point;
 
 abstract Box(Array<Point>) {
   public static function fromPoints(a : Point, b : Point)
@@ -28,11 +28,11 @@ abstract Box(Array<Point>) {
   public function transform(matrix : Matrix4x4)
     return Box.fromPoints(bottomLeft.transform(matrix), topRight.transform(matrix));
 
-  inline function get_topLeft() return new Point(left, top);
+  inline function get_topLeft() return Point.create(left, top);
   inline function get_topRight() return this[1];
   inline function get_bottomLeft() return this[0];
-  inline function get_bottomRight() return new Point(right, bottom);
-  inline function get_center() return new Point(left + width / 2, top + height / 2);
+  inline function get_bottomRight() return Point.create(right, bottom);
+  inline function get_center() return Point.create(left + width / 2, top + height / 2);
   inline function get_left() return bottomLeft.x;
   inline function get_right() return topRight.x;
   inline function get_top() return topRight.y;

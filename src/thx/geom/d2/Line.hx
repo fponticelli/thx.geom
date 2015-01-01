@@ -1,7 +1,6 @@
-package thx.geom;
+package thx.geom.d2;
 
-import thx.geom.Point;
-import thx.geom.Matrix4x4;
+//import thx.geom.Matrix4x4;
 
 class Line {
   public static function fromPoints(p1 : Point, p2 : Point) {
@@ -47,7 +46,7 @@ class Line {
     return Point.solve2Linear(normal.x, normal.y, line.normal.x, line.normal.y, w, line.w);
 
   public function transform(matrix : Matrix4x4) {
-    var origin = new Point(0, 0),
+    var origin = Point.create(0, 0),
         pointOnPlane = normal.multiply(w),
         neworigin = origin.transform(matrix),
         neworiginPlusNormal = normal.transform(matrix),

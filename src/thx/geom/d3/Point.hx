@@ -4,6 +4,8 @@ import thx.geom.d3.xyz.*;
 using thx.core.Arrays;
 using thx.core.Floats;
 
+import thx.geom.d2.Point in Point2D;
+
 abstract Point(XYZ) from XYZ to XYZ {
   public static var zero(default, null) : Point = Point.immutable(0, 0, 0);
 
@@ -123,8 +125,22 @@ abstract Point(XYZ) from XYZ to XYZ {
   public function distanceToSquared(p : Point)
     return subtractPoint(p).lengthSquared;
 
-//  inline public function transform(matrix : Matrix4x4)
-//    return matrix.leftMultiplyPoint((this : Point));
+  // Right multiply by a 4x4 matrix (the vector is interpreted as a row vector)
+  // Returns a new Point3D
+  inline public function transform(matrix : Matrix4x4)
+    return matrix.leftMultiplyPoint3D((this : Point));
+
+  // find a vector that is somewhat perpendicular to this one
+  public function randomNonParallelVector() : Point {
+    var a = abs();
+    if((a.x <= a.y) && (a.x <= a.z)) {
+      return Point.create(1, 0, 0);
+    } else if((a.y <= a.x) && (a.y <= a.z)) {
+      return Point.create(0, 1, 0);
+    } else {
+      return Point.create(0, 0, 1);
+    }
+  }
 
   public function cross(p : Point)
     return Point.create(
@@ -160,10 +176,13 @@ abstract Point(XYZ) from XYZ to XYZ {
     return this;
   }
 
-  @:to inline function toArray() : Array<Float>
+  @:to inline public function toPoint() : Point2D
+    return new Point2D(this);
+
+  @:to inline public function toArray() : Array<Float>
     return [x, y, z];
 
-  @:to inline function toObject() : { x : Float, y : Float, z : Float }
+  @:to inline public function toObject() : { x : Float, y : Float, z : Float }
     return { x : x, y : y, z : z };
 
   @:to inline public function toString()
@@ -175,6 +194,6 @@ abstract Point(XYZ) from XYZ to XYZ {
   inline function set_x(v : Float) return this.x = v;
   inline function set_y(v : Float) return this.y = v;
   inline function set_z(v : Float) return this.z = v;
-  inline function get_length() return (lengthSquared).root(3);
+  inline function get_length() return lengthSquared.sqrt();
   inline function get_lengthSquared() return x * x + y * y + z * z;
 }

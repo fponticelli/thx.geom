@@ -1,6 +1,6 @@
 package thx.geom;
 
-import thx.geom.Point;
+import thx.geom.d2.Point;
 using thx.core.Floats;
 using thx.math.Integrate;
 

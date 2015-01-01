@@ -1,10 +1,11 @@
 package thx.geom;
 
-import thx.geom.Point3D;
+import thx.geom.d2.Point in Point2D;
+import thx.geom.d3.Point in Point3D;
 
 class Line3D {
   public static function fromPoints(p1 : Point3D, p2 : Point3D)
-    return new Line3D(p1, p2.subtractPoint3D(p1).normalize());
+    return new Line3D(p1, p2.subtractPoint(p1).normalize());
 
   public static function fromPlanes(p1 : Plane, p2 : Plane) {
     var direction = p1.normal.cross(p2.normal),
@@ -21,16 +22,16 @@ class Line3D {
     if((mabsx >= mabsy) && (mabsx >= mabsz)) {
       // direction vector is mostly pointing towards x
       // find a point p for which x is zero:
-      var r = Point.solve2Linear(p1.normal.y, p1.normal.z, p2.normal.y, p2.normal.z, p1.w, p2.w);
-      origin = new Point3D(0, r.x, r.y);
+      var r = Point2D.solve2Linear(p1.normal.y, p1.normal.z, p2.normal.y, p2.normal.z, p1.w, p2.w);
+      origin = Point3D.create(0, r.x, r.y);
     } else if((mabsy >= mabsx) && (mabsy >= mabsz)) {
       // find a point p for which y is zero:
-      var r = Point.solve2Linear(p1.normal.x, p1.normal.z, p2.normal.x, p2.normal.z, p1.w, p2.w);
-      origin = new Point3D(r.x, 0, r.y);
+      var r = Point2D.solve2Linear(p1.normal.x, p1.normal.z, p2.normal.x, p2.normal.z, p1.w, p2.w);
+      origin = Point3D.create(r.x, 0, r.y);
     } else {
       // find a point p for which z is zero:
-      var r = Point.solve2Linear(p1.normal.x, p1.normal.y, p2.normal.x, p2.normal.y, p1.w, p2.w);
-      origin = new Point3D(r.x, r.y, 0);
+      var r = Point2D.solve2Linear(p1.normal.x, p1.normal.y, p2.normal.x, p2.normal.y, p1.w, p2.w);
+      origin = Point3D.create(r.x, r.y, 0);
     }
     return new Line3D(origin, direction);
   }
@@ -45,28 +46,28 @@ class Line3D {
 
   public function intersectWithPlane(plane : Plane) {
     var lambda = (plane.w - plane.normal.dot(this.point)) / plane.normal.dot(direction);
-    return point.addPoint3D(direction.multiply(lambda));
+    return point.addPoint(direction.multiply(lambda));
   }
 
   public function reverse()
     return new Line3D(point, direction.negate());
 
   public function transform(matrix4x4) {
-    var newpoint = point.multiply4x4(matrix4x4),
-        pointaddDirection = point.addPoint3D(direction),
-        newPointaddDirection = pointaddDirection.multiply4x4(matrix4x4),
-       newdirection = newPointaddDirection.subtractPoint3D(newpoint);
+    var newpoint = point.transform(matrix4x4),
+        pointaddDirection = point.addPoint(direction),
+        newPointaddDirection = pointaddDirection.transform(matrix4x4),
+       newdirection = newPointaddDirection.subtractPoint(newpoint);
     return new Line3D(newpoint, newdirection);
   }
 
   public function closestPointOnLine(point : Point3D) {
-    var t = point.subtractPoint3D(point).dot(direction) / direction.dot(this.direction);
-    return point.addPoint3D(direction.multiply(t));
+    var t = point.subtractPoint(point).dot(direction) / direction.dot(this.direction);
+    return point.addPoint(direction.multiply(t));
   }
 
   public function distanceToPoint(point : Point3D) {
     var closestpoint = closestPointOnLine(point),
-        distancevector = point.subtractPoint3D(closestpoint);
+        distancevector = point.subtractPoint(closestpoint);
     return distancevector.length;
   }
 

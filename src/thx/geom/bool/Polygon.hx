@@ -2,7 +2,7 @@ package thx.geom.bool;
 
 using thx.core.Iterables;
 import thx.geom.Path;
-import thx.geom.Point;
+import thx.geom.d2.Point;
 import thx.geom.Spline;
 import thx.geom.SplineNode;
 using thx.core.Bools;
@@ -225,7 +225,7 @@ class PolygonVertex {
 
   public function isInside(polygon : Polygon) {
     var windings = 0,
-        boundary = new PolygonVertex(new Point(Math.POSITIVE_INFINITY, point.y)),
+        boundary = new PolygonVertex(Point.create(Math.POSITIVE_INFINITY, point.y)),
         q = polygon.first;
     do {
       if(!q.intersect && new Intersection(this, boundary, q, polygon.getNext(q.next)).test())
@@ -251,7 +251,7 @@ class Intersection {
     uClipper = ((s2.point.x - s1.point.x) * (s1.point.y - c1.point.y) - (s2.point.y - s1.point.y) * (s1.point.x - c1.point.x)) / den;
 
     if (test())
-      point = new Point(
+      point = Point.create(
         s1.point.x + uSubject * (s2.point.x - s1.point.x),
         s1.point.y + uSubject * (s2.point.y - s1.point.y)
       );

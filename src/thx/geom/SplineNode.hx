@@ -1,5 +1,7 @@
 package thx.geom;
 
+import thx.geom.d2.Point;
+
 class SplineNode {
   public var position(default, null) : Point;
   public var normalIn(default, null) : Null<Point>;

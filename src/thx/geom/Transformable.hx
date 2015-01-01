@@ -1,5 +1,8 @@
 package thx.geom;
 
+import thx.geom.d2.Point in Point2D;
+import thx.geom.d3.Point in Point3D;
+
 typedef Transformable<T> = {
   public function transform(matrix : Matrix4x4) : T;
 };
@@ -8,15 +11,15 @@ class Transformables {
   public static inline function mirror<T>(t : Transformable<T>, plane : Plane) : T
     return t.transform(Matrix4x4.mirroring(plane));
 
-  public static var MX(default, null) : Plane = new Plane(new Point3D(1, 0, 0), 0);
+  public static var MX(default, null) : Plane = new Plane(Point3D.create(1, 0, 0), 0);
   public static inline function mirrorX<T>(t : Transformable<T>) : T
     return mirror(t, MX);
 
-  public static var MY(default, null) : Plane = new Plane(new Point3D(0, 1, 0), 0);
+  public static var MY(default, null) : Plane = new Plane(Point3D.create(0, 1, 0), 0);
   public static inline function mirrorY<T>(t : Transformable<T>) : T
     return mirror(t, MY);
 
-  public static var MZ(default, null) : Plane = new Plane(new Point3D(0, 0, 1), 0);
+  public static var MZ(default, null) : Plane = new Plane(Point3D.create(0, 0, 1), 0);
   public static inline function mirrorZ<T>(t : Transformable<T>) : T
     return mirror(t, MZ);
 
@@ -24,13 +27,13 @@ class Transformables {
     return t.transform(Matrix4x4.translation(v));
 
   public static inline function translateX<T>(t : Transformable<T>, x : Float) : T
-    return t.transform(Matrix4x4.translation(new Point3D(x, 0, 0)));
+    return t.transform(Matrix4x4.translation(Point3D.create(x, 0, 0)));
 
   public static inline function translateY<T>(t : Transformable<T>, y : Float) : T
-    return t.transform(Matrix4x4.translation(new Point3D(0, y, 0)));
+    return t.transform(Matrix4x4.translation(Point3D.create(0, y, 0)));
 
   public static inline function translateZ<T>(t : Transformable<T>, z : Float) : T
-    return t.transform(Matrix4x4.translation(new Point3D(0, 0, z)));
+    return t.transform(Matrix4x4.translation(Point3D.create(0, 0, z)));
 
   public static inline function scale<T>(t : Transformable<T>, f : Point3D) : T
     return t.transform(Matrix4x4.scaling(f));

@@ -1,6 +1,8 @@
 package thx.geom;
 
 import thx.geom.Transformable;
+import thx.geom.d2.Point in Point2D;
+import thx.geom.d3.Point in Point3D;
 
 abstract Matrix4x4(Array<Float>)
 {
@@ -160,7 +162,7 @@ abstract Matrix4x4(Array<Float>)
       y *= invw;
       z *= invw;
     }
-    return new Point3D(x, y, z);
+    return Point3D.create(x, y, z);
   }
 
   public function leftMultiplyPoint3D(vector : Point3D) {
@@ -179,10 +181,10 @@ abstract Matrix4x4(Array<Float>)
       y *= invw;
       z *= invw;
     }
-    return new Point3D(x, y, z);
+    return Point3D.create(x, y, z);
   }
 
-  public function rightMultiplyPoint(vector : Point) {
+  public function rightMultiplyPoint(vector : Point2D) {
     var v0 = vector.x,
         v1 = vector.y,
         v2 = 0,
@@ -198,10 +200,10 @@ abstract Matrix4x4(Array<Float>)
       y *= invw;
       z *= invw;
     }
-    return new Point(x, y);
+    return Point2D.create(x, y);
   }
 
-  public function leftMultiplyPoint(vector : Point) {
+  public function leftMultiplyPoint(vector : Point2D) {
     var v0 = vector.x,
         v1 = vector.y,
         v2 = 0,
@@ -217,14 +219,14 @@ abstract Matrix4x4(Array<Float>)
       y *= invw;
       z *= invw;
     }
-    return new Point(x, y);
+    return Point2D.create(x, y);
   }
 
   // determine whether this matrix is a mirroring transformation
   public function isMirroring() {
-    var u = new Point3D(at(0), at(4), at(8)),
-        v = new Point3D(at(1), at(5), at(9)),
-        w = new Point3D(at(2), at(6), at(10));
+    var u = Point3D.create(at(0), at(4), at(8)),
+        v = Point3D.create(at(1), at(5), at(9)),
+        w = Point3D.create(at(2), at(6), at(10));
 
     // for a true orthogonal, non-mirrored base, u.cross(v) == w
     // If they have an opposite direction then we are mirroring

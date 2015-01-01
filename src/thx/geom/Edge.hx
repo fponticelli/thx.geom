@@ -1,5 +1,7 @@
 package thx.geom;
 
+import thx.geom.d2.Line;
+import thx.geom.d2.Point;
 import thx.geom.shape.Box;
 
 interface Edge {
