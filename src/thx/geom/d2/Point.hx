@@ -5,7 +5,7 @@ using thx.core.Arrays;
 using thx.core.Floats;
 
 abstract Point(XY) from XY to XY {
-  public static var zero(default, null) : Point = Point.linked(function() return 0, function() return 0, function(_) return 0, function(_) return 0);
+  public static var zero(default, null) : Point = Point.immutable(0, 0);
 
   @:from public static function fromFloats(arr : Array<Float>) {
     arr.resize(2, 0);
