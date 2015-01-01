@@ -1,10 +1,26 @@
 package thx.geom.d2;
 
 import thx.geom.d2.*;
+import thx.geom.d2.xy.*;
 import utest.Assert;
 
 class TestPoint {
   public function new() {}
+
+  public function testAddAssign() {
+    var a = Point.create(10, 20),
+        b = Point.create(20, 40),
+        c = a;
+
+    Assert.isTrue((a : XY) == (c : XY));
+    a = a + b;
+    Assert.isFalse((a : XY) == (c : XY));
+
+    a = c;
+    Assert.isTrue((a : XY) == (c : XY));
+    a += b;
+    Assert.isTrue((a : XY) == (c : XY));
+  }
 
   public function testInterpolate() {
     var a = Point.create(10, 20),
