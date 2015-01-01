@@ -25,11 +25,9 @@ class EdgeLinear implements Edge {
     last  = this.p1 = p1;
     normalIn = normalOut = null;
   }
-  public function equals(other : Edge) : Bool {
-    if(!Std.is(other, EdgeLinear)) return false;
-    var t : EdgeLinear = cast other;
-    return p0.nearEquals(t.p0) && p1.nearEquals(t.p1);
-  }
+
+  public function equals(other : Edge) : Bool
+    return other.isLinear() && mathces(other);
 
   public function matches(other : Edge) : Bool
     return first.nearEquals(other.first) && last.nearEquals(other.last);
