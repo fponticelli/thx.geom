@@ -1,5 +1,6 @@
 package thx.geom;
 
+import thx.geom.d3.Line in Line3D;
 import thx.geom.d3.Point;
 import thx.geom.Matrix4x4;
 import thx.core.Floats;

@@ -1,6 +1,7 @@
 package thx.geom;
 
-import thx.geom.d2.Line;
+import thx.geom.d2.Line in Line2D;
+import thx.geom.d3.Line in Line3D;
 import thx.geom.d2.Point in Point2D;
 import thx.geom.d3.Point in Point3D;
 import thx.geom.Matrix4x4;
@@ -53,12 +54,12 @@ class OrthoNormalBasis {
       .addPoint(v.multiply(vec2.y));
 
   public function line3Dto2D(line : Line3D)
-    return Line.fromPoints(
+    return Line2D.fromPoints(
       to2D(line.point),
       to2D(line.direction.addPoint(line.point))
     );
 
-  public function line2Dto3D(line : Line) {
+  public function line2Dto3D(line : Line2D) {
     var a = line.origin(),
       b = line.direction().addPoint(a);
     return Line3D.fromPoints(to3D(a), to3D(b));
