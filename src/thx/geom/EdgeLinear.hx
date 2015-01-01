@@ -125,10 +125,10 @@ class EdgeLinear implements Edge {
   function get_isLinear()
     return true;
 
-  function get_length() : Float {
+  function get_length() : Float
     return Math.sqrt(lengthSquared);
 
-  function get_lengthSquared() {
+  function get_lengthSquared()
     return (p1-p0).lengthSquared;
 
   function get_line() : Line
