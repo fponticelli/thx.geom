@@ -9,6 +9,7 @@ class TestAll {
     var runner = new Runner();
     runner.addCase(new TestAll());
 
+    runner.addCase(new thx.geom.TestMatrix());
     runner.addCase(new thx.geom.d2.TestLine());
     runner.addCase(new thx.geom.d2.TestPoint());
     runner.addCase(new thx.geom.d2.TestEdgeLinear());
