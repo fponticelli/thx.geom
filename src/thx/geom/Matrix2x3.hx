@@ -20,40 +20,15 @@ abstract Matrix2x3(M2x3) from M2x3 to M2x3 {
   inline public function new(m : M2x3)
     this = m;
 
-  inline public function flipX() : Matrix2x3 {
-    return null;
-  }
-  inline public function flipY() : Matrix2x3 {
-    return null;
-  }
-  inline public function multiply(other : Matrix2x3) : Matrix2x3 {
-    return null;
-  }
-  inline public function inverse() : Matrix2x3 {
-    return null;
-  }
-  inline public function rotate(angle : Float) : Matrix2x3 {
-    return null;
-  }
-  inline public function rotateFromVector(x : Float, y : Float) : Matrix2x3 {
-    return null;
-  }
-  inline public function rotateFromPoint(point : Point) : Matrix2x3 {
-    return null;
-  }
-  inline public function translate(x : Float, y : Float) : Matrix2x3 {
-    return null;
-  }
-  inline public function scale(scaleFactor : Float) : Matrix2x3 {
-    return null;
-  }
-  inline public function scaleNonUniform(scaleFactorX : Float, scaleFactorY : Float) : Matrix2x3 {
-    return null;
-  }
-  inline public function skewX(angle : Float) : Matrix2x3 {
-    return null;
-  }
-  inline public function skewY(angle : Float) : Matrix2x3 {
+  public function flipX() : Matrix2x3
+    return mul(-1, 0, 0, 1, 0, 0);
+
+  public function flipY() : Matrix2x3
+    return mul(1, 0, 0, -1, 0, 0);
+
+  @:op(A*B) public function multiply(other : Matrix2x3) : Matrix2x3
+    return create(other.a, other.b, other.c, other.d, other.e, other.f);
+
   private function mul(a : Float, b : Float, c : Float, d : Float, e : Float, f : Float) : Matrix2x3
     return create(
       this.a * a + this.c * b,
@@ -64,8 +39,35 @@ abstract Matrix2x3(M2x3) from M2x3 to M2x3 {
       this.b * e + this.d * f + this.f
     );
 
+  public function inverse() : Matrix2x3
     return null;
+
+  public function rotate(angle : Float) : Matrix2x3 {
+    var c = angle.cos(),
+        s = angle.sin();
+    return mul(c, s, -s, -c, 0, 0);
   }
+
+  public function rotateFromVector(x : Float, y : Float) : Matrix2x3
+    return rotate(y.atan2(x));
+
+  public function rotateFromPoint(point : Point) : Matrix2x3
+    return rotateFromVector(point.x, point.y);
+
+  public function translate(x : Float, y : Float) : Matrix2x3
+    return mul(1, 0, 0, 1, x, y);
+
+  public function scale(scaleFactor : Float) : Matrix2x3
+    return mul(scaleFactor, 0, 0, scaleFactor, 0, 0);
+
+  public function scaleNonUniform(scaleFactorX : Float, scaleFactorY : Float) : Matrix2x3
+    return mul(scaleFactorX, 0, 0, scaleFactorY, 0, 0);
+
+  public function skewX(angle : Float) : Matrix2x3
+    return mul(1, 0, angle.tan(), 1, 0, 0);
+
+  public function skewY(angle : Float) : Matrix2x3
+    return mul(1, angle.tan(), 0, 1, 0, 0);
 
   function get_a() return this.a;
   function get_b() return this.b;
