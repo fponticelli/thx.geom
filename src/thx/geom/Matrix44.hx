@@ -167,6 +167,25 @@ abstract Matrix44(Array<Float>) {
     return Point3D.create(x, y, z);
   }
 
+  public function applyLeftMultiplyPoint3D(vector : Point3D) {
+    var v0 = vector.x,
+        v1 = vector.y,
+        v2 = vector.z,
+        v3 = 1,
+        x = v0 * at(0) + v1 * at(4) + v2 * at(8) + v3 * at(12),
+        y = v0 * at(1) + v1 * at(5) + v2 * at(9) + v3 * at(13),
+        z = v0 * at(2) + v1 * at(6) + v2 * at(10) + v3 * at(14),
+        w = v0 * at(3) + v1 * at(7) + v2 * at(11) + v3 * at(15);
+    // scale such that fourth element becomes 1:
+    if(w != 1) {
+      var invw = 1.0 / w;
+      x *= invw;
+      y *= invw;
+      z *= invw;
+    }
+    return vector.set(x, y, z);
+  }
+
   public function leftMultiplyPoint3D(vector : Point3D) {
     var v0 = vector.x,
         v1 = vector.y,
