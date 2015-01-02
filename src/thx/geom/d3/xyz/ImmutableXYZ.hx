@@ -14,8 +14,10 @@ class ImmutableXYZ implements XYZ {
     _z = z;
   }
 
-  public function apply44(matrix : Matrix44)
+  public function apply44(matrix : Matrix44) {
     matrix.applyLeftMultiplyPoint3D(this);
+    return this;
+  }
 
   public function clone() : XYZ return new MutXYZ(_x, _y, _z);
 
