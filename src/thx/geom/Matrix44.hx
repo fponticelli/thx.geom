@@ -224,6 +224,26 @@ abstract Matrix44(Array<Float>) {
     return Point2D.create(x, y);
   }
 
+  public function applyLeftMultiplyPoint(vector : Point2D) {
+    var v0 = vector.x,
+        v1 = vector.y,
+        v2 = 0,
+        v3 = 1,
+        x = v0 * at(0) + v1 * at(4) + v2 * at(8) + v3 * at(12),
+        y = v0 * at(1) + v1 * at(5) + v2 * at(9) + v3 * at(13),
+        z = v0 * at(2) + v1 * at(6) + v2 * at(10) + v3 * at(14),
+        w = v0 * at(3) + v1 * at(7) + v2 * at(11) + v3 * at(15);
+    // scale such that fourth element becomes 1:
+    if(w != 1) {
+      var invw = 1.0 / w;
+      x *= invw;
+      y *= invw;
+      z *= invw;
+    }
+    vector.set(x, y);
+    return vector;
+  }
+
   // determine whether this matrix is a mirroring transformation
   public function isMirroring() {
     var u = Point3D.create(at(0), at(4), at(8)),
