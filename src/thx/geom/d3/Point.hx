@@ -18,7 +18,7 @@ abstract Point(XYZ) from XYZ to XYZ {
     return create(o.x, o.y, o.z);
 
   inline public static function create(x : Float, y : Float, z : Float) : Point
-    return new PointXYZ(x, y, z);
+    return new MutXYZ(x, y, z);
 
   inline public static function linked(getX : Void -> Float, getY : Void -> Float, getZ : Void -> Float, setX : Float -> Float, setY : Float -> Float, setZ : Float -> Float) : Point
     return new LinkedXYZ(getX, getY, getZ, setX, setY, setZ);
