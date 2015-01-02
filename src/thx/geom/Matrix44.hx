@@ -40,17 +40,18 @@ abstract Matrix44(Array<Float>) {
   static public function rotation(rotationCenter : Point3D, rotationAxis : Point3D, radians :  Float) {
     var rotationPlane = Plane.fromNormalAndPoint(rotationAxis, rotationCenter),
         orthobasis = OrthoNormalBasis.fromPlane(rotationPlane),
-        transformation = Matrix44.translation(rotationCenter.negate());
+        negation = rotationCenter.negate(),
+        transformation = Matrix44.translation(negation.x, negation.y, negation.z);
     transformation = transformation.multiply(orthobasis.getProjectionMatrix());
     transformation = transformation.multiply(Matrix44.rotationZ(radians));
     transformation = transformation.multiply(orthobasis.getInverseProjectionMatrix());
-    transformation = transformation.multiply(Matrix44.translation(rotationCenter));
+    transformation = transformation.multiply(Matrix44.translation(rotationCenter.x, rotationCenter.y, rotationCenter.z));
     return transformation;
   }
 
   // Create an affine matrix for translation:
-  static public function translation(vec : Point3D)
-    return new Matrix44(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, vec.x, vec.y, vec.z, 1);
+  static public function translation(x : Float, y : Float, z : Float)
+    return new Matrix44(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, z, 1);
 
   public static inline function mirrorX<T>()
     return mirroring(Transformables.MX);

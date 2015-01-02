@@ -25,16 +25,16 @@ class Transformables {
     return mirror(t, MZ);
 
   public static inline function translate<T>(t : Transformable<T>, v : Point3D) : T
-    return t.transform(Matrix44.translation(v));
+    return t.transform(Matrix44.translation(v.x, v.y, v.z));
 
   public static inline function translateX<T>(t : Transformable<T>, x : Float) : T
-    return t.transform(Matrix44.translation(Point3D.create(x, 0, 0)));
+    return t.transform(Matrix44.translation(x, 0, 0));
 
   public static inline function translateY<T>(t : Transformable<T>, y : Float) : T
-    return t.transform(Matrix44.translation(Point3D.create(0, y, 0)));
+    return t.transform(Matrix44.translation(0, y, 0));
 
   public static inline function translateZ<T>(t : Transformable<T>, z : Float) : T
-    return t.transform(Matrix44.translation(Point3D.create(0, 0, z)));
+    return t.transform(Matrix44.translation(0, 0, z));
 
   public static inline function scale<T>(t : Transformable<T>, f : Point3D) : T
     return t.transform(Matrix44.scaling(f));
