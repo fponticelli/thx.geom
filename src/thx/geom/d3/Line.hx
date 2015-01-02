@@ -53,10 +53,10 @@ class Line {
   public function reverse()
     return new Line(point, direction.negate());
 
-  public function transform(matrix4x4) {
-    var newpoint = point.transform(matrix4x4),
+  public function transform(matrix44) {
+    var newpoint = point.transform(matrix44),
         pointaddDirection = point.addPoint(direction),
-        newPointaddDirection = pointaddDirection.transform(matrix4x4),
+        newPointaddDirection = pointaddDirection.transform(matrix44),
         newdirection = newPointaddDirection.subtractPoint(newpoint);
     return new Line(newpoint, newdirection);
   }
