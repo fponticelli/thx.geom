@@ -1,5 +1,6 @@
 package thx.geom;
 
+import thx.core.Arrays;
 import thx.geom.Transformable;
 import thx.geom.d2.Point in Point2D;
 import thx.geom.d3.OrthoNormalBasis;
@@ -10,8 +11,7 @@ abstract Matrix4x4(Array<Float>) {
   public static var identity(default, null) : Matrix4x4 = new Matrix4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 
   @:from public static function fromArray(e : Array<Float>) {
-    if(e.length != 16)
-      throw 'Invalid array length (${e.length}) for Matrix4x4, should be 16';
+    Arrays.resize(e, 16, 0.0);
     return new Matrix4x4(e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9], e[10], e[11], e[12], e[13], e[14], e[15]);
   }
 
