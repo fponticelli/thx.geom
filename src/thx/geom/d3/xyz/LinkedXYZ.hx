@@ -21,6 +21,11 @@ class LinkedXYZ implements XYZ {
     this.setZ = setZ;
   }
 
+  public function apply44(matrix : Matrix44)
+    matrix.applyLeftMultiplyPoint3D(this);
+
+  public function clone() : XYZ return new MutXYZ(getX(), getY(), getZ());
+
   function get_x() return getX();
   function get_y() return getY();
   function get_z() return getZ();

@@ -1,6 +1,6 @@
 package thx.geom.d3.xyz;
 
-class PointXYZ implements XYZ {
+class MutXYZ implements XYZ {
   public var x(get, set) : Float;
   public var y(get, set) : Float;
   public var z(get, set) : Float;
@@ -13,6 +13,11 @@ class PointXYZ implements XYZ {
     _y = y;
     _z = z;
   }
+
+  public function apply44(matrix : Matrix44)
+    matrix.applyLeftMultiplyPoint3D(this);
+
+  public function clone() : XYZ return new MutXYZ(_x, _y, _z);
 
   function get_x() return _x;
   function get_y() return _y;
