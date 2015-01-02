@@ -1,8 +1,0 @@
--cp perf
--cp src
--lib thx.core
--lib thx.benchmark
--cpp bin/pointspeed_cpp
--main PointSpeed
-
-#-cmd neko ../bin/pointspeed.cpp
