@@ -7,6 +7,10 @@ import thx.core.Floats;
 
 @:access(thx.geom.d3.Polygon)
 class Plane {
+  public static var PX(default, null) : Plane = new Plane(Point.immutable(1, 0, 0), 0);
+  public static var PY(default, null) : Plane = new Plane(Point.immutable(0, 1, 0), 0);
+  public static var PZ(default, null) : Plane = new Plane(Point.immutable(0, 0, 1), 0);
+
   public static function fromPoints(a : Point, b : Point, c : Point) {
     var n = b.subtractPoint(a).cross(c.subtractPoint(a)).normalize();
     return new Plane(n, n.dot(a));

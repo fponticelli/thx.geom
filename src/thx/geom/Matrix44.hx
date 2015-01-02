@@ -54,11 +54,11 @@ abstract Matrix44(Array<Float>) {
     return new Matrix44(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, z, 1);
 
   public static inline function mirrorX<T>()
-    return mirroring(Transformables.MX);
+    return mirroring(Plane.PX);
   public static inline function mirrorY<T>()
-    return mirroring(Transformables.MY);
+    return mirroring(Plane.PY);
   public static inline function mirrorZ<T>()
-    return mirroring(Transformables.MZ);
+    return mirroring(Plane.PZ);
 
   // Create an affine matrix for mirroring into an arbitrary plane:
   static public function mirroring(plane : Plane) {
