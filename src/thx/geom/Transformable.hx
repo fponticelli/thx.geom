@@ -4,6 +4,16 @@ import thx.geom.d2.Point in Point2D;
 import thx.geom.d3.Point in Point3D;
 import thx.geom.d3.Plane;
 
+class Transformables44 {
+  public static function applyTranslationX<T : ITransformable44<Dynamic>>(o : T, x : Float) : T {
+    o.apply44(Matrix44.translation(x, 0, 0));
+    return o;
+  }
+
+  public static function translateX<T : ITransformable44<Dynamic>>(o : T, x : Float) : T
+    return applyTranslationX(o.clone(), x);
+}
+
 typedef Transformable<T> = {
   public function transform(matrix : Matrix44) : T;
 };
