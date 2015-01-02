@@ -1,6 +1,6 @@
 package thx.geom.d2.xy;
 
-class PointXY implements XY {
+class MutXY implements XY {
   public var x(get, set) : Float;
   public var y(get, set) : Float;
   var _x : Float;
