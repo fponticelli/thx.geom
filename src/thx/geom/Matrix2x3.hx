@@ -3,9 +3,13 @@ package thx.geom;
 import thx.geom.d2.Point;
 
 using thx.core.Arrays;
+using thx.core.Floats;
 import thx.geom.m.*;
 
-abstract Matrix2x3(M2x3) {
+abstract Matrix2x3(M2x3) from M2x3 to M2x3 {
+  public static function create(a : Float, b : Float, c : Float, d : Float, e : Float, f : Float) : Matrix2x3
+    return new MutM2x3(a, b, c, d, e, f);
+
   public var a(get, set) : Float;
   public var b(get, set) : Float;
   public var c(get, set) : Float;
@@ -13,7 +17,7 @@ abstract Matrix2x3(M2x3) {
   public var e(get, set) : Float;
   public var f(get, set) : Float;
 
-  public inline function new(m : M2x3)
+  inline public function new(m : M2x3)
     this = m;
 
   inline public function flipX() : Matrix2x3 {
