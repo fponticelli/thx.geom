@@ -5,23 +5,29 @@ import thx.geom.d3.Point in Point3D;
 import thx.geom.d3.Plane;
 
 class Transformables44 {
-  public static function applyTranslationX<T : ITransformable44<Dynamic>>(o : T, x : Float) : T
-    return o.apply44(Matrix44.translation(x, 0, 0));
+  public static function applyTranslation<T : ITransformable44<Dynamic>>(o : T, x : Float, y : Float, z : Float) : T
+    return o.apply44(Matrix44.translation(x, y, z));
 
-  public static function translateX<T : ITransformable44<Dynamic>>(o : T, x : Float) : T
-    return applyTranslationX(o.clone(), x);
+  public static function translate<T : ITransformable44<Dynamic>>(o : T, x : Float, y : Float, z : Float) : T
+    return applyTranslation(o.clone(), x, y, z);
 
-  public static function applyTranslationY<T : ITransformable44<Dynamic>>(o : T, y : Float) : T
-    return o.apply44(Matrix44.translation(0, y, 0));
+  inline public static function applyTranslationX<T : ITransformable44<Dynamic>>(o : T, x : Float) : T
+    return applyTranslation(o, x, 0, 0);
 
-  public static function translateY<T : ITransformable44<Dynamic>>(o : T, y : Float) : T
-    return applyTranslationY(o.clone(), y);
+  inline public static function translateX<T : ITransformable44<Dynamic>>(o : T, x : Float) : T
+    return translate(o, x, 0, 0);
 
-  public static function applyTranslationZ<T : ITransformable44<Dynamic>>(o : T, z : Float) : T
-    return o.apply44(Matrix44.translation(0, 0, z));
+  inline public static function applyTranslationY<T : ITransformable44<Dynamic>>(o : T, y : Float) : T
+    return applyTranslation(o, 0, y, 0);
 
-  public static function translateZ<T : ITransformable44<Dynamic>>(o : T, z : Float) : T
-    return applyTranslationZ(o.clone(), z);
+  inline public static function translateY<T : ITransformable44<Dynamic>>(o : T, y : Float) : T
+    return translate(o, 0, y, 0);
+
+  inline public static function applyTranslationZ<T : ITransformable44<Dynamic>>(o : T, z : Float) : T
+    return applyTranslation(o, 0, 0, z);
+
+  inline public static function translateZ<T : ITransformable44<Dynamic>>(o : T, z : Float) : T
+    return translate(o, 0, 0, z);
 }
 
 typedef Transformable<T> = {
@@ -46,15 +52,6 @@ class Transformables {
 
   public static inline function translate<T>(t : Transformable<T>, v : Point3D) : T
     return t.transform(Matrix44.translation(v.x, v.y, v.z));
-
-  public static inline function translateX<T>(t : Transformable<T>, x : Float) : T
-    return t.transform(Matrix44.translation(x, 0, 0));
-
-  public static inline function translateY<T>(t : Transformable<T>, y : Float) : T
-    return t.transform(Matrix44.translation(0, y, 0));
-
-  public static inline function translateZ<T>(t : Transformable<T>, z : Float) : T
-    return t.transform(Matrix44.translation(0, 0, z));
 
   public static inline function scale<T>(t : Transformable<T>, f : Point3D) : T
     return t.transform(Matrix44.scaling(f));
