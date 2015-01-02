@@ -54,6 +54,16 @@ abstract Matrix2x3(M2x3) from M2x3 to M2x3 {
     return null;
   }
   inline public function skewY(angle : Float) : Matrix2x3 {
+  private function mul(a : Float, b : Float, c : Float, d : Float, e : Float, f : Float) : Matrix2x3
+    return create(
+      this.a * a + this.c * b,
+      this.b * a + this.d * b,
+      this.a * c + this.c * d,
+      this.b * c + this.d * d,
+      this.a * e + this.c * f + this.e,
+      this.b * e + this.d * f + this.f
+    );
+
     return null;
   }
 
