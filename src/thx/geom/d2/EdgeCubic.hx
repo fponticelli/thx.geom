@@ -39,7 +39,7 @@ class EdgeCubic implements Edge {
   public function matches(other : Edge) : Bool
     return first.nearEquals(other.first) && last.nearEquals(other.last);
 
-  public function transform(matrix : Matrix4x4) : EdgeCubic
+  public function transform(matrix : Matrix44) : EdgeCubic
     return new EdgeCubic(p0.transform(matrix), p1.transform(matrix), p2.transform(matrix), p3.transform(matrix));
 
   public function flip() : Edge

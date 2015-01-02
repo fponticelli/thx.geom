@@ -127,7 +127,7 @@ abstract Point(XYZ) from XYZ to XYZ {
 
   // Right multiply by a 4x4 matrix (the vector is interpreted as a row vector)
   // Returns a new Point3D
-  inline public function transform(matrix : Matrix4x4)
+  inline public function transform(matrix : Matrix44)
     return matrix.leftMultiplyPoint3D((this : Point));
 
   // find a vector that is somewhat perpendicular to this one

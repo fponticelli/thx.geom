@@ -42,7 +42,7 @@ class Vertex {
   public function getDistance(other : Vertex)
     return Math.sqrt(getDistanceSquared(other));
 
-  inline public function transform(matrix : Matrix4x4)
+  inline public function transform(matrix : Matrix44)
     return new Vertex(position.transform(matrix), normal.transform(matrix));
 
   public function equals(other : Vertex)

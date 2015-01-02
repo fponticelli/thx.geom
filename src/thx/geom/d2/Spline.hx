@@ -130,7 +130,7 @@ class Spline {
     return edges;
   }
 
-  public function transform(matrix : Matrix4x4) {
+  public function transform(matrix : Matrix44) {
     var ismirror = matrix.isMirroring(),
         result = new Spline(iterator().map(function(node) return node.transform(matrix)), isClosed);
     //result = Spline.fromEdges(edges.map(function(edge) return edge.transform(matrix)), isClosed);

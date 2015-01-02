@@ -7,50 +7,50 @@ import thx.geom.d3.OrthoNormalBasis;
 import thx.geom.d3.Plane;
 import thx.geom.d3.Point in Point3D;
 
-abstract Matrix4x4(Array<Float>) {
-  public static var identity(default, null) : Matrix4x4 = new Matrix4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+abstract Matrix44(Array<Float>) {
+  public static var identity(default, null) : Matrix44 = new Matrix44(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 
   @:from public static function fromArray(e : Array<Float>) {
     Arrays.resize(e, 16, 0.0);
-    return new Matrix4x4(e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9], e[10], e[11], e[12], e[13], e[14], e[15]);
+    return new Matrix44(e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9], e[10], e[11], e[12], e[13], e[14], e[15]);
   }
 
   // Create a rotation matrix for rotating around the x axis
   static public function rotationX(radians :  Float) {
     var cos = Math.cos(radians),
         sin = Math.sin(radians);
-    return new Matrix4x4(1, 0, 0, 0, 0, cos, sin, 0, 0, -sin, cos, 0, 0, 0, 0, 1);
+    return new Matrix44(1, 0, 0, 0, 0, cos, sin, 0, 0, -sin, cos, 0, 0, 0, 0, 1);
   }
 
   // Create a rotation matrix for rotating around the y axis
   static public function rotationY(radians :  Float) {
     var cos = Math.cos(radians),
         sin = Math.sin(radians);
-    return new Matrix4x4(cos, 0, -sin, 0, 0, 1, 0, 0, sin, 0, cos, 0, 0, 0, 0, 1);
+    return new Matrix44(cos, 0, -sin, 0, 0, 1, 0, 0, sin, 0, cos, 0, 0, 0, 0, 1);
   }
 
   // Create a rotation matrix for rotating around the z axis
   static public function rotationZ(radians :  Float) {
     var cos = Math.cos(radians),
         sin = Math.sin(radians);
-    return new Matrix4x4(cos, sin, 0, 0, -sin, cos, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    return new Matrix44(cos, sin, 0, 0, -sin, cos, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
   }
 
   // Matrix for rotation about arbitrary point and axis
   static public function rotation(rotationCenter : Point3D, rotationAxis : Point3D, radians :  Float) {
     var rotationPlane = Plane.fromNormalAndPoint(rotationAxis, rotationCenter),
         orthobasis = OrthoNormalBasis.fromPlane(rotationPlane),
-        transformation = Matrix4x4.translation(rotationCenter.negate());
+        transformation = Matrix44.translation(rotationCenter.negate());
     transformation = transformation.multiply(orthobasis.getProjectionMatrix());
-    transformation = transformation.multiply(Matrix4x4.rotationZ(radians));
+    transformation = transformation.multiply(Matrix44.rotationZ(radians));
     transformation = transformation.multiply(orthobasis.getInverseProjectionMatrix());
-    transformation = transformation.multiply(Matrix4x4.translation(rotationCenter));
+    transformation = transformation.multiply(Matrix44.translation(rotationCenter));
     return transformation;
   }
 
   // Create an affine matrix for translation:
   static public function translation(vec : Point3D)
-    return new Matrix4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, vec.x, vec.y, vec.z, 1);
+    return new Matrix44(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, vec.x, vec.y, vec.z, 1);
 
   public static inline function mirrorX<T>()
     return mirroring(Transformables.MX);
@@ -65,7 +65,7 @@ abstract Matrix4x4(Array<Float>) {
         ny = plane.normal.y,
         nz = plane.normal.z,
         w  = plane.w;
-    return new Matrix4x4(
+    return new Matrix44(
       (1.0 - 2.0 * nx * nx), (-2.0 * ny * nx), (-2.0 * nz * nx), 0,
       (-2.0 * nx * ny), (1.0 - 2.0 * ny * ny), (-2.0 * nz * ny), 0,
       (-2.0 * nx * nz), (-2.0 * ny * nz), (1.0 - 2.0 * nz * nz), 0,
@@ -75,7 +75,7 @@ abstract Matrix4x4(Array<Float>) {
 
   // Create an affine matrix for scaling:
   static public function scaling(vec : Point3D)
-    return new Matrix4x4(vec.x, 0, 0, 0, 0, vec.y, 0, 0, 0, 0, vec.z, 0, 0, 0, 0, 1);
+    return new Matrix44(vec.x, 0, 0, 0, 0, vec.y, 0, 0, 0, 0, vec.z, 0, 0, 0, 0, 1);
 
   public inline function new(e0 : Float, e1 : Float, e2 : Float, e3 : Float, e4 : Float, e5 : Float, e6 : Float, e7 : Float, e8 : Float, e9 : Float, e10 : Float, e11 : Float, e12 : Float, e13 : Float, e14 : Float, e15 : Float)
     this = [e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15];
@@ -83,8 +83,8 @@ abstract Matrix4x4(Array<Float>) {
   @:to public inline function toArray()
     return this.copy();
 
-  @:op(A + B) public function add(other : Matrix4x4) : Matrix4x4
-    return new Matrix4x4(
+  @:op(A + B) public function add(other : Matrix44) : Matrix44
+    return new Matrix44(
       at(0) + other.at(0),
       at(1) + other.at(1),
       at(2) + other.at(2),
@@ -103,8 +103,8 @@ abstract Matrix4x4(Array<Float>) {
       at(15) + other.at(15)
     );
 
-  @:op(A - B) public function subtract(other : Matrix4x4) : Matrix4x4
-    return new Matrix4x4(
+  @:op(A - B) public function subtract(other : Matrix44) : Matrix44
+    return new Matrix44(
       at(0) - other.at(0),
       at(1) - other.at(1),
       at(2) - other.at(2),
@@ -124,10 +124,10 @@ abstract Matrix4x4(Array<Float>) {
     );
 
   @:op(A * B)
-  public function multiply(other : Matrix4x4) : Matrix4x4 {
+  public function multiply(other : Matrix44) : Matrix44 {
     var t0 = at(0), t1 = at(1), t2 = at(2), t3 = at(3), t4 = at(4), t5 = at(5), t6 = at(6), t7 = at(7), t8 = at(8), t9 = at(9), t10 = at(10), t11 = at(11), t12 = at(12), t13 = at(13), t14 = at(14), t15 = at(15),
         m0 = other.at(0), m1 = other.at(1), m2 = other.at(2), m3 = other.at(3), m4 = other.at(4), m5 = other.at(5), m6 = other.at(6), m7 = other.at(7), m8 = other.at(8), m9 = other.at(9), m10 = other.at(10), m11 = other.at(11), m12 = other.at(12), m13 = other.at(13), m14 = other.at(14), m15 = other.at(15);
-    return new Matrix4x4(
+    return new Matrix44(
       t0 * m0 + t1 * m4 + t2 * m8 + t3 * m12,
       t0 * m1 + t1 * m5 + t2 * m9 + t3 * m13,
       t0 * m2 + t1 * m6 + t2 * m10 + t3 * m14,
@@ -336,7 +336,7 @@ abstract Matrix4x4(Array<Float>) {
         det = at(0) * inv_0 + at(1) * inv_4 + at(2) * inv_8 + at(3) * inv_12;
     if(det == 0)
       return null;
-    return new Matrix4x4(inv_0, inv_1, inv_2, inv_3, inv_4, inv_5, inv_6, inv_7, inv_8, inv_9, inv_10, inv_11, inv_12, inv_13, inv_14, inv_15);
+    return new Matrix44(inv_0, inv_1, inv_2, inv_3, inv_4, inv_5, inv_6, inv_7, inv_8, inv_9, inv_10, inv_11, inv_12, inv_13, inv_14, inv_15);
   }
 
   public inline function at(index : Int)

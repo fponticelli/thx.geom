@@ -1,6 +1,6 @@
 package thx.geom;
 
-import thx.geom.Matrix2x3;
+import thx.geom.Matrix23;
 
 class TestMatrix {
   public function new() {}

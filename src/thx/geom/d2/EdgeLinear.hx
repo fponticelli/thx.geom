@@ -32,7 +32,7 @@ class EdgeLinear implements Edge {
   public function matches(other : Edge) : Bool
     return first.nearEquals(other.first) && last.nearEquals(other.last);
 
-  public function transform(matrix : Matrix4x4) : EdgeLinear
+  public function transform(matrix : Matrix44) : EdgeLinear
     return new EdgeLinear(p0.transform(matrix), p1.transform(matrix));
 
   public function flip() : EdgeLinear

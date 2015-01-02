@@ -130,7 +130,7 @@ abstract Point(XY) from XY to XY {
   public function distanceToSquared(p : Point)
     return subtractPoint(p).lengthSquared;
 
-  inline public function transform(matrix : Matrix4x4)
+  inline public function transform(matrix : Matrix44)
     return matrix.leftMultiplyPoint((this : Point));
 
   inline public function cross(p : Point)

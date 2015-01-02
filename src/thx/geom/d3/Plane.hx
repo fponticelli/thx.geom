@@ -2,7 +2,7 @@ package thx.geom.d3;
 
 import thx.geom.d3.Line in Line3D;
 import thx.geom.d3.Point;
-import thx.geom.Matrix4x4;
+import thx.geom.Matrix44;
 import thx.core.Floats;
 
 @:access(thx.geom.d3.Polygon)
@@ -100,7 +100,7 @@ class Plane {
   public function equals(other : Plane)
     return normal.equals(other.normal) && (w == other.w);
 
-  public function transform(matrix : Matrix4x4) {
+  public function transform(matrix : Matrix44) {
     var ismirror = matrix.isMirroring(),
       // get two vectors in the plane:
       r = normal.randomNonParallelVector(),

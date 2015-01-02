@@ -63,7 +63,7 @@ class Path {
     return throw 'not implemented';
   }
 
-  public function transform(matrix : Matrix4x4)
+  public function transform(matrix : Matrix44)
     return new Path(splines.map(function(spline) return spline.transform(matrix)));
 
   public function flip() {

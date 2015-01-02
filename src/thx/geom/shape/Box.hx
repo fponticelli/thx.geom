@@ -1,6 +1,6 @@
 package thx.geom.shape;
 
-import thx.geom.Matrix4x4;
+import thx.geom.Matrix44;
 import thx.geom.d2.Point;
 import thx.geom.d2.Spline;
 
@@ -26,7 +26,7 @@ abstract Box(Array<Point>) {
   public var width(get, never) : Float;
   public var height(get, never) : Float;
 
-  public function transform(matrix : Matrix4x4)
+  public function transform(matrix : Matrix44)
     return Box.fromPoints(bottomLeft.transform(matrix), topRight.transform(matrix));
 
   inline function get_topLeft() return Point.create(left, top);

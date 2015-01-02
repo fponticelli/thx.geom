@@ -4,7 +4,7 @@ import thx.geom.d2.Line in Line2D;
 import thx.geom.d3.Line in Line3D;
 import thx.geom.d2.Point in Point2D;
 import thx.geom.d3.Point in Point3D;
-import thx.geom.Matrix4x4;
+import thx.geom.Matrix44;
 
 class OrthoNormalBasis {
   public static inline function fromPlane(plane : Plane)
@@ -28,7 +28,7 @@ class OrthoNormalBasis {
     );
 
   public function getProjectionMatrix() {
-    return new Matrix4x4(
+    return new Matrix44(
       u.x, v.x, plane.normal.x, 0,
       u.y, v.y, plane.normal.y, 0,
       u.z, v.z, plane.normal.z, 0,
@@ -38,7 +38,7 @@ class OrthoNormalBasis {
 
   public function getInverseProjectionMatrix() {
     var p = plane.normal.multiply(plane.w);
-    return new Matrix4x4(
+    return new Matrix44(
       u.x, u.y, u.z, 0,
       v.x, v.y, v.z, 0,
       plane.normal.x, plane.normal.y, plane.normal.z, 0,
@@ -65,7 +65,7 @@ class OrthoNormalBasis {
     return Line3D.fromPoints(to3D(a), to3D(b));
   }
 
-  public function transform(matrix : Matrix4x4) {
+  public function transform(matrix : Matrix44) {
     // todo: may not work properly in case of mirroring
     var newplane = plane.transform(matrix),
         rightpoint_transformed = u.transform(matrix),

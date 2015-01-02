@@ -19,7 +19,7 @@ interface Edge {
 
   public function equals(other : Edge) : Bool;
   public function matches(other : Edge) : Bool;
-  public function transform(matrix : Matrix4x4) : Edge;
+  public function transform(matrix : Matrix44) : Edge;
   public function flip() : Edge;
   public function direction() : Point;
   public function intersects(other : Edge) : Bool;

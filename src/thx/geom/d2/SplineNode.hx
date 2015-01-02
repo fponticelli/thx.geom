@@ -13,7 +13,7 @@ class SplineNode {
     this.normalIn = null == normalin || normalin.nearEquals(position) ? null : normalin;
   }
 
-  public function transform(matrix : Matrix4x4)
+  public function transform(matrix : Matrix44)
     return new SplineNode(
       position.transform(matrix),
       null != normalOut ? normalOut.transform(matrix) : null,

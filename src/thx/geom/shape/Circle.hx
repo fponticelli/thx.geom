@@ -1,6 +1,6 @@
 package thx.geom.shape;
 
-import thx.geom.Matrix4x4;
+import thx.geom.Matrix44;
 import thx.geom.d2.Point in Point2D;
 import thx.geom.d2.Spline;
 import thx.geom.d2.SplineNode;
