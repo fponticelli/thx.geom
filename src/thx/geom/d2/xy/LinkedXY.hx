@@ -16,6 +16,12 @@ class LinkedXY implements XY {
     this.setY = setY;
   }
 
+  public function apply44(matrix : Matrix44)
+    matrix.applyLeftMultiplyPoint(this);
+
+  public function clone() : XY
+    return new MutXY(getX(), getY());
+
   function get_x() return getX();
   function get_y() return getY();
   function set_x(v : Float) return setX(v);

@@ -11,6 +11,12 @@ class ImmutableXY implements XY {
     _y = y;
   }
 
+  public function apply44(matrix : Matrix44)
+    matrix.applyLeftMultiplyPoint(this);
+
+  public function clone() : XY
+    return new MutXY(_x, _y);
+
   function get_x() return _x;
   function get_y() return _y;
   function set_x(v : Float) return throw 'this instance of Point cannot be modified';
