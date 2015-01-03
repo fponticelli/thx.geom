@@ -115,6 +115,12 @@ abstract Point(XY) from XY to XY {
   public function isNearZero()
     return nearEquals(zero);
 
+  inline public function clone() : Point
+    return this.clone();
+
+  inline public function apply44(matrix : Matrix44) : Point
+    return this.apply44(matrix);
+
   inline public function dot(p : Point) : Float
     return x * p.x + y * p.y;
 

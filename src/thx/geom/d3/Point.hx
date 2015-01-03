@@ -98,6 +98,12 @@ abstract Point(XYZ) from XYZ to XYZ {
   inline public function abs() : Point
     return Point.create(Math.abs(x), Math.abs(y), Math.abs(z));
 
+  inline public function clone() : Point
+    return this.clone();
+
+  inline public function apply44(matrix : Matrix44) : Point
+    return this.apply44(matrix);
+
   public function nearEquals(p : Point)
     return Math.abs(x - p.x) <= Floats.EPSILON && Math.abs(y - p.y) <= Floats.EPSILON && Math.abs(z - p.z) <= Floats.EPSILON;
 
