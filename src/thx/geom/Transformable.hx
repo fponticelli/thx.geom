@@ -17,6 +17,18 @@ class Transformables44 {
   public static inline function applyMirrorZ<T : ITransformable44<Dynamic>>(o : T) : T
     return o.apply44(MZ);
 
+  public static inline function applyRotateX<T : ITransformable44<Dynamic>>(o : T, angle :  Float) : T
+    return o.apply44(Matrix44.rotationX(angle));
+
+  public static inline function applyRotateY<T : ITransformable44<Dynamic>>(o : T, angle :  Float) : T
+    return o.apply44(Matrix44.rotationY(angle));
+
+  public static inline function applyRotateZ<T : ITransformable44<Dynamic>>(o : T, angle :  Float) : T
+    return o.apply44(Matrix44.rotationZ(angle));
+
+  public static inline function applyRotateOnAxis<T : ITransformable44<Dynamic>>(o : T, center : Point3D, axis : Point3D, angle :  Float) : T
+    return o.apply44(Matrix44.rotation(center, axis, angle));
+
   public static inline function applyScale<T : ITransformable44<Dynamic>>(o : T, x : Float, y : Float, z : Float) : T
     return o.apply44(Matrix44.scaling(x, y, z));
 
@@ -52,6 +64,18 @@ class Transformables44 {
 
   public static inline function mirrorZ<T : ITransformable44<Dynamic>>(o : T) : T
     return applyMirrorZ(o.clone());
+
+  public static inline function rotateX<T : ITransformable44<Dynamic>>(o : T, angle :  Float) : T
+    return applyRotateX(o.clone(), angle);
+
+  public static inline function rotateY<T : ITransformable44<Dynamic>>(o : T, angle :  Float) : T
+    return applyRotateY(o.clone(), angle);
+
+  public static inline function rotateZ<T : ITransformable44<Dynamic>>(o : T, angle :  Float) : T
+    return applyRotateZ(o.clone(), angle);
+
+  public static inline function rotateOnAxis<T : ITransformable44<Dynamic>>(o : T, center : Point3D, axis : Point3D, angle :  Float) : T
+    return applyRotateOnAxis(o.clone(), center, axis, angle);
 
   public static inline function scale<T : ITransformable44<Dynamic>>(o : T, x : Float, y : Float, z : Float) : T
     return applyScale(o, x, y, z);
@@ -94,16 +118,4 @@ class Transformables {
 
   public static inline function scale<T>(t : Transformable<T>, f : Point3D) : T
     return t.transform(Matrix44.scaling(f.x, f.y, f.z));
-
-  public static inline function rotateX<T>(t : Transformable<T>, angle :  Float) : T
-    return t.transform(Matrix44.rotationX(angle));
-
-  public static inline function rotateY<T>(t : Transformable<T>, angle :  Float) : T
-    return t.transform(Matrix44.rotationY(angle));
-
-  public static inline function rotateZ<T>(t : Transformable<T>, angle :  Float) : T
-    return t.transform(Matrix44.rotationZ(angle));
-
-  public static inline function rotateOnAxis<T>(t : Transformable<T>, center : Point3D, axis : Point3D, angle :  Float) : T
-    return t.transform(Matrix44.rotation(center, axis, angle));
 }
