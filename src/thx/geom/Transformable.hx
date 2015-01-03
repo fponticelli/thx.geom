@@ -17,6 +17,18 @@ class Transformables44 {
   public static inline function applyMirrorZ<T : ITransformable44<Dynamic>>(o : T) : T
     return o.apply44(MZ);
 
+  public static inline function applyScale<T : ITransformable44<Dynamic>>(o : T, x : Float, y : Float, z : Float) : T
+    return o.apply44(Matrix44.scaling(x, y, z));
+
+  public static inline function applyScaleX<T : ITransformable44<Dynamic>>(o : T, x : Float) : T
+    return o.apply44(Matrix44.scaling(x, 0, 0));
+
+  public static inline function applyScaleY<T : ITransformable44<Dynamic>>(o : T, y : Float) : T
+    return o.apply44(Matrix44.scaling(0, y, 0));
+
+  public static inline function applyScaleZ<T : ITransformable44<Dynamic>>(o : T, z : Float) : T
+    return o.apply44(Matrix44.scaling(0, 0, z));
+
   public static function applyTranslation<T : ITransformable44<Dynamic>>(o : T, x : Float, y : Float, z : Float) : T
     return o.apply44(Matrix44.translation(x, y, z));
 
@@ -41,6 +53,18 @@ class Transformables44 {
   public static inline function mirrorZ<T : ITransformable44<Dynamic>>(o : T) : T
     return applyMirrorZ(o.clone());
 
+  public static inline function scale<T : ITransformable44<Dynamic>>(o : T, x : Float, y : Float, z : Float) : T
+    return applyScale(o, x, y, z);
+
+  public static inline function scaleX<T : ITransformable44<Dynamic>>(o : T, x : Float) : T
+    return applyScaleX(o.clone(), x);
+
+  public static inline function scaleY<T : ITransformable44<Dynamic>>(o : T, y : Float) : T
+    return applyScaleY(o.clone(), y);
+
+  public static inline function scaleZ<T : ITransformable44<Dynamic>>(o : T, z : Float) : T
+    return applyScaleZ(o.clone(), z);
+
   public static function translate<T : ITransformable44<Dynamic>>(o : T, x : Float, y : Float, z : Float) : T
     return applyTranslation(o.clone(), x, y, z);
 
@@ -63,13 +87,13 @@ typedef Transformable<T> = {
   public function transform(matrix : Matrix44) : T;
 };
 
-// TODO REMOVE
+// TODO REMOVE (Spline depends on it)
 class Transformables {
   public static inline function translate<T>(t : Transformable<T>, v : Point3D) : T
     return t.transform(Matrix44.translation(v.x, v.y, v.z));
 
   public static inline function scale<T>(t : Transformable<T>, f : Point3D) : T
-    return t.transform(Matrix44.scaling(f));
+    return t.transform(Matrix44.scaling(f.x, f.y, f.z));
 
   public static inline function rotateX<T>(t : Transformable<T>, angle :  Float) : T
     return t.transform(Matrix44.rotationX(angle));
