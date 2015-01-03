@@ -6,8 +6,9 @@ import thx.geom.bool.Polygon in BoolPolygon;
 import thx.geom.shape.Box;
 import thx.geom.d2.Point;
 import thx.geom.d2.Line;
+import thx.geom.ITransformable44;
 
-class Spline {
+class Spline implements ITransformable44<Spline> {
   public var area(get, null) : Float;
   public var length(get, null) : Float;
   public var isSelfIntersecting(get, null) : Bool;
@@ -129,6 +130,17 @@ class Spline {
     }
     return edges;
   }
+
+  public function apply44(matrix : Matrix44) {
+    var ismirror = matrix.isMirroring();
+    this.nodes = this.nodes.pluck(_.apply44(matrix));
+    if(ismirror)
+      this.nodes.reverse();
+    return this;
+  }
+
+  public function clone()
+    return new Spline(nodes.pluck(_.clone()), isClosed);
 
   public function transform(matrix : Matrix44) {
     var ismirror = matrix.isMirroring(),

@@ -6,7 +6,7 @@ import thx.geom.d2.Spline;
 import thx.geom.d2.SplineNode;
 import thx.geom.d3.Point in Point3D;
 import thx.math.Const;
-using thx.geom.Transformable.Transformables;
+using thx.geom.Transformable;
 
 abstract Circle({ center : Point2D, radius : Float }) {
   inline public function new(center : Point2D, radius : Float)
@@ -30,8 +30,8 @@ abstract Circle({ center : Point2D, radius : Float }) {
 
   @:to public function toSpline() {
     return unitaryCircle
-      .scale(Point3D.create(radius, radius, 1))
-      .translate(Point3D.create(center.x, center.y, 0));
+      .scale(radius, radius, 1)
+      .translate(center.x, center.y, 0);
   }
 
   @:to public function toPath()

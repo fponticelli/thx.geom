@@ -105,17 +105,3 @@ class Transformables44 {
   public static var MY(default, null) : Matrix44 = Matrix44.mirroring(Plane.PY);
   public static var MZ(default, null) : Matrix44 = Matrix44.mirroring(Plane.PZ);
 }
-
-// TODO REMOVE
-typedef Transformable<T> = {
-  public function transform(matrix : Matrix44) : T;
-};
-
-// TODO REMOVE (Spline depends on it)
-class Transformables {
-  public static inline function translate<T>(t : Transformable<T>, v : Point3D) : T
-    return t.transform(Matrix44.translation(v.x, v.y, v.z));
-
-  public static inline function scale<T>(t : Transformable<T>, f : Point3D) : T
-    return t.transform(Matrix44.scaling(f.x, f.y, f.z));
-}
