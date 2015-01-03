@@ -69,6 +69,9 @@ abstract Matrix23(M23) from M23 to M23 {
   public function skewY(angle : Float) : Matrix23
     return mul(1, angle.tan(), 0, 1, 0, 0);
 
+  public function toString()
+    return 'matrix($a,$b,$c,$d,$e,$f)';
+
   function get_a() return this.a;
   function get_b() return this.b;
   function get_c() return this.c;

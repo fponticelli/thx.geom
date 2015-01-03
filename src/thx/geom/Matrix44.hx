@@ -212,14 +212,12 @@ abstract Matrix44(Array<Float>) {
         v3 = 1,
         x = v0 * at(0) + v1 * at(1) + v2 * at(2) + v3 * at(3),
         y = v0 * at(4) + v1 * at(5) + v2 * at(6) + v3 * at(7),
-        z = v0 * at(8) + v1 * at(9) + v2 * at(10) + v3 * at(11),
         w = v0 * at(12) + v1 * at(13) + v2 * at(14) + v3 * at(15);
     // scale such that fourth element becomes 1:
     if(w != 1) {
       var invw = 1.0 / w;
       x *= invw;
       y *= invw;
-      z *= invw;
     }
     return Point2D.create(x, y);
   }
@@ -231,14 +229,12 @@ abstract Matrix44(Array<Float>) {
         v3 = 1,
         x = v0 * at(0) + v1 * at(4) + v2 * at(8) + v3 * at(12),
         y = v0 * at(1) + v1 * at(5) + v2 * at(9) + v3 * at(13),
-        z = v0 * at(2) + v1 * at(6) + v2 * at(10) + v3 * at(14),
         w = v0 * at(3) + v1 * at(7) + v2 * at(11) + v3 * at(15);
     // scale such that fourth element becomes 1:
     if(w != 1) {
       var invw = 1.0 / w;
       x *= invw;
       y *= invw;
-      z *= invw;
     }
     return Point2D.create(x, y);
   }
@@ -250,14 +246,12 @@ abstract Matrix44(Array<Float>) {
         v3 = 1,
         x = v0 * at(0) + v1 * at(4) + v2 * at(8) + v3 * at(12),
         y = v0 * at(1) + v1 * at(5) + v2 * at(9) + v3 * at(13),
-        z = v0 * at(2) + v1 * at(6) + v2 * at(10) + v3 * at(14),
         w = v0 * at(3) + v1 * at(7) + v2 * at(11) + v3 * at(15);
     // scale such that fourth element becomes 1:
     if(w != 1) {
       var invw = 1.0 / w;
       x *= invw;
       y *= invw;
-      z *= invw;
     }
     vector.set(x, y);
     return vector;
@@ -383,5 +377,5 @@ abstract Matrix44(Array<Float>) {
     return this[index];
 
   @:to public inline function toString()
-    return 'Matrix(${this.join(",")})';
+    return 'matrix(${this.join(",")})';
 }
