@@ -20,6 +20,18 @@ class SplineNode {
       null != normalIn ? normalIn.transform(matrix) : null
     );
 
+  public function apply44(matrix : Matrix44) {
+    position.apply44(matrix);
+    if(null != normalOut)
+      normalOut.apply44(matrix);
+    if(null != normalIn)
+      normalIn.apply44(matrix);
+    return this;
+  }
+
+  public function clone()
+    return new SplineNode(position.clone(), normalIn.clone(), normalOut.clone());
+
   public function flip()
     return new SplineNode(position, normalIn, normalOut);
 
