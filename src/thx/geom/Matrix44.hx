@@ -75,8 +75,8 @@ abstract Matrix44(Array<Float>) {
   }
 
   // Create an affine matrix for scaling:
-  static public function scaling(vec : Point3D)
-    return new Matrix44(vec.x, 0, 0, 0, 0, vec.y, 0, 0, 0, 0, vec.z, 0, 0, 0, 0, 1);
+  static public function scaling(x : Float, y : Float, z : Float)
+    return new Matrix44(x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, 0, 0, 0, 1);
 
   public inline function new(e0 : Float, e1 : Float, e2 : Float, e3 : Float, e4 : Float, e5 : Float, e6 : Float, e7 : Float, e8 : Float, e9 : Float, e10 : Float, e11 : Float, e12 : Float, e13 : Float, e14 : Float, e15 : Float)
     this = [e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15];
