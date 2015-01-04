@@ -101,6 +101,9 @@ abstract Point(XYZ) from XYZ to XYZ {
   inline public function clone() : Point
     return this.clone();
 
+  inline public function copyTo(other : Point)
+    return other.set(x, y, z);
+
   inline public function apply44(matrix : Matrix44) : Point
     return this.apply44(matrix);
 

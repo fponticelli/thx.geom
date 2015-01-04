@@ -100,6 +100,9 @@ abstract Point(XY) from XY to XY {
   inline public function abs() : Point
     return Point.create(Math.abs(x), Math.abs(y));
 
+  inline public function copyTo(other : Point)
+    return other.set(x, y);
+
   public function nearEquals(p : Point)
     return Math.abs(x - p.x) <= Floats.EPSILON && Math.abs(y - p.y) <= Floats.EPSILON;
 
