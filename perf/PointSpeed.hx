@@ -24,7 +24,13 @@ class PointSpeed {
         p6 = new PointAccessor(x, y),
         p7 = new PointInlineAccessor(x, y),
         p8 = new PointAbstractAccessor(x, y),
-        p9 = new PointInlineAbstractAccessor(x, y);
+        p9 = new PointInlineAbstractAccessor(x, y),
+        p10 = new PointInlineAbstractAccessorAccessor(
+          function() return x,
+          function() return y,
+          function(v) return x = v,
+          function(v) return y = v
+        );
 
     test.add("array abstract", function() {
       p1.x = p1.y * x;
@@ -61,6 +67,10 @@ class PointSpeed {
     test.add("instance abstract accessor inline", function() {
       p9.x = p9.y * x;
       p9.y = p9.x / y;
+    });
+    test.add("instance abstract accessor accessor inline", function() {
+      p10.x = p10.y * x;
+      p10.y = p10.x / y;
     });
 
     return test;
@@ -233,7 +243,7 @@ class PointSpeed {
     var test = new SpeedTest(),
         x = 10.0,
         y = 1.0,
-        p1, p2, p3, p4, p5, p6, p7, p8, p9;
+        p1, p2, p3, p4, p5, p6, p7, p8, p9, p10;
 
     test.add("array abstract", function() {
       p1 = new PointArray(x, y);
@@ -270,6 +280,15 @@ class PointSpeed {
     test.add("instance abstract accessor inline", function() {
       p9 = new PointInlineAbstractAccessor(x, y);
       p9.x = p9.y = p9.x * p9.y;
+    });
+    test.add("instance abstract accessor accessor inline", function() {
+        p10 = new PointInlineAbstractAccessorAccessor(
+          function() return x,
+          function() return y,
+          function(v) return x = v,
+          function(v) return y = v
+        );
+        p10.x = p10.y = p10.x * p10.y;
     });
 
     return test;
@@ -334,11 +353,43 @@ class PointInlineAccessor implements IPoint {
   inline function set_y(v) return _y = v;
 }
 
+class PointDynamicAccessor implements IPoint {
+  public var x(get, set) : Float;
+  public var y(get, set) : Float;
+  var getX : Void -> Float;
+  var getY : Void -> Float;
+  var setX : Float -> Float;
+  var setY : Float -> Float;
+  public function new(getX : Void -> Float, getY : Void -> Float, setX : Float -> Float, setY : Float -> Float) {
+    this.getX = getX;
+    this.getY = getY;
+    this.setX = setX;
+    this.setY = setY;
+  }
+
+  inline function get_x() return getX();
+  inline function get_y() return getY();
+  inline function set_x(v) return setX(v);
+  inline function set_y(v) return setY(v);
+}
+
 abstract PointInlineAbstractAccessor(IPoint) {
   public var x(get, set) : Float;
   public var y(get, set) : Float;
   inline public function new(x : Float, y : Float)
     this = new PointInlineAccessor(x, y);
+
+  inline function get_x() return this.x;
+  inline function get_y() return this.y;
+  inline function set_x(v) return this.x = v;
+  inline function set_y(v) return this.y = v;
+}
+
+abstract PointInlineAbstractAccessorAccessor(IPoint) {
+  public var x(get, set) : Float;
+  public var y(get, set) : Float;
+  inline public function new(getX : Void -> Float, getY : Void -> Float, setX : Float -> Float, setY : Float -> Float)
+    this = new PointDynamicAccessor(getX, getY, setX, setY);
 
   inline function get_x() return this.x;
   inline function get_y() return this.y;
