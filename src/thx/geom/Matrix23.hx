@@ -27,7 +27,7 @@ abstract Matrix23(M23) from M23 to M23 {
     return mul(1, 0, 0, -1, 0, 0);
 
   @:op(A*B) public function multiply(other : Matrix23) : Matrix23
-    return create(other.a, other.b, other.c, other.d, other.e, other.f);
+    return mul(other.a, other.b, other.c, other.d, other.e, other.f);
 
   private function mul(a : Float, b : Float, c : Float, d : Float, e : Float, f : Float) : Matrix23
     return create(
