@@ -10,13 +10,13 @@ class Polygon {
   // please ensure that vertices is not mutable
   public function new(vertices : Array<Vertex>)
     this.vertices = vertices;
-
+/*
   public static function fromVertices(vertices : Iterable<Vertex>)
     if(Std.is(vertices, Array))
       return new Polygon(cast(vertices).copy());
     else
       return new Polygon([for(v in vertices) v]);
-
+*/
   public function flip() {
     var reverse = vertices.copy();
     reverse.reverse();
