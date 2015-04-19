@@ -11,11 +11,6 @@ class MutXY implements XY {
     _y = y;
   }
 
-  public function apply44(matrix : Matrix44) {
-    matrix.applyLeftMultiplyPoint(this);
-    return this;
-  }
-
   public function clone() : XY
     return new MutXY(_x, _y);
 

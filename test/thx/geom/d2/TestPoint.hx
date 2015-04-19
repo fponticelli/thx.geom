@@ -4,8 +4,6 @@ import thx.geom.d2.*;
 import thx.geom.d2.xy.*;
 import utest.Assert;
 
-using thx.geom.Transformable;
-
 class TestPoint {
   public function new() {}
 
@@ -58,14 +56,5 @@ class TestPoint {
 
   public function testToAngle() {
     Assert.floatEquals(Math.PI / 4, Point.create(1, 1).toAngle());
-  }
-
-  public function testTransformable() {
-    var p = Point.create(2, 3);
-    p = p.translateX(5);
-    Assert.equals(7, p.x);
-    Assert.equals(3, p.y);
-    p.applyTranslationX(-5);
-    Assert.equals(2, p.x);
   }
 }
