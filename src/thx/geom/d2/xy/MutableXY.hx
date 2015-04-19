@@ -1,6 +1,6 @@
 package thx.geom.d2.xy;
 
-class MutXY implements XY {
+class MutableXY implements XY {
   public var x(get, set) : Float;
   public var y(get, set) : Float;
   var _x : Float;
@@ -12,7 +12,7 @@ class MutXY implements XY {
   }
 
   public function clone() : XY
-    return new MutXY(_x, _y);
+    return new MutableXY(_x, _y);
 
   function get_x() return _x;
   function get_y() return _y;

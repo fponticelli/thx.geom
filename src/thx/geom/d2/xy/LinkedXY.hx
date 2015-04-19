@@ -17,7 +17,7 @@ class LinkedXY implements XY {
   }
 
   public function clone() : XY
-    return new MutXY(getX(), getY());
+    return new MutableXY(getX(), getY());
 
   function get_x() return getX();
   function get_y() return getY();

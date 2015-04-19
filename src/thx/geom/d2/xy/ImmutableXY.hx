@@ -12,7 +12,7 @@ class ImmutableXY implements XY {
   }
 
   public function clone() : XY
-    return new MutXY(_x, _y);
+    return new MutableXY(_x, _y);
 
   function get_x() return _x;
   function get_y() return _y;

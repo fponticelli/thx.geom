@@ -22,7 +22,7 @@ abstract Vector(XY) from XY to XY {
     return create(Math.cos(angle), Math.sin(angle));
 
   inline public static function create(x : Float, y : Float) : Vector
-    return new MutXY(x, y);
+    return new MutableXY(x, y);
 
   inline public static function linked(getX : Void -> Float, getY : Void -> Float, setX : Float -> Float, setY : Float -> Float) : Vector
     return new LinkedXY(getX, getY, setX, setY);
