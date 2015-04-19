@@ -1,6 +1,6 @@
 package thx.geom.m;
 
-class MutM23 implements M23 {
+class MutableM23 implements M23 {
   public var a(get, set) : Float;
   public var b(get, set) : Float;
   public var c(get, set) : Float;
