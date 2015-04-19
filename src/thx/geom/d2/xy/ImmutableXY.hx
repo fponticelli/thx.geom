@@ -16,6 +16,6 @@ class ImmutableXY implements XY {
 
   function get_x() return _x;
   function get_y() return _y;
-  function set_x(v : Float) return throw 'this instance of Point cannot be modified';
-  function set_y(v : Float) return throw 'this instance of Point cannot be modified';
+  function set_x(v : Float) return throw 'this instance of XY cannot be modified';
+  function set_y(v : Float) return throw 'this instance of XY cannot be modified';
 }

@@ -8,7 +8,7 @@ using thx.core.Floats;
 import thx.geom.m.*;
 
 abstract Matrix23(M23) from M23 to M23 {
-  public static var identity(default, null) = new Matrix23(new MutableM23(1, 0, 0, 1, 0, 0));
+  public static var identity(default, null) = new Matrix23(new ImmutableM23(1, 0, 0, 1, 0, 0));
 
   public static function create(a : Float, b : Float, c : Float, d : Float, e : Float, f : Float) : Matrix23
     return new MutableM23(a, b, c, d, e, f);
