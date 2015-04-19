@@ -193,15 +193,15 @@ abstract Point(XY) from XY to XY {
 
   public function transform(matrix : Matrix23) : Point {
     return create(
-      matrix.a * this.x + matrix.c * this.y,
-      matrix.b * this.x + matrix.d * this.y
+      matrix.a * x + matrix.c * y,
+      matrix.b * x + matrix.d * y
     );
   }
 
   public function apply(matrix : Matrix23) : Point {
     return set(
-      matrix.a * this.x + matrix.c * this.y,
-      matrix.b * this.x + matrix.d * this.y
+      matrix.a * x + matrix.c * y,
+      matrix.b * x + matrix.d * y
     );
   }
 
