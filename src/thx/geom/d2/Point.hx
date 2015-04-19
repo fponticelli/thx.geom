@@ -7,6 +7,9 @@ using thx.core.Floats;
 abstract Point(XY) from XY to XY {
   public static var zero(default, null) : Point = Point.immutable(0, 0);
 
+  @:from inline public static function fromVector(v : Vector)
+    return new Point((v : XY));
+
   @:from public static function fromFloats(arr : Array<Float>) {
     arr.resize(2, 0);
     return create(arr[0], arr[1]);
@@ -29,8 +32,6 @@ abstract Point(XY) from XY to XY {
 
   public var x(get, set) : Float;
   public var y(get, set) : Float;
-  public var length(get, never) : Float;
-  public var lengthSquared(get, never) : Float;
 
   inline public function new(xy : XY)
     this = xy;
@@ -107,7 +108,7 @@ abstract Point(XY) from XY to XY {
   inline public function notNearEquals(p : Point)
     return !nearEquals(p);
 
-  public function interpolate(p : Point, f : Float)
+  public function lerp(p : Point, f : Float)
     return addPoint(p.subtractPoint(this).multiply(f));
 
   inline public function isZero()
@@ -119,23 +120,11 @@ abstract Point(XY) from XY to XY {
   inline public function clone() : Point
     return this.clone();
 
-  inline public function dot(p : Point) : Float
-    return x * p.x + y * p.y;
-
-  inline public function normal()
-    return Point.create(y, -x);
-
-  inline public function normalize()
-    return divide(length);
-
   public function distanceTo(p : Point)
-    return Math.abs(subtractPoint(p).length);
+    return Math.abs((subtractPoint(p) : Vector).length);
 
-  public function distanceToSquared(p : Point)
-    return subtractPoint(p).lengthSquared;
-
-  inline public function cross(p : Point)
-    return x * p.y - y * p.x;
+  public function magnitudeTo(p : Point)
+    return (subtractPoint(p) : Vector).magnitude;
 
   inline public function min(p : Point)
     return Point.create(
@@ -182,9 +171,6 @@ abstract Point(XY) from XY to XY {
     return this;
   }
 
-  @:to inline public function toAngle() : Float
-    return Math.atan2(y, x);
-
   @:to inline function toArray() : Array<Float>
     return [x, y];
 
@@ -205,10 +191,24 @@ abstract Point(XY) from XY to XY {
     return Point.create(x * invdet, y * invdet);
   }
 
-  public static function interpolateBetween2DPointsForY(p1 : Point, p2 : Point, y : Float) {
-    var f1 = y - p1.y,
-      f2 = p2.y - p1.y,
-      t;
+  public function transform(matrix : Matrix23) : Point {
+    return create(
+      matrix.a * this.x + matrix.c * this.y,
+      matrix.b * this.x + matrix.d * this.y
+    );
+  }
+
+  public function apply(matrix : Matrix23) : Point {
+    return set(
+      matrix.a * this.x + matrix.c * this.y,
+      matrix.b * this.x + matrix.d * this.y
+    );
+  }
+
+  public function lerpAtY(other : Point, y : Float) {
+    var f1 = y - this.y,
+        f2 = other.y - this.y,
+        t;
     if(f2 < 0) {
       f1 = -f1;
       f2 = -f2;
@@ -217,17 +217,15 @@ abstract Point(XY) from XY to XY {
       t = 0.0;
     else if(f1 >= f2)
       t = 1.0;
-    else if(f2 < 1e-10)
+    else if(f2 < thx.math.Const.E)
       t = 0.5;
     else
       t = f1 / f2;
-    return p1.x + t * (p2.x - p1.x);
+    return this.x + t * (other.x - this.x);
   }
 
   inline function get_x() return this.x;
   inline function get_y() return this.y;
   inline function set_x(v : Float) return this.x = v;
   inline function set_y(v : Float) return this.y = v;
-  inline function get_length() return Math.sqrt(lengthSquared);
-  inline function get_lengthSquared() return x * x + y * y;
 }
