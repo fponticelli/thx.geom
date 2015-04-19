@@ -1,2 +1,3 @@
 -D thx_geom
 -lib thx.core
+-lib thx.math
