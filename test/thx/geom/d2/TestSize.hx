@@ -9,5 +9,7 @@ class TestSize {
 
   public function testBasics() {
     var size = Size.create(10, 20);
+    Assert.equals(200, size.area);
+    Assert.equals(60, size.perimeter);
   }
 }
