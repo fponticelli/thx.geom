@@ -3,14 +3,15 @@ package thx.geom.d2;
 import thx.geom.d2.xy.*;
 import thx.math.Const;
 
-@:forward(center, radius)
-abstract Circle({ center : Point, radius : Float }) {
+class Circle {
   static function fromPoints(a : Point, b : Point) {
     var c = (a + b) / 2,
         r = c.distanceTo(a);
     return new Circle(c, r);
   }
 
+  public var center : Point;
+  public var radius : Float;
   public var x(get, set) : Float;
   public var y(get, set) : Float;
   public var left(get, set) : Float;
@@ -19,8 +20,10 @@ abstract Circle({ center : Point, radius : Float }) {
   public var bottom(get, set) : Float;
   public var area(get, never) : Float;
   public var perimeter(get, never) : Float;
-  public function new(center : Point, radius : Float)
-    this = { center : center, radius : radius };
+  public function new(center : Point, radius : Float) {
+    this.center = center;
+    this.radius = radius;
+  }
 
   inline function get_area()
     return this.radius * this.radius * Const.PI;
@@ -64,9 +67,9 @@ abstract Circle({ center : Point, radius : Float }) {
   inline function set_bottom(v : Float)
     return this.center.y = v + this.radius;
 
-  @:op(A==B) inline public function equals(other : Circle)
+  inline public function equals(other : Circle)
     return this.center == other.center && this.radius == other.radius;
 
-  @:to inline public function toString()
+  inline public function toString()
     return 'Circle(${this.center.x},${this.center.y},${this.radius})';
 }
