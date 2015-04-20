@@ -7,7 +7,7 @@ import utest.Assert;
 class TestSize {
   public function new() {}
 
-  public function testArea() {
-
+  public function testBasics() {
+    var size = Size.create(10, 20);
   }
 }
