@@ -29,4 +29,7 @@ abstract Circle({ position : Point, radius : Float }) {
 
   inline function set_y(v : Float)
     return this.position.y = v;
+
+  @:to inline public function toString()
+    return 'Circle(${this.position.x},${this.position.y},${this.radius})';
 }
