@@ -36,6 +36,9 @@ abstract Point(XY) from XY to XY {
   inline public function asVector()
     return new Vector(this);
 
+  inline public function asSize()
+    return new Size(this);
+
   @:op(A+=B) inline public function addPointAssign(p : Point) : Point
     return set(x + p.x, y + p.y);
 

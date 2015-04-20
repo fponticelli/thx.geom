@@ -38,6 +38,9 @@ abstract Vector(XY) from XY to XY {
   inline public function asPoint()
     return new Point(this);
 
+  inline public function asSize()
+    return new Size(this);
+
   @:op(A+=B) inline public function addVectorAssign(p : Vector) : Vector
     return set(x + p.x, y + p.y);
 
