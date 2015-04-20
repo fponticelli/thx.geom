@@ -7,6 +7,7 @@ class TestAll {
     var runner = new Runner();
     runner.addCase(new TestAll());
 
+    runner.addCase(new thx.geom.d2.TestCircle());
     runner.addCase(new thx.geom.d2.TestPoint());
     runner.addCase(new thx.geom.d2.TestSize());
     runner.addCase(new thx.geom.d2.TestVector());
