@@ -3,8 +3,14 @@ package thx.geom.d2;
 import thx.geom.d2.xy.*;
 import thx.math.Const;
 
-@:forward(position, radius)
-abstract Circle({ position : Point, radius : Float }) {
+@:forward(center, radius)
+abstract Circle({ center : Point, radius : Float }) {
+  static function fromPoints(a : Point, b : Point) {
+    var c = (a + b) / 2,
+        r = c.distanceTo(a);
+    return new Circle(c, r);
+  }
+
   public var x(get, set) : Float;
   public var y(get, set) : Float;
   public var left(get, set) : Float;
@@ -13,8 +19,8 @@ abstract Circle({ position : Point, radius : Float }) {
   public var bottom(get, set) : Float;
   public var area(get, never) : Float;
   public var perimeter(get, never) : Float;
-  public function new(position : Point, radius : Float)
-    this = { position : position, radius : radius };
+  public function new(center : Point, radius : Float)
+    this = { center : center, radius : radius };
 
   inline function get_area()
     return this.radius * this.radius * Const.PI;
@@ -23,16 +29,16 @@ abstract Circle({ position : Point, radius : Float }) {
     return this.radius * Const.TWO_PI;
 
   inline function get_x()
-    return this.position.x;
+    return this.center.x;
 
   inline function get_y()
-    return this.position.y;
+    return this.center.y;
 
   inline function set_x(v : Float)
-    return this.position.x = v;
+    return this.center.x = v;
 
   inline function set_y(v : Float)
-    return this.position.y = v;
+    return this.center.y = v;
 
   inline function get_left()
     return x - this.radius;
@@ -47,17 +53,20 @@ abstract Circle({ position : Point, radius : Float }) {
     return y + this.radius;
 
   inline function set_left(v : Float)
-    return this.position.x = v + this.radius;
+    return this.center.x = v + this.radius;
 
   inline function set_right(v : Float)
-    return this.position.x = v - this.radius;
+    return this.center.x = v - this.radius;
 
   inline function set_top(v : Float)
-    return this.position.y = v - this.radius;
+    return this.center.y = v - this.radius;
 
   inline function set_bottom(v : Float)
-    return this.position.y = v + this.radius;
+    return this.center.y = v + this.radius;
+
+  @:op(A==B) inline public function equals(other : Circle)
+    return this.center == other.center && this.radius == other.radius;
 
   @:to inline public function toString()
-    return 'Circle(${this.position.x},${this.position.y},${this.radius})';
+    return 'Circle(${this.center.x},${this.center.y},${this.radius})';
 }
