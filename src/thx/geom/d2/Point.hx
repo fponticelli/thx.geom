@@ -7,9 +7,6 @@ using thx.core.Floats;
 abstract Point(XY) from XY to XY {
   public static var zero(default, null) : Point = Point.immutable(0, 0);
 
-  @:from inline public static function fromVector(v : Vector)
-    return new Point((v : XY));
-
   @:from public static function fromFloats(arr : Array<Float>) {
     arr.resize(2, 0);
     return create(arr[0], arr[1]);
@@ -35,6 +32,9 @@ abstract Point(XY) from XY to XY {
 
   inline public function new(xy : XY)
     this = xy;
+
+  inline public function asVector()
+    return new Vector(this);
 
   @:op(A+=B) inline public function addPointAssign(p : Point) : Point
     return set(x + p.x, y + p.y);
@@ -121,10 +121,10 @@ abstract Point(XY) from XY to XY {
     return this.clone();
 
   public function distanceTo(p : Point)
-    return Math.abs((subtractPoint(p) : Vector).length);
+    return Math.abs(subtractPoint(p).asVector().length);
 
   public function magnitudeTo(p : Point)
-    return (subtractPoint(p) : Vector).magnitude;
+    return subtractPoint(p).asVector().magnitude;
 
   inline public function min(p : Point)
     return Point.create(

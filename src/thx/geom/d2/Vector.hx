@@ -7,9 +7,6 @@ using thx.core.Floats;
 abstract Vector(XY) from XY to XY {
   public static var zero(default, null) : Vector = Vector.immutable(0, 0);
 
-  @:from inline public static function fromPoint(v : Point)
-    return new Vector((v : XY));
-
   @:from public static function fromFloats(arr : Array<Float>) {
     arr.resize(2, 0);
     return create(arr[0], arr[1]);
@@ -37,6 +34,9 @@ abstract Vector(XY) from XY to XY {
 
   inline public function new(xy : XY)
     this = xy;
+
+  inline public function asPoint()
+    return new Point(this);
 
   @:op(A+=B) inline public function addVectorAssign(p : Vector) : Vector
     return set(x + p.x, y + p.y);
