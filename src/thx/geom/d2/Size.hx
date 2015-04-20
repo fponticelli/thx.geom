@@ -125,6 +125,6 @@ abstract Size(XY) from XY to XY {
   inline function get_height() return this.y;
   inline function set_width(v : Float) return this.x = v;
   inline function set_height(v : Float) return this.y = v;
-  inline function get_area() return width * height;
-  inline function get_perimeter() return (width + height) * 2;
+  inline function get_area() return Math.abs(width * height);
+  inline function get_perimeter() return (Math.abs(width) + Math.abs(height)) * 2;
 }
