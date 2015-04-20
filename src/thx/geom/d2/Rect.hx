@@ -2,11 +2,12 @@ package thx.geom.d2;
 
 import thx.geom.d2.xy.*;
 
-@:forward(position, size)
-abstract Rect({ position : Point, size : Size }) {
+class Rect {
   public static inline function create(x : Float, y : Float, width : Float, height : Float)
     return new Rect(Point.create(x, y), Size.create(width, height));
 
+  public var position : Point;
+  public var size : Size;
   public var x(get, set) : Float;
   public var y(get, set) : Float;
   public var width(get, set) : Float;
@@ -18,8 +19,10 @@ abstract Rect({ position : Point, size : Size }) {
   public var area(get, never) : Float;
   public var perimeter(get, never) : Float;
 
-  public function new(position : Point, size : Size)
-    this = { position : position, size : size };
+  public function new(position : Point, size : Size) {
+    this.position = position;
+    this.size = size;
+  }
 
   public function center() : Point
     return Point.linked(
@@ -163,10 +166,13 @@ abstract Rect({ position : Point, size : Size }) {
   inline function set_y(v : Float)
     return this.position.y = v;
 
-  @:op(A==B) public function equals(other : Rect)
+  public function equals(other : Rect)
     return
       left   == other.left   &&
       right  == other.right  &&
       top    == other.top    &&
       bottom == other.bottom;
+
+  inline public function toString()
+    return 'Rect(${x},${y},${width},${height})';
 }
