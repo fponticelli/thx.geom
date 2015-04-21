@@ -1,7 +1,7 @@
 package thx.geom.d2;
 
 import thx.geom.d2.*;
-import thx.geom.d2.xy.*;
+import thx.geom.core.*;
 import utest.Assert;
 
 class TestCircle {

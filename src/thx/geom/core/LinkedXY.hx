@@ -1,4 +1,4 @@
-package thx.geom.d2.xy;
+package thx.geom.core;
 
 class LinkedXY implements XY {
   public var x(get, set) : Float;

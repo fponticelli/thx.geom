@@ -1,4 +1,4 @@
-package thx.geom.m;
+package thx.geom.core;
 
 class ImmutableM23 implements M23 {
   public var a(get, set) : Float;

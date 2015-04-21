@@ -5,7 +5,7 @@ import thx.geom.d2.Vector;
 
 using thx.core.Arrays;
 using thx.core.Floats;
-import thx.geom.m.*;
+import thx.geom.core.*;
 
 abstract Matrix23(M23) from M23 to M23 {
   public static var identity(default, null) = new Matrix23(new ImmutableM23(1, 0, 0, 1, 0, 0));

@@ -1,4 +1,4 @@
-package thx.geom.m;
+package thx.geom.core;
 
 interface M23 {
   public var a(get, set) : Float;

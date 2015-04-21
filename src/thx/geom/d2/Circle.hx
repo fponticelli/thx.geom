@@ -1,6 +1,6 @@
 package thx.geom.d2;
 
-import thx.geom.d2.xy.*;
+import thx.geom.core.*;
 import thx.math.Const;
 
 class Circle {

@@ -1,6 +1,6 @@
-package thx.geom.d2.xy;
+package thx.geom.core;
 
-class MutableXY implements XY {
+class ImmutableXY implements XY {
   public var x(get, set) : Float;
   public var y(get, set) : Float;
   var _x : Float;
@@ -16,6 +16,6 @@ class MutableXY implements XY {
 
   function get_x() return _x;
   function get_y() return _y;
-  function set_x(v : Float) return _x = v;
-  function set_y(v : Float) return _y = v;
+  function set_x(v : Float) return throw 'this instance of XY cannot be modified';
+  function set_y(v : Float) return throw 'this instance of XY cannot be modified';
 }

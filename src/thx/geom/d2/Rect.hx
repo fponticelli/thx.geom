@@ -1,6 +1,6 @@
 package thx.geom.d2;
 
-import thx.geom.d2.xy.*;
+import thx.geom.core.*;
 
 class Rect {
   public static inline function create(x : Float, y : Float, width : Float, height : Float)

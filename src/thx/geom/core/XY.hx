@@ -1,4 +1,4 @@
-package thx.geom.d2.xy;
+package thx.geom.core;
 
 interface XY {
   var x(get, set) : Float;
