@@ -11,25 +11,31 @@ class Circle {
   }
 
   public var center : Point;
-  public var radius : Float;
+  public var radius : Radius;
   public var x(get, set) : Float;
   public var y(get, set) : Float;
   public var left(get, set) : Float;
   public var right(get, set) : Float;
   public var top(get, set) : Float;
   public var bottom(get, set) : Float;
-  public var area(get, never) : Float;
-  public var perimeter(get, never) : Float;
-  public function new(center : Point, radius : Float) {
+  public var area(get, set) : Float;
+  public var perimeter(get, set) : Float;
+  public function new(center : Point, radius : Radius) {
     this.center = center;
     this.radius = radius;
   }
 
   inline function get_area()
-    return this.radius * this.radius * Const.PI;
+    return this.radius.area;
+
+  inline function set_area(v : Float)
+    return this.radius.area = v;
 
   inline function get_perimeter()
-    return this.radius * Const.TWO_PI;
+    return this.radius.perimeter;
+
+  inline function set_perimeter(v : Float)
+    return this.radius.perimeter = v;
 
   inline function get_x()
     return this.center.x;
@@ -44,28 +50,28 @@ class Circle {
     return this.center.y = v;
 
   inline function get_left()
-    return x - this.radius;
+    return x - (this.radius : Float);
 
   inline function get_right()
-    return x + this.radius;
+    return x + (this.radius : Float);
 
   inline function get_top()
-    return y - this.radius;
+    return y - (this.radius : Float);
 
   inline function get_bottom()
-    return y + this.radius;
+    return y + (this.radius : Float);
 
   inline function set_left(v : Float)
-    return this.center.x = v + this.radius;
+    return this.center.x = v + (this.radius : Float);
 
   inline function set_right(v : Float)
-    return this.center.x = v - this.radius;
+    return this.center.x = v - (this.radius : Float);
 
   inline function set_top(v : Float)
-    return this.center.y = v - this.radius;
+    return this.center.y = v - (this.radius : Float);
 
   inline function set_bottom(v : Float)
-    return this.center.y = v + this.radius;
+    return this.center.y = v + (this.radius : Float);
 
   inline public function equals(other : Circle)
     return this.center == other.center && this.radius == other.radius;
