@@ -19,6 +19,6 @@ class TestCircle {
     Assert.equals(25, circle.bottom);
     Assert.equals( 5, (circle.radius : Float));
     Assert.floatEquals(78.53981633974483, circle.area);
-    Assert.floatEquals(31.41592653589793, circle.perimeter);
+    Assert.floatEquals(31.41592653589793, circle.circumference);
   }
 }

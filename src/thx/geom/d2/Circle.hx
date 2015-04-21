@@ -19,7 +19,7 @@ class Circle {
   public var top(get, set) : Float;
   public var bottom(get, set) : Float;
   public var area(get, set) : Float;
-  public var perimeter(get, set) : Float;
+  public var circumference(get, set) : Float;
   public function new(center : Point, radius : Radius) {
     this.center = center;
     this.radius = radius;
@@ -31,11 +31,11 @@ class Circle {
   inline function set_area(v : Float)
     return this.radius.area = v;
 
-  inline function get_perimeter()
-    return this.radius.perimeter;
+  inline function get_circumference()
+    return this.radius.circumference;
 
-  inline function set_perimeter(v : Float)
-    return this.radius.perimeter = v;
+  inline function set_circumference(v : Float)
+    return this.radius.circumference = v;
 
   inline function get_x()
     return this.center.x;

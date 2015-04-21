@@ -19,7 +19,7 @@ abstract Radius(Dim) from Dim to Dim {
 
   public var coord(get, set) : Float;
   public var area(get, set) : Float;
-  public var perimeter(get, set) : Float;
+  public var circumference(get, set) : Float;
 
   inline public function new(r : Dim)
     this = r;
@@ -63,10 +63,10 @@ abstract Radius(Dim) from Dim to Dim {
     return v;
   }
 
-  inline function get_perimeter()
+  inline function get_circumference()
     return this.coord * Const.TWO_PI;
 
-  function set_perimeter(v : Float) {
+  function set_circumference(v : Float) {
     this.coord = v / Const.TWO_PI;
     return v;
   }
