@@ -5,8 +5,30 @@ import thx.math.Const;
 
 class Circle {
   static function fromPoints(a : Point, b : Point) {
-    var c = (a + b) / 2,
-        r = c.distanceTo(a);
+    var c = Point.linked(
+          function() return (a.x + b.x) / 2,
+          function() return (a.y + b.y) / 2,
+          function(x) {
+            var dx = x - (a.x + b.x) / 2;
+            a.x += dx;
+            return x;
+          },
+          function(y) {
+            var dy = y - (a.y + b.y) / 2;
+            a.y += dy;
+            return y;
+          }
+        ),
+        r = Radius.linked(
+          function() return c.distanceTo(a),
+          function(v) {
+            var d = (b - c).asVector();
+            d.length = v;
+            b.set(c.x + d.x, c.y + d.y);
+            a.set(c.x - d.x, c.y - d.y);
+            return v;
+          }
+        );
     return new Circle(c, r);
   }
 
