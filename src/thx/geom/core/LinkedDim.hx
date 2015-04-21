@@ -11,8 +11,8 @@ class LinkedDim implements Dim {
     this.setCoord = setCoord;
   }
 
-  public function clone() : Coord
-    return new MutableDim(getCoord(), setCoord());
+  public function clone() : Dim
+    return new MutableDim(getCoord());
 
   function get_coord() return getCoord();
   function set_coord(v : Float) return setCoord(v);

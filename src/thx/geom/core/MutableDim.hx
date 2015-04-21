@@ -4,7 +4,7 @@ class MutableDim implements Dim {
   public var coord(get, set) : Float;
   var _coord : Float;
 
-  public function new(coord : Float, y : Float)
+  public function new(coord : Float)
     _coord = coord;
 
   public function clone() : Dim
