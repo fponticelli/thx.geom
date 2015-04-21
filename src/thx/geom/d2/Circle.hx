@@ -4,7 +4,7 @@ import thx.geom.core.*;
 import thx.math.Const;
 
 class Circle {
-  static function fromPoints(a : Point, b : Point) {
+  public static function fromPoints(a : Point, b : Point) {
     var c = Point.linked(
           function() return (a.x + b.x) / 2,
           function() return (a.y + b.y) / 2,
@@ -31,6 +31,9 @@ class Circle {
         );
     return new Circle(c, r);
   }
+
+  public static inline function create(x : Float, y : Float, r : Radius)
+    return new Circle(Point.create(x, y), r);
 
   public var center : Point;
   public var radius : Radius;
