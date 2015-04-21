@@ -29,8 +29,8 @@ abstract Vector(XY) from XY to XY {
 
   public var x(get, set) : Float;
   public var y(get, set) : Float;
-  public var length(get, never) : Float;
-  public var magnitude(get, never) : Float;
+  public var length(get, set) : Float;
+  public var magnitude(get, set) : Float;
 
   inline public function new(xy : XY)
     this = xy;
@@ -239,5 +239,15 @@ abstract Vector(XY) from XY to XY {
   inline function set_x(v : Float) return this.x = v;
   inline function set_y(v : Float) return this.y = v;
   inline function get_length() return Math.sqrt(magnitude);
+  function set_length(l : Float) {
+    var d = l / length;
+    x *= d;
+    y *= d;
+    return l;
+  }
   inline function get_magnitude() return x * x + y * y;
+  function set_magnitude(m : Float) {
+    length = Math.sqrt(m);
+    return m;
+  }
 }
