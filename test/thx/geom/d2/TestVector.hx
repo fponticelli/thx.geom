@@ -21,10 +21,6 @@ class TestVector {
     Assert.equals(1, a.unit().y);
   }
 
-  public function testDistanceTo() {
-    Assert.equals(10, Vector.create(10, 10).distanceTo(Vector.create(0, 10)));
-  }
-
   public function testToAngle() {
     Assert.floatEquals(Math.PI / 4, Vector.create(1, 1).toAngle());
   }

@@ -149,12 +149,6 @@ abstract Vector(XY) from XY to XY {
     return multiply(f);
   }
 
-  public function distanceTo(p : Vector)
-    return Math.abs(subtractVector(p).length);
-
-  public function distanceToSquared(p : Vector)
-    return subtractVector(p).magnitude;
-
   inline public function cross(p : Vector)
     return x * p.y - y * p.x;
 
