@@ -1,8 +1,8 @@
 package thx.geom.d2;
 
 import thx.geom.core.*;
-using thx.core.Arrays;
-using thx.core.Floats;
+using thx.Arrays;
+using thx.Floats;
 
 abstract Size(XY) from XY to XY {
   @:from public static function fromFloats(arr : Array<Float>) {

@@ -3,8 +3,8 @@ package thx.geom;
 import thx.geom.d2.Point;
 import thx.geom.d2.Vector;
 
-using thx.core.Arrays;
-using thx.core.Floats;
+using thx.Arrays;
+using thx.Floats;
 import thx.geom.core.*;
 
 abstract Matrix23(M23) from M23 to M23 {

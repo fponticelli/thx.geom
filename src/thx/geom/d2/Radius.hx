@@ -1,6 +1,6 @@
 package thx.geom.d2;
 
-using thx.core.Floats;
+using thx.Floats;
 import thx.geom.core.*;
 import thx.math.Const;
 

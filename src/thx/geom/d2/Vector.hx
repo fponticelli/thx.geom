@@ -1,8 +1,8 @@
 package thx.geom.d2;
 
 import thx.geom.core.*;
-using thx.core.Arrays;
-using thx.core.Floats;
+using thx.Arrays;
+using thx.Floats;
 
 abstract Vector(XY) from XY to XY {
   public static var zero(default, null) : Vector = Vector.immutable(0, 0);
