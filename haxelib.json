@@ -9,7 +9,7 @@
   "version": "0.1.1",
   "contributors": ["fponticelli"],
   "dependencies": {
-    "thx": "",
+    "thx.core": "",
     "thx.math": ""
   }
 }
