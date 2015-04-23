@@ -45,7 +45,7 @@ class Circle implements IShape {
   public var bottom(get, set) : Float;
   public var area(get, set) : Float;
   public var circumference(get, set) : Float;
-  @:isVar public var anchors(get, never) : Array<Point>;
+  @:isVar public var anchors(get, null) : Array<Point>;
   @:isVar public var centerLeft(get, null) : Point;
   @:isVar public var centerRight(get, null) : Point;
   @:isVar public var centerTop(get, null) : Point;
@@ -111,7 +111,7 @@ class Circle implements IShape {
 
   function get_anchors() {
     if(null == anchors) {
-      return [center, centerLeft, centerTop, centerRight, centerBottom];
+      anchors = [center, centerLeft, centerTop, centerRight, centerBottom];
     }
     return anchors;
   }
