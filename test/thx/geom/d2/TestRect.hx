@@ -21,9 +21,9 @@ class TestRect {
 
   public function testAnchorPoints() {
     var rect = Rect.create(10, 20, 20, -40),
-        tl = rect.topLeft(),
-        br = rect.bottomRight(),
-        c  = rect.center();
+        tl = rect.topLeft,
+        br = rect.bottomRight,
+        c  = rect.center;
     Assert.equals( 10, tl.x);
     Assert.equals( 20, tl.y);
     Assert.equals( 30, br.x);
