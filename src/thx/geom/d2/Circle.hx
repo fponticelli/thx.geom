@@ -3,7 +3,7 @@ package thx.geom.d2;
 import thx.geom.core.*;
 import thx.math.Const;
 
-class Circle {
+class Circle implements IShape {
   public static function fromPoints(a : Point, b : Point) {
     var c = Point.linked(
           function() return (a.x + b.x) / 2,
