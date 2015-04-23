@@ -47,6 +47,9 @@ class Circle implements IShape {
   public var circumference(get, set) : Float;
   @:isVar public var anchors(get, never) : Array<Point>;
   @:isVar public var centerLeft(get, null) : Point;
+  @:isVar public var centerRight(get, null) : Point;
+  @:isVar public var centerTop(get, null) : Point;
+  @:isVar public var centerBottom(get, null) : Point;
   public function new(center : Point, radius : Radius) {
     this.center = center;
     this.radius = radius;
@@ -108,7 +111,7 @@ class Circle implements IShape {
 
   function get_anchors() {
     if(null == anchors) {
-      return [center, centerLeft];
+      return [center, centerLeft, centerTop, centerRight, centerBottom];
     }
     return anchors;
   }
@@ -123,5 +126,41 @@ class Circle implements IShape {
       );
     }
     return centerLeft;
+  }
+
+  function get_centerRight() : Point {
+    if(null == centerRight) {
+      centerRight = Point.linked(
+        function() return right,
+        function() return center.y,
+        function(v) return right = v,
+        function(v) return center.y = v
+      );
+    }
+    return centerRight;
+  }
+
+  function get_centerTop() : Point {
+    if(null == centerTop) {
+      centerTop = Point.linked(
+        function() return center.x,
+        function() return top,
+        function(v) return center.x = v,
+        function(v) return top = v
+      );
+    }
+    return centerTop;
+  }
+
+  function get_centerBottom() : Point {
+    if(null == centerBottom) {
+      centerBottom = Point.linked(
+        function() return center.x,
+        function() return bottom,
+        function(v) return center.x = v,
+        function(v) return bottom = v
+      );
+    }
+    return centerBottom;
   }
 }
