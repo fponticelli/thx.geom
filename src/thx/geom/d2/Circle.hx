@@ -45,6 +45,8 @@ class Circle {
   public var bottom(get, set) : Float;
   public var area(get, set) : Float;
   public var circumference(get, set) : Float;
+  @:isVar public var anchors(get, never) : Array<Point>;
+  @:isVar public var centerLeft(get, null) : Point;
   public function new(center : Point, radius : Radius) {
     this.center = center;
     this.radius = radius;
@@ -103,4 +105,23 @@ class Circle {
 
   inline public function toString()
     return 'Circle(${this.center.x},${this.center.y},${this.radius})';
+
+  function get_anchors() {
+    if(null == anchors) {
+      return [center, centerLeft];
+    }
+    return anchors;
+  }
+
+  function get_centerLeft() : Point {
+    if(null == centerLeft) {
+      centerLeft = Point.linked(
+        function() return left,
+        function() return center.y,
+        function(v) return left = v,
+        function(v) return center.y = v
+      );
+    }
+    return centerLeft;
+  }
 }
