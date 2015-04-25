@@ -9,8 +9,9 @@ class TestAll {
 
     runner.addCase(new thx.geom.d2.TestCircle());
     runner.addCase(new thx.geom.d2.TestLineSegment());
-    runner.addCase(new thx.geom.d2.TestRadius());
     runner.addCase(new thx.geom.d2.TestPoint());
+    runner.addCase(new thx.geom.d2.TestPolyline());
+    runner.addCase(new thx.geom.d2.TestRadius());
     runner.addCase(new thx.geom.d2.TestRect());
     runner.addCase(new thx.geom.d2.TestSize());
     runner.addCase(new thx.geom.d2.TestVector());
