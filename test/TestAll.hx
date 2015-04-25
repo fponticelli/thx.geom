@@ -8,6 +8,7 @@ class TestAll {
     runner.addCase(new TestAll());
 
     runner.addCase(new thx.geom.d2.TestCircle());
+    runner.addCase(new thx.geom.d2.TestLineSegment());
     runner.addCase(new thx.geom.d2.TestRadius());
     runner.addCase(new thx.geom.d2.TestPoint());
     runner.addCase(new thx.geom.d2.TestRect());
