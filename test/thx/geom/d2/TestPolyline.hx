@@ -10,5 +10,8 @@ class TestPolyline {
   public function testBasics() {
     var poly = new Polyline();
     trace(poly.toString());
+
+    var poly = new Polygon();
+    trace(poly.toString());
   }
 }
