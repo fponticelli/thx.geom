@@ -4,8 +4,8 @@ using thx.Arrays;
 
 class Path {
   var segments : Array<Segment>;
-  public function new() {
-    segments = [];
+  public function new(?list : Array<Segment>) {
+    segments = null == list ? [] : list;
   }
 
   public function toSVGPath() {
