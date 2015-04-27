@@ -7,7 +7,7 @@ class ArcSegment extends LineSegment {
   public var largeArcFlag : Bool;
   public var sweepFlag : Bool;
   public var xAxisRotate(default, null) : Dim;
-  public function new(start : Point, radius : Vector, largeArcFlag : Bool, sweepFlag : Bool, end : Point, xAxisRotate : Dim) {
+  public function new(start : Point, radius : Vector, largeArcFlag : Bool, sweepFlag : Bool, xAxisRotate : Dim, end : Point) {
     super(start, end);
     this.radius = radius;
     this.largeArcFlag = largeArcFlag;
@@ -16,5 +16,5 @@ class ArcSegment extends LineSegment {
   }
 
   override public function toString()
-    return 'ArcSegment(sx:${start.x},sy:${start.y},xr:${xAxisRotate},laf:${largeArcFlag},sf:${sweepFlag},ex:${end.x},ey:${end.y})';
+    return 'ArcSegment(sx:${start.x},sy:${start.y},xr:${xAxisRotate.coord},laf:${largeArcFlag},sf:${sweepFlag},ex:${end.x},ey:${end.y})';
 }
