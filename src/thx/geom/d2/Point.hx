@@ -168,6 +168,9 @@ abstract Point(XY) from XY to XY {
   public function pointAt(angle :  Float, distance : Float)
     return (this : Point) + Point.fromAngle(angle).multiply(distance);
 
+  public function reflection(p : Point)
+    return p + (p - this);
+
   public function set(nx : Float, ny : Float) : Point {
     x = nx;
     y = ny;
