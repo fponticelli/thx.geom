@@ -35,23 +35,27 @@ class Svg {
     function capturePoint()
       return capturePoints(1)[0];
 
-    var prev = "L",
+    var beginShape = 0,
+        prev = "L",
         last = Point.create(0, 0),
-        smooth;
+        smooth = null;
 
     while(d.length > 0) {
       while(isFiller(d))
         d = d.substring(1);
       var c = d.substring(0, 1);
       d = d.substring(1);
+
       switch c {
         case "M":
+          beginShape = list.length;
           prev = "L";
           smooth = null;
           var p = capturePoint();
           if(last != p)
             last = p;
         case "m":
+          beginShape = list.length;
           prev = "l";
           smooth = null;
           var p = capturePoint();
@@ -158,7 +162,7 @@ class Svg {
           ));
         case "z", "Z":
           smooth = null;
-          var first = list[0];
+          var first = list[beginShape];
           if(null != first && !first.start.equals(last)) {
             list.push(new LineSegment(last, first.start));
           }
