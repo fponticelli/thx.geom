@@ -14,11 +14,14 @@ class Path {
 
   public function toSVGPath() {
     var buf = [],
-        end = Point.create(Math.NaN, Math.NaN);
+        end = Point.create(Math.NaN, Math.NaN),
+        startingPoint = end;
 
     for(segment in segments) {
-      if(!end.equals(segment.start))
+      if(!end.equals(segment.start)) {
         buf.push('M ${segment.start.x} ${segment.start.y}');
+        startingPoint = segment.start;
+      }
       switch Type.getClass(segment) {
         case LineSegment:
           buf.push('L ${segment.end.x} ${segment.end.y}');
@@ -32,15 +35,10 @@ class Path {
           var s : ArcSegment = cast segment;
           buf.push('A ${s.radius.x} ${s.radius.y} ${s.xAxisRotate.coord} ${s.largeArcFlag ? 1 : 0} ${s.sweepFlag ? 1 : 0} ${s.end.x} ${s.end.y}');
       }
-      end = segment.end;
-    }
-    if(segments.length > 1 && segments.last().end == segments.first().start) {
-      // TODO hierarchy doesn't work well in this case
-      if(Type.getClass(segments.last()) == LineSegment) {
-        trace("POP");
-        buf.pop();
+      if(segment.end.equals(startingPoint)) {
+        buf.push("Z");
       }
-      buf.push("Z");
+      end = segment.end;
     }
 
     return buf.join(" ");
