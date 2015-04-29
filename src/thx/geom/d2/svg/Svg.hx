@@ -166,6 +166,8 @@ class Svg {
           if(null != first && !first.start.equals(last)) {
             list.push(new LineSegment(last, first.start));
           }
+        case ".":
+          d = '0.$d'; // numbers with no integer part
         case "-","0","1","2","3","4","5","6","7","8","9","e": // implicit repeat command
           d = prev+c+d;
         case v if(isFiller(v) || v == ""): // skip
