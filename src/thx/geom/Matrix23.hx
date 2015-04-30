@@ -76,6 +76,9 @@ abstract Matrix23(M23) from M23 to M23 {
   public function translate(x : Float, y : Float) : Matrix23
     return mul(1, 0, 0, 1, x, y);
 
+  public function translateBy(point : Point) : Matrix23
+    return mul(1, 0, 0, 1, point.x, point.y);
+
   public function scale(scaleFactor : Float) : Matrix23
     return mul(scaleFactor, 0, 0, scaleFactor, 0, 0);
 
