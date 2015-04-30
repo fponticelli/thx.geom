@@ -8,7 +8,21 @@ using thx.Floats;
 import thx.geom.core.*;
 
 abstract Matrix23(M23) from M23 to M23 {
-  public static var identity(default, null) = new Matrix23(new ImmutableM23(1, 0, 0, 1, 0, 0));
+  static public var identity(default, null) = new Matrix23(new ImmutableM23(1, 0, 0, 1, 0, 0));
+  static public function rotation(radians :  Float) {
+    var c = Math.cos(radians),
+        s = Math.sin(radians);
+    return Matrix23.create(c, s, -s, -c, 0, 0);
+  }
+
+  static public function rotationAt(center : Point, radians :  Float)
+    return identity.translateBy(-center).rotate(radians).translateBy(center);
+
+  static public function translation(x : Float, y : Float)
+    return Matrix23.create(1, 0, 0, 1, x, y);
+
+  static public function translationAt(point : Point)
+    return Matrix23.create(1, 0, 0, 1, point.x, point.y);
 
   public static function create(a : Float, b : Float, c : Float, d : Float, e : Float, f : Float) : Matrix23
     return new MutableM23(a, b, c, d, e, f);
