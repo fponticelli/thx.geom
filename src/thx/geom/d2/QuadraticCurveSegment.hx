@@ -3,7 +3,7 @@ package thx.geom.d2;
 class QuadraticCurveSegment extends Segment {
   public var c1(default, null) : Point;
   public function new(start : Point, c1 : Point, end : Point) {
-    super(start, end);
+    super(start, end, [start, c1, end]);
     this.c1 = c1;
   }
 
