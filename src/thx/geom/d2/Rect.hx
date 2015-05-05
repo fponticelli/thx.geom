@@ -1,10 +1,24 @@
 package thx.geom.d2;
 
 import thx.geom.core.*;
+using thx.Iterables;
 
 class Rect implements IShape {
   public static inline function create(x : Float, y : Float, width : Float, height : Float)
     return new Rect(Point.create(x, y), Size.create(width, height));
+
+  public static function fromPoints(points : Iterable<Point>) {
+    var min = Point.linkedMin(points),
+        max = Point.linkedMax(points),
+        v   = Vector.linkedPoints(min, max);
+    return new Rect(min, v.asSize());
+  }
+
+  public static function fromRects(rects : Iterable<Rect>) {
+    var min = Point.linkedMin(rects.pluck(_.bottomLeft)),
+        max = Point.linkedMax(rects.pluck(_.topRight));
+    return fromPoints([min, max]);
+  }
 
   public var position : Point;
   public var size : Size;
@@ -219,6 +233,8 @@ class Rect implements IShape {
 
   inline function set_y(v : Float)
     return this.position.y = v;
+
+
 
   public function equals(other : Rect)
     return
