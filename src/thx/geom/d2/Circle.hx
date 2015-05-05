@@ -45,14 +45,17 @@ class Circle implements IShape {
   public var bottom(get, set) : Float;
   public var area(get, set) : Float;
   public var circumference(get, set) : Float;
-  @:isVar public var anchors(get, null) : Array<Point>;
+  public var box(default, null) : Rect;
   @:isVar public var centerLeft(get, null) : Point;
   @:isVar public var centerRight(get, null) : Point;
   @:isVar public var centerTop(get, null) : Point;
   @:isVar public var centerBottom(get, null) : Point;
+  @:isVar public var bottomLeft(get, null) : Point;
+  @:isVar public var topRight(get, null) : Point;
   public function new(center : Point, radius : Radius) {
     this.center = center;
     this.radius = radius;
+    this.box = Rect.fromPoints([bottomLeft, topRight]);
   }
 
   inline function get_area()
@@ -109,13 +112,6 @@ class Circle implements IShape {
   inline public function toString()
     return 'Circle(${this.center.x},${this.center.y},${this.radius})';
 
-  function get_anchors() {
-    if(null == anchors) {
-      anchors = [center, centerLeft, centerTop, centerRight, centerBottom];
-    }
-    return anchors;
-  }
-
   function get_centerLeft() : Point {
     if(null == centerLeft) {
       centerLeft = Point.linked(
@@ -162,5 +158,29 @@ class Circle implements IShape {
       );
     }
     return centerBottom;
+  }
+
+  function get_bottomLeft() : Point {
+    if(null == bottomLeft) {
+      bottomLeft = Point.linked(
+        function() return left,
+        function() return bottom,
+        function(v) return left = v,
+        function(v) return bottom = v
+      );
+    }
+    return bottomLeft;
+  }
+
+  function get_topRight() : Point {
+    if(null == topRight) {
+      topRight = Point.linked(
+        function() return right,
+        function() return top,
+        function(v) return right = v,
+        function(v) return top = v
+      );
+    }
+    return topRight;
   }
 }

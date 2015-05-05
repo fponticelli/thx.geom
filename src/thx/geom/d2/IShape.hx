@@ -1,5 +1,5 @@
 package thx.geom.d2;
 
 interface IShape {
-  public var anchors(get, null) : Array<Point>;
+  public var box(default, null) : Rect;
 }

@@ -3,7 +3,7 @@ package thx.geom.d2;
 import thx.geom.d2.svg.Svg;
 using thx.Arrays;
 
-class Path {
+class Path implements IShape {
   public static function fromSVGPath(d : String)
     return new Path(Svg.parsePath(d));
 
