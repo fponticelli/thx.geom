@@ -22,6 +22,6 @@ class Segment {
       }
     );
 
-  public function toString()
-    return 'Segment(${start.x},${start.y},${end.x},${end.y})';
+  public function toString() : String
+    return throw 'Segment.toString() is abstract and must be overwritten';
 }
