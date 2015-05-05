@@ -2,7 +2,7 @@ package thx.geom.d2;
 
 import thx.geom.core.Dim;
 
-class ArcSegment extends LineSegment {
+class ArcSegment extends Segment {
   public var radius(default, null) : Vector;
   public var largeArcFlag : Bool;
   public var sweepFlag : Bool;
