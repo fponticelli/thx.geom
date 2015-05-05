@@ -18,6 +18,20 @@ abstract Vector(XY) from XY to XY {
   @:from static inline public function fromAngle(angle :  Float)
     return create(Math.cos(angle), Math.sin(angle));
 
+  public static function linkedPoints(a : Point, b : Point)
+    return linked(
+      function() return b.x - a.x,
+      function() return b.y - a.y,
+      function(v) {
+        b.x = a.x + v;
+        return v;
+      },
+      function(v) {
+        b.y = a.y + v;
+        return v;
+      }
+    );
+
   inline public static function create(x : Float, y : Float) : Vector
     return new MutableXY(x, y);
 
