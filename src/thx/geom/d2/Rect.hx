@@ -42,6 +42,7 @@ class Rect implements IShape {
   @:isVar public var topRight(get, null) : Point;
   @:isVar public var bottomLeft(get, null) : Point;
   @:isVar public var bottomRight(get, null) : Point;
+  @:isVar public var corners(get, null) : Iterable<Point>;
 
   public function new(position : Point, size : Size) {
     this.position = position;
@@ -228,7 +229,12 @@ class Rect implements IShape {
   inline function set_y(v : Float)
     return this.position.y = v;
 
-
+  function get_corners() {
+    if(null == corners) {
+      corners = [bottomLeft, topLeft, topRight, bottomRight];
+    }
+    return corners;
+  }
 
   public function equals(other : Rect)
     return
