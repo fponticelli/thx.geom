@@ -12,6 +12,7 @@ class TestLineSegment {
         b = Point.create(100, 100),
         ab = new LineSegment(a, b);
 
-    trace(ab.toString());
+    Assert.isTrue(ab.box.bottomLeft == a);
+    Assert.isTrue(ab.box.topRight == b);
   }
 }
