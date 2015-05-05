@@ -3,9 +3,11 @@ package thx.geom.d2;
 class Segment {
   public var start(default, null) : Point;
   public var end(default, null) : Point;
-  public function new(start : Point, end : Point) {
+  public var box(default, null) : Rect;
+  public function new(start : Point, end : Point, cloud : Iterable<Point>) {
     this.start = start;
     this.end = end;
+    this.box = Rect.fromPoints(cloud);
   }
 
   public function toVector()

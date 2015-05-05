@@ -8,7 +8,8 @@ class ArcSegment extends Segment {
   public var sweepFlag : Bool;
   public var xAxisRotate(default, null) : Dim;
   public function new(start : Point, radius : Vector, largeArcFlag : Bool, sweepFlag : Bool, xAxisRotate : Dim, end : Point) {
-    super(start, end);
+    // TODO box definition is not complete
+    super(start, end, [start, end]);
     this.radius = radius;
     this.largeArcFlag = largeArcFlag;
     this.sweepFlag = sweepFlag;
