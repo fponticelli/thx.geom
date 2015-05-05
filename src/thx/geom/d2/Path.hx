@@ -7,9 +7,13 @@ class Path {
   public static function fromSVGPath(d : String)
     return new Path(Svg.parsePath(d));
 
+  public var box(default, null) : Rect;
   var segments : Array<Segment>;
   public function new(?list : Array<Segment>) {
     segments = null == list ? [] : list;
+    box = Rect.fromRects({
+      iterator : function() return segments.pluck(_.box).iterator()
+    });
   }
 
   public function toSVGPath() {
