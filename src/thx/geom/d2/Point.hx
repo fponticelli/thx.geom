@@ -7,6 +7,46 @@ using thx.Floats;
 abstract Point(XY) from XY to XY {
   public static var zero(default, null) : Point = Point.immutable(0, 0);
 
+  public static function linkedMin(points : Iterable<Point>)
+    return Point.linked(
+      function() {
+        var x = Math.POSITIVE_INFINITY;
+        for(p in points)
+          if(p.x < x)
+            x = p.x;
+        return x;
+      },
+      function() {
+        var y = Math.POSITIVE_INFINITY;
+        for(p in points)
+          if(p.y < y)
+            y = p.y;
+        return y;
+      },
+      function(_) return throw "cannot set X for linkedMin point",
+      function(_) return throw "cannot set Y for linkedMin point"
+    );
+
+    public static function linkedMax(points : Iterable<Point>)
+      return Point.linked(
+        function() {
+          var x = Math.NEGATIVE_INFINITY;
+          for(p in points)
+            if(p.x > x)
+              x = p.x;
+          return x;
+        },
+        function() {
+          var y = Math.NEGATIVE_INFINITY;
+          for(p in points)
+            if(p.y > y)
+              y = p.y;
+          return y;
+        },
+        function(_) return throw "cannot set X for linkedMax point",
+        function(_) return throw "cannot set Y for linkedMax point"
+      );
+
   @:from public static function fromFloats(arr : Array<Float>) {
     arr.resize(2, 0);
     return create(arr[0], arr[1]);
