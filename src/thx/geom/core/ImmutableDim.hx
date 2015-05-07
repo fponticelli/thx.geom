@@ -10,6 +10,6 @@ class ImmutableDim implements Dim {
   public function clone() : Dim
     return new MutableDim(_coord);
 
-  function get_coord() return _coord;
-  function set_coord(v : Float) return throw 'this instance of Dim cannot be modified';
+  function get_coord() : Float return _coord;
+  function set_coord(v : Float) : Float return throw 'this instance of Dim cannot be modified';
 }

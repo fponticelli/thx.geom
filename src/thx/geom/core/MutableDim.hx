@@ -10,6 +10,6 @@ class MutableDim implements Dim {
   public function clone() : Dim
     return new MutableDim(_coord);
 
-  function get_coord() return _coord;
-  function set_coord(v : Float) return _coord = v;
+  function get_coord() : Float return _coord;
+  function set_coord(v : Float) : Float return _coord = v;
 }
