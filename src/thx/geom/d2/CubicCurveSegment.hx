@@ -9,6 +9,9 @@ class CubicCurveSegment extends Segment<CubicCurveSegment> {
     this.c2 = c2;
   }
 
+  override public function equals(other : CubicCurveSegment) : Bool
+    return super.equals(other) && c1 == other.c1 && c2 == other.c2;
+
   override public function toString()
     return 'CubicCurveSegment(${start.x},${start.y},${c1.x},${c1.y},${c2.x},${c2.y},${end.x},${end.y})';
 }

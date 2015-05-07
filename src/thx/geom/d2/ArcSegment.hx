@@ -143,6 +143,9 @@ class ArcSegment extends Segment<ArcSegment> {
     this.xAxisRotate = xAxisRotate;
   }
 
+  override public function equals(other : ArcSegment) : Bool
+    return super.equals(other) && radius == other.radius && largeArcFlag == other.largeArcFlag && sweepFlag == other.sweepFlag && xAxisRotate == other.xAxisRotate;
+
   override public function toString()
     return 'ArcSegment(sx:${start.x},sy:${start.y},xr:${xAxisRotate.coord},laf:${largeArcFlag},sf:${sweepFlag},ex:${end.x},ey:${end.y})';
 }
