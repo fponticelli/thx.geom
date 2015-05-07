@@ -37,7 +37,7 @@ class Path implements IShape {
           buf.push('C ${s.c1.x} ${s.c1.y} ${s.c2.x} ${s.c2.y} ${s.end.x} ${s.end.y}');
         case ArcSegment:
           var s : ArcSegment = cast segment;
-          buf.push('A ${s.radius.x} ${s.radius.y} ${s.xAxisRotate.coord} ${s.largeArcFlag ? 1 : 0} ${s.sweepFlag ? 1 : 0} ${s.end.x} ${s.end.y}');
+          buf.push('A ${s.radius.x} ${s.radius.y} ${s.xAxisRotate.degrees} ${s.largeArcFlag ? 1 : 0} ${s.sweepFlag ? 1 : 0} ${s.end.x} ${s.end.y}');
       }
       if(segment.end.equals(startingPoint)) {
         buf.push("Z");

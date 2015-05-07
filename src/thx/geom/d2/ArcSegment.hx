@@ -1,12 +1,11 @@
 package thx.geom.d2;
 
-import thx.geom.core.Dim;
 using thx.Arrays;
 using thx.Floats;
 
 class ArcSegment extends Segment<ArcSegment> {
   public static function toCubic(arc : ArcSegment) : Array<CubicCurveSegment> {
-    var values = arcToCubic(arc.start.x, arc.start.y, arc.radius.x, arc.radius.y, arc.xAxisRotate.coord, arc.largeArcFlag, arc.sweepFlag, arc.end.x, arc.end.y, null),
+    var values = arcToCubic(arc.start.x, arc.start.y, arc.radius.x, arc.radius.y, arc.xAxisRotate.radians, arc.largeArcFlag, arc.sweepFlag, arc.end.x, arc.end.y, null),
         start  = arc.start,
         result = [];
     for(i in 0...Std.int(values.length / 3)) {
@@ -41,18 +40,17 @@ class ArcSegment extends Segment<ArcSegment> {
       };
 
     var _120 = Math.PI * 120 / 180,
-        rad  = Math.PI / 180 * angle,
         res  = [],
         xy, f1, f2, cx, cy;
     if (null == recursive) {
-      xy = rotate(x1, y1, -rad);
+      xy = rotate(x1, y1, -angle);
       x1 = xy.x;
       y1 = xy.y;
-      xy = rotate(x2, y2, -rad);
+      xy = rotate(x2, y2, -angle);
       x2 = xy.x;
       y2 = xy.y;
-      var cos = Math.cos(Math.PI / 180 * angle),
-          sin = Math.sin(Math.PI / 180 * angle),
+      var cos = Math.cos(angle),
+          sin = Math.sin(angle),
           x = (x1 - x2) / 2,
           y = (y1 - y2) / 2;
       var h = (x * x) / (rx * rx) + (y * y) / (ry * ry);
@@ -121,8 +119,8 @@ class ArcSegment extends Segment<ArcSegment> {
       var c = 0;
       while(i < ii) {
         newres[c++] = [
-          rotate(res2[i], res2[i + 1], rad).x,
-          rotate(res2[++i - 1], res2[i], rad).y
+          rotate(res2[i], res2[i + 1], angle).x,
+          rotate(res2[++i - 1], res2[i], angle).y
         ];
         i++;
       }
@@ -133,8 +131,8 @@ class ArcSegment extends Segment<ArcSegment> {
   public var radius(default, null) : Vector;
   public var largeArcFlag : Bool;
   public var sweepFlag : Bool;
-  public var xAxisRotate(default, null) : Dim;
-  public function new(start : Point, radius : Vector, largeArcFlag : Bool, sweepFlag : Bool, xAxisRotate : Dim, end : Point) {
+  public var xAxisRotate(default, null) : Angle;
+  public function new(start : Point, radius : Vector, largeArcFlag : Bool, sweepFlag : Bool, xAxisRotate : Angle, end : Point) {
     // TODO box definition is not complete
     super(start, end, [start, end]);
     this.radius = radius;
@@ -146,6 +144,9 @@ class ArcSegment extends Segment<ArcSegment> {
   override public function equals(other : ArcSegment) : Bool
     return super.equals(other) && radius == other.radius && largeArcFlag == other.largeArcFlag && sweepFlag == other.sweepFlag && xAxisRotate == other.xAxisRotate;
 
+  override public function nearEquals(other : ArcSegment) : Bool
+    return super.equals(other) && radius.nearEquals(other.radius) && largeArcFlag == other.largeArcFlag && sweepFlag == other.sweepFlag && xAxisRotate.nearEquals(other.xAxisRotate);
+
   override public function toString()
-    return 'ArcSegment(sx:${start.x},sy:${start.y},xr:${xAxisRotate.coord},laf:${largeArcFlag},sf:${sweepFlag},ex:${end.x},ey:${end.y})';
+    return 'ArcSegment(sx:${start.x},sy:${start.y},rot:${xAxisRotate.degrees}°,laf:${largeArcFlag},sf:${sweepFlag},ex:${end.x},ey:${end.y})';
 }
