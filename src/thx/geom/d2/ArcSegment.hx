@@ -5,12 +5,32 @@ using thx.Arrays;
 using thx.Floats;
 
 class ArcSegment extends Segment {
-  public static function arcToCubic(arc : ArcSegment) : CubicCurveSegment {
-    var r = a2c(arc.start.x, arc.start.y, arc.radius.x, arc.radius.y, arc.xAxisRotate.coord, arc.largeArcFlag, arc.sweepFlag, arc.end.x, arc.end.y, null);
-    return null;
+  public static function toCubic(arc : ArcSegment) : Array<CubicCurveSegment> {
+    var values = arcToCubic(arc.start.x, arc.start.y, arc.radius.x, arc.radius.y, arc.xAxisRotate.coord, arc.largeArcFlag, arc.sweepFlag, arc.end.x, arc.end.y, null),
+        start  = arc.start,
+        result = [];
+    for(i in 0...Std.int(values.length / 3)) {
+      result.push(new CubicCurveSegment(
+        start,
+        Point.create(
+          values[i*3][0],
+          values[i*3][1]
+        ),
+        Point.create(
+          values[i*3+1][0],
+          values[i*3+1][1]
+        ),
+        start = Point.create(
+          values[i*3+2][0],
+          values[i*3+2][1]
+        )
+      ));
+
+    }
+    return result;
   }
 
-  static function a2c(x1 : Float, y1 : Float, rx : Float, ry : Float, angle : Float, large_arc_flag : Bool, sweep_flag : Bool, x2 : Float, y2 : Float, ?recursive : Array<Float>) : Array<Array<Float>> {
+  static function arcToCubic(x1 : Float, y1 : Float, rx : Float, ry : Float, angle : Float, large_arc_flag : Bool, sweep_flag : Bool, x2 : Float, y2 : Float, ?recursive : Array<Float>) : Array<Array<Float>> {
     // for more information of where this math came from visit:
     // http://www.w3.org/TR/SVG11/implnote.html#ArcImplementationNotes
 
@@ -75,7 +95,7 @@ class ArcSegment extends Segment {
       f2 = f1 + _120 * (sweep_flag && f2 > f1 ? 1 : -1);
       x2 = cx + rx * Math.cos(f2);
       y2 = cy + ry * Math.sin(f2);
-      res = a2c(x2, y2, rx, ry, angle, false, sweep_flag, x2old, y2old, [f2, f2old, cx, cy]);
+      res = arcToCubic(x2, y2, rx, ry, angle, false, sweep_flag, x2old, y2old, [f2, f2old, cx, cy]);
     }
     df = f2 - f1;
     var c1 = Math.cos(f1),
