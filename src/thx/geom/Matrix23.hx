@@ -18,7 +18,7 @@ abstract Matrix23(M23) from M23 to M23 {
   static public function rotationAt(center : Point, radians :  Float)
     return identity.translateBy(-center).rotate(radians).translateBy(center);
 
-  static public function scaled(scaleFactorX : Float, ?scaleFactorY : Float) : Matrix23
+  static public function scaling(scaleFactorX : Float, ?scaleFactorY : Float) : Matrix23
     return Matrix23.create(scaleFactorX, 0, 0, null == scaleFactorY ? scaleFactorX : scaleFactorY, 0, 0);
 
   static public function translation(x : Float, y : Float)
