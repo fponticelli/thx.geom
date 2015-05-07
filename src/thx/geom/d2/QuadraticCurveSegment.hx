@@ -10,6 +10,9 @@ class QuadraticCurveSegment extends Segment<QuadraticCurveSegment> {
   override public function equals(other : QuadraticCurveSegment) : Bool
     return super.equals(other) && c1 == other.c1;
 
+  override public function nearEquals(other : QuadraticCurveSegment) : Bool
+    return super.equals(other) && c1.nearEquals(other.c1);
+
   override public function toString()
     return 'QuadraticCurveSegment(${start.x},${start.y},${c1.x},${c1.y},${end.x},${end.y})';
 }

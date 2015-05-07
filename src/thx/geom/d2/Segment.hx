@@ -15,6 +15,9 @@ class Segment<T : Segment<T>> {
   public function equals(other : T) : Bool
     return this.sameType(other) && start == other.start && end == other.end;
 
+  public function nearEquals(other : T) : Bool
+    return this.sameType(other) && start.nearEquals(other.start) && end.nearEquals(other.end);
+
   public function toVector()
     return Vector.linked(
       function( ) return end.x - start.x,
