@@ -1,6 +1,8 @@
 package thx.geom.d2;
 
-class Segment {
+using thx.Types;
+
+class Segment<T : Segment<T>> {
   public var start(default, null) : Point;
   public var end(default, null) : Point;
   public var box(default, null) : Rect;
@@ -9,6 +11,9 @@ class Segment {
     this.end = end;
     this.box = Rect.fromPoints(cloud);
   }
+
+  public function equals(other : T) : Bool
+    return this.sameType(other) && start == other.start && end == other.end;
 
   public function toVector()
     return Vector.linked(

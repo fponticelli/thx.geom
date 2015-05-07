@@ -5,8 +5,8 @@ import thx.geom.core.MutableDim;
 using thx.Arrays;
 
 class Svg {
-  public static function parsePath(d : String) : Array<Segment> {
-    var list : Array<Segment> = [];
+  public static function parsePath(d : String) : Array<Segment<Dynamic>> {
+    var list : Array<Segment<Dynamic>> = [];
     function capture(qt : Int) {
       var arr = [],
           b = "",

@@ -1,6 +1,6 @@
 package thx.geom.d2;
 
-class QuadraticCurveSegment extends Segment {
+class QuadraticCurveSegment extends Segment<QuadraticCurveSegment> {
   public var c1(default, null) : Point;
   public function new(start : Point, c1 : Point, end : Point) {
     super(start, end, [start, c1, end]);

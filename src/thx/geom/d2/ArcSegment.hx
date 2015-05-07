@@ -4,7 +4,7 @@ import thx.geom.core.Dim;
 using thx.Arrays;
 using thx.Floats;
 
-class ArcSegment extends Segment {
+class ArcSegment extends Segment<ArcSegment> {
   public static function toCubic(arc : ArcSegment) : Array<CubicCurveSegment> {
     var values = arcToCubic(arc.start.x, arc.start.y, arc.radius.x, arc.radius.y, arc.xAxisRotate.coord, arc.largeArcFlag, arc.sweepFlag, arc.end.x, arc.end.y, null),
         start  = arc.start,

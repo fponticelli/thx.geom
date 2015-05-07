@@ -1,6 +1,6 @@
 package thx.geom.d2;
 
-class CubicCurveSegment extends Segment {
+class CubicCurveSegment extends Segment<CubicCurveSegment> {
   public var c1(default, null) : Point;
   public var c2(default, null) : Point;
   public function new(start : Point, c1 : Point, c2 : Point, end : Point) {
