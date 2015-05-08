@@ -129,10 +129,10 @@ class ArcSegment extends Segment<ArcSegment> {
   }
 
   public var radius(default, null) : Vector;
-  public var largeArcFlag : Bool;
-  public var sweepFlag : Bool;
+  public var largeArcFlag : Flag;
+  public var sweepFlag : Flag;
   public var xAxisRotate(default, null) : Angle;
-  public function new(start : Point, radius : Vector, largeArcFlag : Bool, sweepFlag : Bool, xAxisRotate : Angle, end : Point) {
+  public function new(start : Point, radius : Vector, largeArcFlag : Flag, sweepFlag : Flag, xAxisRotate : Angle, end : Point) {
     // TODO box definition is not complete
     super(start, end, [start, end]);
     this.radius = radius;
