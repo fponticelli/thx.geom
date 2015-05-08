@@ -11,8 +11,12 @@ abstract Radius(Dim) from Dim to Dim {
   inline public static function create(r : Float) : Radius
     return new MutableDim(Math.abs(r));
 
-  inline public static function linked(getRadius : Void -> Float, setRadius : Float -> Float) : Radius
-    return new LinkedDim(getRadius, setRadius);
+  inline public static function linked(getRadius : Void -> Float, setRadius : Float -> Float, ?radius : Float) : Radius {
+    var r : Radius = new LinkedDim(getRadius, setRadius);
+    if(null != radius)
+      r.coord = radius;
+    return r;
+  }
 
   inline public static function immutable(r : Float) : Radius
     return new ImmutableDim(r);

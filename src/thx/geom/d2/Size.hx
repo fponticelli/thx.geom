@@ -16,8 +16,14 @@ abstract Size(XY) from XY to XY {
   inline public static function create(width : Float, height : Float) : Size
     return new MutableXY(width, height);
 
-  inline public static function linked(getWidth : Void -> Float, getHeight : Void -> Float, setWidth : Float -> Float, setHeight : Float -> Float) : Size
-    return new LinkedXY(getWidth, getHeight, setWidth, setHeight);
+  inline public static function linked(getWidth : Void -> Float, getHeight : Void -> Float, setWidth : Float -> Float, setHeight : Float -> Float, ?width : Float, ?height : Float) : Size {
+    var size : Size = new LinkedXY(getWidth, getHeight, setWidth, setHeight);
+    if(null != width)
+      size.width = width;
+    if(null != height)
+      size.height = height;
+    return size;
+  }
 
   inline public static function immutable(width : Float, height : Float) : Size
     return new ImmutableXY(width, height);
