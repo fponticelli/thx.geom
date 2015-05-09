@@ -9,13 +9,18 @@ class Path implements IShape {
     return new Path(Svg.parsePath(d));
 
   public var box(default, null) : Rect;
+
   var segments : Array<Segment<Dynamic>>;
+
   public function new(?list : Array<Segment<Dynamic>>) {
     segments = null == list ? [] : list;
     box = Rect.fromRects({
       iterator : function() return segments.pluck(_.box).iterator()
     });
   }
+
+  public function iterator()
+    return segments.iterator();
 
   public function toSVGPath() {
     var buf = [],
