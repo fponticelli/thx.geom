@@ -8,7 +8,7 @@ using thx.Floats;
 import thx.geom.core.*;
 
 abstract Matrix23(M23) from M23 to M23 {
-  static public var identity(default, null) = new Matrix23(new ImmutableM23(1, 0, 0, 1, 0, 0));
+  static public var identity(default, null) = immutable(1, 0, 0, 1, 0, 0);
   static public function rotation(radians :  Float) {
     var c = Math.cos(radians),
         s = Math.sin(radians);
@@ -29,6 +29,12 @@ abstract Matrix23(M23) from M23 to M23 {
 
   public static function create(a : Float, b : Float, c : Float, d : Float, e : Float, f : Float) : Matrix23
     return new MutableM23(a, b, c, d, e, f);
+
+  public static function immutable(a : Float, b : Float, c : Float, d : Float, e : Float, f : Float) : Matrix23
+    return new ImmutableM23(a, b, c, d, e, f);
+
+  public static function linked(getA : Void -> Float, setA : Float -> Float, getB : Void -> Float, setB : Float -> Float, getC : Void -> Float, setC : Float -> Float, getD : Void -> Float, setD : Float -> Float, getE : Void -> Float, setE : Float -> Float, getF : Void -> Float, setF : Float -> Float) : Matrix23
+    return new LinkedM23(getA, setA, getB, setB, getC, setC, getD, setD, getE, setE, getF, setF);
 
   public var a(get, set) : Float;
   public var b(get, set) : Float;
