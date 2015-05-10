@@ -21,7 +21,7 @@ class LinkedM23 implements M23 {
   var setE : Float -> Float;
   var setF : Float -> Float;
 
-  public function new(getA : Void -> Float, setA : Float -> Float, getB : Void -> Float, setB : Float -> Float, getC : Void -> Float, setC : Float -> Float, getD : Void -> Float, setD : Void -> Void, getE : Void -> Float, setE : Float -> Float, getF : Void -> Float, setF : Float -> Float) {
+  public function new(getA : Void -> Float, setA : Float -> Float, getB : Void -> Float, setB : Float -> Float, getC : Void -> Float, setC : Float -> Float, getD : Void -> Float, setD : Float -> Float, getE : Void -> Float, setE : Float -> Float, getF : Void -> Float, setF : Float -> Float) {
     this.getA = getA;
     this.getB = getB;
     this.getC = getC;
