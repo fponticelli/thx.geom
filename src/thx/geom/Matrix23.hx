@@ -64,18 +64,18 @@ abstract Matrix23(M23) from M23 to M23 {
   public function flipY() : Matrix23
     return mul(1, 0, 0, -1, 0, 0);
 
-  @:op(A*B) public function multiply(other : Matrix23) : Matrix23
+  public function multiply(other : Matrix23) : Matrix23
     return mul(other.a, other.b, other.c, other.d, other.e, other.f);
 
-  private function mul(a : Float, b : Float, c : Float, d : Float, e : Float, f : Float) : Matrix23
-    return create(
-      this.a * a + this.c * b,
-      this.b * a + this.d * b,
-      this.a * c + this.c * d,
-      this.b * c + this.d * d,
-      this.a * e + this.c * f + this.e,
-      this.b * e + this.d * f + this.f
-    );
+  private function mul(a : Float, b : Float, c : Float, d : Float, e : Float, f : Float) : Matrix23 {
+    this.a = this.a * a + this.c * b;
+    this.b = this.b * a + this.d * b;
+    this.c = this.a * c + this.c * d;
+    this.d = this.b * c + this.d * d;
+    this.e = this.a * e + this.c * f + this.e;
+    this.f = this.b * e + this.d * f + this.f;
+    return this;
+  }
 
   public function inverse() : Matrix23 {
     var det1 = this.a * this.d - this.b * this.c;
