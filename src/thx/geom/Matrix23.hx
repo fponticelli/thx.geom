@@ -46,6 +46,18 @@ abstract Matrix23(M23) from M23 to M23 {
   inline public function new(m : M23)
     this = m;
 
+  public function clone() : Matrix23
+    return create(a, b, c, d, e, f);
+
+  public function copyTo(other : Matrix23) {
+    other.a = a;
+    other.b = b;
+    other.c = c;
+    other.d = d;
+    other.e = e;
+    other.f = f;
+  }
+
   public function flipX() : Matrix23
     return mul(-1, 0, 0, 1, 0, 0);
 
