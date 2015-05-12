@@ -163,7 +163,7 @@ abstract Matrix23(M23) from M23 to M23 {
            f == other.f;
 
   public function toString()
-    return 'matrix($a,$b,$c,$d,$e,$f)';
+    return 'matrix($a $b $c $d $e $f)';
 
   inline function get_a() : Float return this.a;
   inline function get_b() : Float return this.b;
