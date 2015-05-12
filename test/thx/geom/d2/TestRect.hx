@@ -33,8 +33,8 @@ class TestRect {
 
     rect.right = 60;
     rect.left = 20;
-    rect.top = 40;
-    rect.bottom = 10;
+    rect.max = 40;
+    rect.min = 10;
 
     Assert.equals( 20, tl.x);
     Assert.equals( 40, tl.y);
