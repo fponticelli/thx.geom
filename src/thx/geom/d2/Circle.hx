@@ -41,21 +41,21 @@ class Circle implements IShape {
   public var y(get, set) : Float;
   public var left(get, set) : Float;
   public var right(get, set) : Float;
-  public var top(get, set) : Float;
-  public var bottom(get, set) : Float;
+  public var max(get, set) : Float;
+  public var min(get, set) : Float;
   public var area(get, set) : Float;
   public var circumference(get, set) : Float;
   public var box(default, null) : Rect;
   @:isVar public var centerLeft(get, null) : Point;
   @:isVar public var centerRight(get, null) : Point;
-  @:isVar public var centerTop(get, null) : Point;
-  @:isVar public var centerBottom(get, null) : Point;
-  @:isVar public var bottomLeft(get, null) : Point;
-  @:isVar public var topRight(get, null) : Point;
+  @:isVar public var centerMax(get, null) : Point;
+  @:isVar public var centerMin(get, null) : Point;
+  @:isVar public var minLeft(get, null) : Point;
+  @:isVar public var maxRight(get, null) : Point;
   public function new(center : Point, radius : Radius) {
     this.center = center;
     this.radius = radius;
-    this.box = Rect.fromPoints([bottomLeft, topRight]);
+    this.box = Rect.fromPoints([minLeft, maxRight]);
   }
 
   inline function get_area()
@@ -88,10 +88,10 @@ class Circle implements IShape {
   inline function get_right()
     return x + (this.radius : Float);
 
-  inline function get_top()
+  inline function get_max()
     return y - (this.radius : Float);
 
-  inline function get_bottom()
+  inline function get_min()
     return y + (this.radius : Float);
 
   inline function set_left(v : Float)
@@ -100,10 +100,10 @@ class Circle implements IShape {
   inline function set_right(v : Float)
     return this.center.x = v - (this.radius : Float);
 
-  inline function set_top(v : Float)
+  inline function set_max(v : Float)
     return this.center.y = v - (this.radius : Float);
 
-  inline function set_bottom(v : Float)
+  inline function set_min(v : Float)
     return this.center.y = v + (this.radius : Float);
 
   inline public function equals(other : Circle)
@@ -136,51 +136,51 @@ class Circle implements IShape {
     return centerRight;
   }
 
-  function get_centerTop() : Point {
-    if(null == centerTop) {
-      centerTop = Point.linked(
+  function get_centerMax() : Point {
+    if(null == centerMax) {
+      centerMax = Point.linked(
         function() return center.x,
-        function() return top,
+        function() return max,
         function(v) return center.x = v,
-        function(v) return top = v
+        function(v) return max = v
       );
     }
-    return centerTop;
+    return centerMax;
   }
 
-  function get_centerBottom() : Point {
-    if(null == centerBottom) {
-      centerBottom = Point.linked(
+  function get_centerMin() : Point {
+    if(null == centerMin) {
+      centerMin = Point.linked(
         function() return center.x,
-        function() return bottom,
+        function() return min,
         function(v) return center.x = v,
-        function(v) return bottom = v
+        function(v) return min = v
       );
     }
-    return centerBottom;
+    return centerMin;
   }
 
-  function get_bottomLeft() : Point {
-    if(null == bottomLeft) {
-      bottomLeft = Point.linked(
+  function get_minLeft() : Point {
+    if(null == minLeft) {
+      minLeft = Point.linked(
         function() return left,
-        function() return bottom,
+        function() return min,
         function(v) return left = v,
-        function(v) return bottom = v
+        function(v) return min = v
       );
     }
-    return bottomLeft;
+    return minLeft;
   }
 
-  function get_topRight() : Point {
-    if(null == topRight) {
-      topRight = Point.linked(
+  function get_maxRight() : Point {
+    if(null == maxRight) {
+      maxRight = Point.linked(
         function() return right,
-        function() return top,
+        function() return max,
         function(v) return right = v,
-        function(v) return top = v
+        function(v) return max = v
       );
     }
-    return topRight;
+    return maxRight;
   }
 }

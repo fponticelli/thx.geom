@@ -15,8 +15,8 @@ class Rect implements IShape {
   }
 
   public static function fromRects(rects : Iterable<Rect>) {
-    var min = Point.linkedMin(rects.pluck(_.bottomLeft)),
-        max = Point.linkedMax(rects.pluck(_.topRight));
+    var min = Point.linkedMin(rects.pluck(_.minLeft)),
+        max = Point.linkedMax(rects.pluck(_.maxRight));
     return fromPoints([min, max]);
   }
 
@@ -28,20 +28,20 @@ class Rect implements IShape {
   public var height(get, set) : Float;
   public var left(get, set) : Float;
   public var right(get, set) : Float;
-  public var top(get, set) : Float;
-  public var bottom(get, set) : Float;
+  public var max(get, set) : Float;
+  public var min(get, set) : Float;
   public var area(get, never) : Float;
   public var perimeter(get, never) : Float;
   public var box(default, null) : Rect;
   @:isVar public var center(get, null) : Point;
   @:isVar public var centerLeft(get, null) : Point;
   @:isVar public var centerRight(get, null) : Point;
-  @:isVar public var centerTop(get, null) : Point;
-  @:isVar public var centerBottom(get, null) : Point;
-  @:isVar public var topLeft(get, null) : Point;
-  @:isVar public var topRight(get, null) : Point;
-  @:isVar public var bottomLeft(get, null) : Point;
-  @:isVar public var bottomRight(get, null) : Point;
+  @:isVar public var centerMax(get, null) : Point;
+  @:isVar public var centerMin(get, null) : Point;
+  @:isVar public var maxLeft(get, null) : Point;
+  @:isVar public var maxRight(get, null) : Point;
+  @:isVar public var minLeft(get, null) : Point;
+  @:isVar public var minRight(get, null) : Point;
   @:isVar public var corners(get, null) : Iterable<Point>;
 
   public function new(position : Point, size : Size) {
@@ -86,77 +86,77 @@ class Rect implements IShape {
     return centerRight;
   }
 
-  function get_centerTop() : Point {
-    if(null == centerTop) {
-      centerTop = Point.linked(
+  function get_centerMax() : Point {
+    if(null == centerMax) {
+      centerMax = Point.linked(
         function() return x + width / 2,
-        function() return top,
+        function() return max,
         function(v) return x = v - width / 2,
-        function(v) return top = v
+        function(v) return max = v
       );
     }
-    return centerTop;
+    return centerMax;
   }
 
-  function get_centerBottom() : Point {
-    if(null == centerBottom) {
-      centerBottom = Point.linked(
+  function get_centerMin() : Point {
+    if(null == centerMin) {
+      centerMin = Point.linked(
         function() return x + width / 2,
-        function() return bottom,
+        function() return min,
         function(v) return x = v - width / 2,
-        function(v) return bottom = v
+        function(v) return min = v
       );
     }
-    return centerBottom;
+    return centerMin;
   }
 
-  function get_topLeft() : Point {
-    if(null == topLeft) {
-      topLeft = Point.linked(
+  function get_maxLeft() : Point {
+    if(null == maxLeft) {
+      maxLeft = Point.linked(
         function() return left,
-        function() return top,
+        function() return max,
         function(v) return left = v,
-        function(v) return top = v
+        function(v) return max = v
       );
     }
-    return topLeft;
+    return maxLeft;
   }
 
-  function get_topRight() : Point {
-    if(null == topRight) {
-      topRight = Point.linked(
+  function get_maxRight() : Point {
+    if(null == maxRight) {
+      maxRight = Point.linked(
         function() return right,
-        function() return top,
+        function() return max,
         function(v) return right = v,
-        function(v) return top = v
+        function(v) return max = v
       );
     }
-    return topRight;
+    return maxRight;
   }
 
-  function get_bottomLeft() : Point {
-    if(null == bottomLeft) {
-      bottomLeft = Point.linked(
+  function get_minLeft() : Point {
+    if(null == minLeft) {
+      minLeft = Point.linked(
         function() return left,
-        function() return bottom,
+        function() return min,
         function(v) return left = v,
-        function(v) return bottom = v
+        function(v) return min = v
       );
 
     }
-    return bottomLeft;
+    return minLeft;
   }
 
-  function get_bottomRight() : Point {
-    if(null == bottomRight) {
-      bottomRight = Point.linked(
+  function get_minRight() : Point {
+    if(null == minRight) {
+      minRight = Point.linked(
         function() return right,
-        function() return bottom,
+        function() return min,
         function(v) return right = v,
-        function(v) return bottom = v
+        function(v) return min = v
       );
     }
-    return bottomRight;
+    return minRight;
   }
 
   inline function get_area()
@@ -171,10 +171,10 @@ class Rect implements IShape {
   function get_right()
     return x + (width > 0 ? width : 0);
 
-  function get_top()
+  function get_max()
     return y + (height > 0 ? height : 0);
 
-  function get_bottom()
+  function get_min()
     return y + (height < 0 ? height : 0);
 
   function set_left(v : Float) {
@@ -191,15 +191,15 @@ class Rect implements IShape {
     return v;
   }
 
-  function set_top(v : Float) {
-    var b = bottom;
+  function set_max(v : Float) {
+    var b = min;
     y = b;
     height = v - b;
     return v;
   }
 
-  function set_bottom(v : Float) {
-    var t = top;
+  function set_min(v : Float) {
+    var t = max;
     y = v;
     height = t - v;
     return v;
@@ -231,7 +231,7 @@ class Rect implements IShape {
 
   function get_corners() {
     if(null == corners) {
-      corners = [bottomLeft, topLeft, topRight, bottomRight];
+      corners = [minLeft, maxLeft, maxRight, minRight];
     }
     return corners;
   }
@@ -240,8 +240,8 @@ class Rect implements IShape {
     return
       left   == other.left   &&
       right  == other.right  &&
-      top    == other.top    &&
-      bottom == other.bottom;
+      max    == other.max    &&
+      min    == other.min;
 
   inline public function toString()
     return 'Rect(${x},${y},${width},${height})';

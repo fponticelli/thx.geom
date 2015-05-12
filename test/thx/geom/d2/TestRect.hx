@@ -13,16 +13,16 @@ class TestRect {
         rect = new Rect(position, size);
     Assert.equals(-30, rect.left);
     Assert.equals( 10, rect.right);
-    Assert.equals( 40, rect.top);
-    Assert.equals( 20, rect.bottom);
+    Assert.equals( 40, rect.max);
+    Assert.equals( 20, rect.min);
     Assert.floatEquals(800, rect.area);
     Assert.floatEquals(120, rect.perimeter);
   }
 
   public function testAnchorPoints() {
     var rect = Rect.create(10, 20, 20, -40),
-        tl = rect.topLeft,
-        br = rect.bottomRight,
+        tl = rect.maxLeft,
+        br = rect.minRight,
         c  = rect.center;
     Assert.equals( 10, tl.x);
     Assert.equals( 20, tl.y);

@@ -15,7 +15,7 @@ class TestPolyline {
           ]);
 
 
-    Assert.isTrue(poly.box.bottomLeft == Point.create(10, 10));
-    Assert.isTrue(poly.box.topRight == Point.create(20, 20));
+    Assert.isTrue(poly.box.minLeft == Point.create(10, 10));
+    Assert.isTrue(poly.box.maxRight == Point.create(20, 20));
   }
 }
