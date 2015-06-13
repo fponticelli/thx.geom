@@ -1,6 +1,7 @@
 package thx.geom.d2;
 
 using thx.Arrays;
+using thx.Functions;
 
 class Polyline {
   public var box(default, null) : Rect;
@@ -12,5 +13,5 @@ class Polyline {
   }
 
   public function toString()
-    return 'Polyline(${points.pluck(_.x+","+_.y).join(";")})';
+    return 'Polyline(${points.map.fn(_.x+","+_.y).join(";")})';
 }

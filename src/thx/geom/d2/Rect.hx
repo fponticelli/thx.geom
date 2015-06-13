@@ -2,6 +2,7 @@ package thx.geom.d2;
 
 import thx.geom.core.*;
 using thx.Iterables;
+using thx.Functions;
 
 class Rect implements IShape {
   public static inline function create(x : Float, y : Float, width : Float, height : Float)
@@ -15,8 +16,8 @@ class Rect implements IShape {
   }
 
   public static function fromRects(rects : Iterable<Rect>) {
-    var min = Point.linkedMin(rects.pluck(_.minLeft)),
-        max = Point.linkedMax(rects.pluck(_.maxRight));
+    var min = Point.linkedMin(rects.map.fn(_.minLeft)),
+        max = Point.linkedMax(rects.map.fn(_.maxRight));
     return fromPoints([min, max]);
   }
 

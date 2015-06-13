@@ -3,6 +3,7 @@ package thx.geom.d2;
 import thx.geom.d2.svg.Svg;
 using thx.Arrays;
 using thx.Floats;
+using thx.Functions;
 
 class Path implements IShape {
   public static function fromSVGPath(d : String)
@@ -15,7 +16,7 @@ class Path implements IShape {
   public function new(?list : Array<Segment<Dynamic>>) {
     segments = null == list ? [] : list;
     box = Rect.fromRects({
-      iterator : function() return segments.pluck(_.box).iterator()
+      iterator : function() return segments.map.fn(_.box).iterator()
     });
   }
 

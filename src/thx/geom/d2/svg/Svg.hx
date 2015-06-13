@@ -3,6 +3,7 @@ package thx.geom.d2.svg;
 import thx.geom.d2.Path;
 import thx.geom.core.MutableDim;
 using thx.Arrays;
+using thx.Functions;
 
 class Svg {
   public static function parsePath(d : String) : Array<Segment<Dynamic>> {
@@ -29,7 +30,7 @@ class Svg {
 
     function capturePoints(qt : Int) {
       var c = capture(qt * 2);
-      return c.splitBy(2).pluck(Point.create(_[0], _[1]));
+      return c.splitBy(2).map.fn(Point.create(_[0], _[1]));
     }
 
     function capturePoint()
